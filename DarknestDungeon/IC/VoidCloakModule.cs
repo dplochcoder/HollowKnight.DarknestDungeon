@@ -1,5 +1,6 @@
 ﻿using ItemChanger;
 using Modding;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace DarknestDungeon.IC
@@ -8,10 +9,14 @@ namespace DarknestDungeon.IC
     {
         public bool HasVoidCloak = false;
 
+        [JsonIgnore]
+        public Vector2? DashVelocityOverride = null;
+
         public override void Initialize()
         {
             ModHooks.GetPlayerBoolHook += OverrideGetBool;
             ModHooks.SetPlayerBoolHook += OverrideSetBool;
+            ModHooks.DashVectorHook += OverrideDashVelocity;
             Events.AddFsmEdit(new FsmID("Knight", "ProxyFSM"), HookVoidCloak);
         }
 
@@ -19,6 +24,7 @@ namespace DarknestDungeon.IC
         {
             ModHooks.GetPlayerBoolHook -= OverrideGetBool;
             ModHooks.SetPlayerBoolHook -= OverrideSetBool;
+            ModHooks.DashVectorHook -= OverrideDashVelocity;
             Events.RemoveFsmEdit(new FsmID("Knight", "ProxyFSM"), HookVoidCloak);
         }
 
@@ -29,6 +35,8 @@ namespace DarknestDungeon.IC
             if (boolName == nameof(HasVoidCloak)) HasVoidCloak = value;
             return value;
         }
+
+        private Vector2 OverrideDashVelocity(Vector2 v) => DashVelocityOverride ?? v;
 
         private void HookVoidCloak(PlayMakerFSM fsm)
         {
