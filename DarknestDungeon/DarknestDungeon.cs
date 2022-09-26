@@ -1,7 +1,4 @@
 ﻿using Modding;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
 
 namespace DarknestDungeon
 {
