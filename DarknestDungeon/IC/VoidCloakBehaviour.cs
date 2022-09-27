@@ -17,6 +17,7 @@ namespace DarknestDungeon.IC
         private static readonly FieldInfo inputHandlerField = typeof(HeroController).GetField("inputHandler", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly FieldInfo rb2dField = typeof(HeroController).GetField("rb2d", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly FieldInfo dashTimerField = typeof(HeroController).GetField("dash_timer", BindingFlags.NonPublic | BindingFlags.Instance);
+        private static readonly FieldInfo doubleJumpedField = typeof(HeroController).GetField("doubleJumped", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly MethodInfo origDashVectorMethod = typeof(HeroController).GetMethod("OrigDashVector", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly MethodInfo finishedDashingMethod = typeof(HeroController).GetMethod("FinishedDashing", BindingFlags.NonPublic | BindingFlags.Instance);
 
@@ -60,6 +61,12 @@ namespace DarknestDungeon.IC
         {
             get { return (float)dashTimerField.GetValue(hc); }
             set { dashTimerField.SetValue(hc, value); }
+        }
+
+        private bool doubleJumped
+        {
+            get { return (bool)doubleJumpedField.GetValue(hc); }
+            set { doubleJumpedField.SetValue(hc, value);  }
         }
 
         private static readonly object[] emptyArr = new object[0];
@@ -135,6 +142,10 @@ namespace DarknestDungeon.IC
         {
             dash_timer = 0;
             voidDashTimer += Time.deltaTime;
+            if (doubleJumped && voidDashTimer > hc.DASH_TIME)
+            {
+                doubleJumped = false;
+            }
 
             var targetVelocity = GetTargetDir() * origMagnitude;
             var diff = targetVelocity - velocity;
