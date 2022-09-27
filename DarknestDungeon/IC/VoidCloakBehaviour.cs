@@ -1,5 +1,9 @@
-﻿using IL;
+﻿using HutongGames.PlayMaker;
+using IL;
+using ItemChanger.Extensions;
+using ItemChanger.FsmStateActions;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Reflection;
 using UnityEngine;
 
@@ -7,11 +11,17 @@ namespace DarknestDungeon.IC
 {
     public class VoidCloakBehaviour : MonoBehaviour
     {
-        private enum State
+        private enum VoidCloakState
         {
             Idle,
             VoidDashing,
             VoidEarlyRelease
+        }
+
+        private enum ShadowRechargeState
+        {
+            Default,
+            Delayed
         }
 
         private static readonly FieldInfo inputHandlerField = typeof(HeroController).GetField("inputHandler", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -32,10 +42,23 @@ namespace DarknestDungeon.IC
         private Rigidbody2D rb2d;
         private HeroControllerStates hcs;
 
-        private State state = State.Idle;
+        private GameObject shadowRecharge;
+        private PlayMakerFSM shadeClockRechargeFsm;
+        private FsmFloat shadeClockWaitTime;
+        private float origShadeCloakWaitTime;
+
+        private VoidCloakState voidCloakState = VoidCloakState.Idle;
         private Vector2 velocity;
         private float origMagnitude;
         private float voidDashTimer;
+
+        private ShadowRechargeState shadowRechargeState = ShadowRechargeState.Default;
+        private float shadowRechargePauseTime;
+
+        private class ShadeClockTimerResetAction : Lambda
+        {
+            public ShadeClockTimerResetAction(Action a) : base(a) { }
+        }
 
         public void Start()
         {
@@ -44,17 +67,25 @@ namespace DarknestDungeon.IC
             rb2d = (Rigidbody2D)rb2dField.GetValue(hc);
             hcs = hc.cState;
 
+            shadowRecharge = gameObject.FindChild("Effects").FindChild("Shadow Recharge");
+            shadeClockRechargeFsm = shadowRecharge.LocateMyFSM("Recharge Effect");
+            shadeClockWaitTime = shadeClockRechargeFsm.FsmVariables.FindFsmFloat("Wait time");
+            origShadeCloakWaitTime = shadeClockWaitTime.Value;
+
+            shadeClockRechargeFsm.GetState("Init").AddLastAction(new ShadeClockTimerResetAction(() => shadeClockWaitTime.Value = origShadeCloakWaitTime));
             Vcm.OnTransition += OnSceneTransition;
         }
 
         private void OnSceneTransition()
         {
-            if (state == State.VoidDashing) FinishedVoidDashing();
+            if (voidCloakState == VoidCloakState.VoidDashing) FinishedVoidDashing();
         }
 
         public void OnDestroy()
         {
             Vcm.OnTransition -= OnSceneTransition;
+            shadeClockWaitTime.Value = origShadeCloakWaitTime;
+            shadeClockRechargeFsm.GetState("Init").RemoveFirstActionOfType<ShadeClockTimerResetAction>();
         }
 
         private float dash_timer
@@ -79,18 +110,18 @@ namespace DarknestDungeon.IC
         {
             if (!Vcm.HasVoidCloak) return;
 
-            switch (state)
+            switch (voidCloakState)
             {
-                case State.Idle:
+                case VoidCloakState.Idle:
                     if (hcs.shadowDashing)
                     {
                         StartVoidDash();
                     }
                     break;
-                case State.VoidDashing:
+                case VoidCloakState.VoidDashing:
                     if (!ih.inputActions.dash.IsPressed && voidDashTimer <= hc.DASH_TIME)
                     {
-                        state = State.VoidEarlyRelease;
+                        voidCloakState = VoidCloakState.VoidEarlyRelease;
                         dash_timer = voidDashTimer;
                     }
                     else if (!ih.inputActions.dash.IsPressed || voidDashTimer > VOID_DASH_TIME)
@@ -102,18 +133,32 @@ namespace DarknestDungeon.IC
                         VoidDashUpdate();
                     }
                     break;
-                case State.VoidEarlyRelease:
+                case VoidCloakState.VoidEarlyRelease:
                     if (!hcs.shadowDashing)
                     {
                         FinishedVoidDashing();
                     }
                     break;
             }
+
+            switch (shadowRechargeState)
+            {
+                case ShadowRechargeState.Default:
+                    break;
+                case ShadowRechargeState.Delayed:
+                    if (shadowRechargePauseTime <= 0)
+                    {
+                        shadowRechargeState = ShadowRechargeState.Default;
+                        shadowRecharge.GetComponent<tk2dSpriteAnimator>().Resume();
+                    }
+                    shadowRechargePauseTime -= Time.deltaTime;
+                    break;
+            }
         }
 
         private void StartVoidDash()
         {
-            state = State.VoidDashing;
+            voidCloakState = VoidCloakState.VoidDashing;
             dash_timer = 0;
             voidDashTimer = Time.deltaTime;
 
@@ -142,9 +187,18 @@ namespace DarknestDungeon.IC
         {
             dash_timer = 0;
             voidDashTimer += Time.deltaTime;
-            if (doubleJumped && voidDashTimer > hc.DASH_TIME)
+            if (voidDashTimer > hc.DASH_TIME)
             {
-                doubleJumped = false;
+                if (doubleJumped) doubleJumped = false;
+
+                if (shadowRechargeState == ShadowRechargeState.Default)
+                {
+                    shadowRechargeState = ShadowRechargeState.Delayed;
+                    shadowRecharge.GetComponent<tk2dSpriteAnimator>().Pause();
+                    shadeClockWaitTime = 0;
+                }
+                shadeClockWaitTime.Value += 2 * Time.deltaTime;
+                shadowRechargePauseTime += 2 * Time.deltaTime;
             }
 
             var targetVelocity = GetTargetDir() * origMagnitude;
@@ -157,7 +211,7 @@ namespace DarknestDungeon.IC
         {
             Vcm.DashVelocityOverride = null;
             FinishedDashing();
-            state = State.Idle;
+            voidCloakState = VoidCloakState.Idle;
 
             // TODO: Airborne velocity
         }
