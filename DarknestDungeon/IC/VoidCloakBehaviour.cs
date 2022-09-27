@@ -20,8 +20,8 @@ namespace DarknestDungeon.IC
         private static readonly MethodInfo origDashVectorMethod = typeof(HeroController).GetMethod("OrigDashVector", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly MethodInfo finishedDashingMethod = typeof(HeroController).GetMethod("FinishedDashing", BindingFlags.NonPublic | BindingFlags.Instance);
 
-        private /*const*/ static float VOID_DASH_TIME = 0.65f;
-        private /*const*/ static float FULL_REVERSAL_PERIOD = 0.2f;
+        private /*const*/ static float VOID_DASH_TIME = 0.7f;
+        private /*const*/ static float FULL_REVERSAL_PERIOD = 0.125f;
 
         // Must be set before Start().
         public VoidCloakModule Vcm;
@@ -42,6 +42,18 @@ namespace DarknestDungeon.IC
             ih = (InputHandler)inputHandlerField.GetValue(hc);
             rb2d = (Rigidbody2D)rb2dField.GetValue(hc);
             hcs = hc.cState;
+
+            Vcm.OnTransition += OnSceneTransition;
+        }
+
+        private void OnSceneTransition()
+        {
+            if (state == State.VoidDashing) FinishedVoidDashing();
+        }
+
+        public void OnDestroy()
+        {
+            Vcm.OnTransition -= OnSceneTransition;
         }
 
         private float dash_timer
@@ -65,7 +77,6 @@ namespace DarknestDungeon.IC
                 case State.Idle:
                     if (hcs.shadowDashing)
                     {
-                        state = State.VoidDashing;
                         StartVoidDash();
                     }
                     break;
@@ -77,18 +88,16 @@ namespace DarknestDungeon.IC
                     }
                     else if (!ih.inputActions.dash.IsPressed || voidDashTimer > VOID_DASH_TIME)
                     {
-                        state = State.Idle;
                         FinishedVoidDashing();
                     }
                     else
                     {
-                        VoidDash();
+                        VoidDashUpdate();
                     }
                     break;
                 case State.VoidEarlyRelease:
                     if (!hcs.shadowDashing)
                     {
-                        state = State.Idle;
                         FinishedVoidDashing();
                     }
                     break;
@@ -97,11 +106,14 @@ namespace DarknestDungeon.IC
 
         private void StartVoidDash()
         {
+            state = State.VoidDashing;
             dash_timer = 0;
             voidDashTimer = Time.deltaTime;
+
             velocity = OrigDashVector();
             origMagnitude = velocity.magnitude;
             SetDashVelocity(GetTargetDir() * velocity.magnitude);
+
             // TODO: Particle effects
         }
 
@@ -119,7 +131,7 @@ namespace DarknestDungeon.IC
             rb2d.velocity = v;
         }
 
-        private void VoidDash()
+        private void VoidDashUpdate()
         {
             dash_timer = 0;
             voidDashTimer += Time.deltaTime;
@@ -134,6 +146,8 @@ namespace DarknestDungeon.IC
         {
             Vcm.DashVelocityOverride = null;
             FinishedDashing();
+            state = State.Idle;
+
             // TODO: Airborne velocity
         }
     }
