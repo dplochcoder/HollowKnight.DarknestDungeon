@@ -18,21 +18,24 @@ namespace DarknestDungeon.IC
             VoidEarlyRelease
         }
 
-        private enum ShadowRechargeState
+        private enum ShadowRechargeAnimState
         {
-            Default,
-            Delayed
+            Idle,
+            AwaitingPause,
+            AwaitingUnpause
         }
 
         private static readonly FieldInfo inputHandlerField = typeof(HeroController).GetField("inputHandler", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly FieldInfo rb2dField = typeof(HeroController).GetField("rb2d", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly FieldInfo dashTimerField = typeof(HeroController).GetField("dash_timer", BindingFlags.NonPublic | BindingFlags.Instance);
+        private static readonly FieldInfo shadowDashTimerField = typeof(HeroController).GetField("shadowDashTimer", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly FieldInfo doubleJumpedField = typeof(HeroController).GetField("doubleJumped", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly MethodInfo origDashVectorMethod = typeof(HeroController).GetMethod("OrigDashVector", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly MethodInfo finishedDashingMethod = typeof(HeroController).GetMethod("FinishedDashing", BindingFlags.NonPublic | BindingFlags.Instance);
 
-        private /*const*/ static float VOID_DASH_TIME = 0.7f;
-        private /*const*/ static float FULL_REVERSAL_PERIOD = 0.125f;
+        private /*const*/ static float VOID_DASH_EXTENSION_RATIO = 1.4f;
+        private /*const*/ static float VOID_DASH_LIMIT = 0.7f;
+        private /*const*/ static float FULL_REVERSAL_PERIOD = 0.1f;
 
         // Must be set before Start().
         public VoidCloakModule Vcm;
@@ -42,17 +45,13 @@ namespace DarknestDungeon.IC
         private Rigidbody2D rb2d;
         private HeroControllerStates hcs;
 
-        private GameObject shadowRecharge;
-        private PlayMakerFSM shadeClockRechargeFsm;
-        private FsmFloat shadeClockWaitTime;
-        private float origShadeCloakWaitTime;
-
         private VoidCloakState voidCloakState = VoidCloakState.Idle;
         private Vector2 velocity;
         private float origMagnitude;
         private float voidDashTimer;
 
-        private ShadowRechargeState shadowRechargeState = ShadowRechargeState.Default;
+        private ShadowRechargeAnimState shadowRechargeAnimState = ShadowRechargeAnimState.Idle;
+        private tk2dSpriteAnimator shadowRecharge;
         private float shadowRechargePauseTime;
 
         private class ShadeClockTimerResetAction : Lambda
@@ -67,12 +66,8 @@ namespace DarknestDungeon.IC
             rb2d = (Rigidbody2D)rb2dField.GetValue(hc);
             hcs = hc.cState;
 
-            shadowRecharge = gameObject.FindChild("Effects").FindChild("Shadow Recharge");
-            shadeClockRechargeFsm = shadowRecharge.LocateMyFSM("Recharge Effect");
-            shadeClockWaitTime = shadeClockRechargeFsm.FsmVariables.FindFsmFloat("Wait time");
-            origShadeCloakWaitTime = shadeClockWaitTime.Value;
+            shadowRecharge = gameObject.FindChild("Effects").FindChild("Shadow Recharge").GetComponent<tk2dSpriteAnimator>();
 
-            shadeClockRechargeFsm.GetState("Init").AddLastAction(new ShadeClockTimerResetAction(() => shadeClockWaitTime.Value = origShadeCloakWaitTime));
             Vcm.OnTransition += OnSceneTransition;
         }
 
@@ -84,14 +79,18 @@ namespace DarknestDungeon.IC
         public void OnDestroy()
         {
             Vcm.OnTransition -= OnSceneTransition;
-            shadeClockWaitTime.Value = origShadeCloakWaitTime;
-            shadeClockRechargeFsm.GetState("Init").RemoveFirstActionOfType<ShadeClockTimerResetAction>();
         }
 
         private float dash_timer
         {
             get { return (float)dashTimerField.GetValue(hc); }
             set { dashTimerField.SetValue(hc, value); }
+        }
+
+        private float shadowDashTimer
+        {
+            get { return (float)shadowDashTimerField.GetValue(hc); }
+            set { shadowDashTimerField.SetValue(hc, value); }
         }
 
         private bool doubleJumped
@@ -124,7 +123,7 @@ namespace DarknestDungeon.IC
                         voidCloakState = VoidCloakState.VoidEarlyRelease;
                         dash_timer = voidDashTimer;
                     }
-                    else if (!ih.inputActions.dash.IsPressed || voidDashTimer > VOID_DASH_TIME)
+                    else if (!ih.inputActions.dash.IsPressed || voidDashTimer > VOID_DASH_LIMIT)
                     {
                         FinishedVoidDashing();
                     }
@@ -141,17 +140,28 @@ namespace DarknestDungeon.IC
                     break;
             }
 
-            switch (shadowRechargeState)
+            switch (shadowRechargeAnimState)
             {
-                case ShadowRechargeState.Default:
+                case ShadowRechargeAnimState.Idle:
                     break;
-                case ShadowRechargeState.Delayed:
-                    if (shadowRechargePauseTime <= 0)
+                case ShadowRechargeAnimState.AwaitingPause:
+                    if (shadowRecharge.Playing)
                     {
-                        shadowRechargeState = ShadowRechargeState.Default;
-                        shadowRecharge.GetComponent<tk2dSpriteAnimator>().Resume();
+                        shadowRechargeAnimState = ShadowRechargeAnimState.AwaitingUnpause;
+                        shadowRecharge.Pause();
                     }
-                    shadowRechargePauseTime -= Time.deltaTime;
+                    break;
+                case ShadowRechargeAnimState.AwaitingUnpause:
+                    if (shadowRechargePauseTime <= 0f)
+                    {
+                        shadowRechargeAnimState = ShadowRechargeAnimState.Idle;
+                        shadowRecharge.Resume();
+                        shadowRechargePauseTime = 0f;
+                    }
+                    else
+                    {
+                        shadowRechargePauseTime -= Time.deltaTime;
+                    }
                     break;
             }
         }
@@ -183,6 +193,12 @@ namespace DarknestDungeon.IC
             rb2d.velocity = v;
         }
 
+        private void IncreaseShadowTime(float delta)
+        {
+            shadowRechargePauseTime += VOID_DASH_EXTENSION_RATIO * delta;
+            shadowDashTimer += VOID_DASH_EXTENSION_RATIO * delta;
+        }
+
         private void VoidDashUpdate()
         {
             dash_timer = 0;
@@ -191,14 +207,16 @@ namespace DarknestDungeon.IC
             {
                 if (doubleJumped) doubleJumped = false;
 
-                if (shadowRechargeState == ShadowRechargeState.Default)
+                if (voidDashTimer - hc.DASH_TIME <= Time.deltaTime)
                 {
-                    shadowRechargeState = ShadowRechargeState.Delayed;
-                    shadowRecharge.GetComponent<tk2dSpriteAnimator>().Pause();
-                    shadeClockWaitTime = 0;
+                    shadowRechargeAnimState = ShadowRechargeAnimState.AwaitingPause;
+                    shadowRechargePauseTime = 0;
+                    IncreaseShadowTime(voidDashTimer - hc.DASH_TIME);
                 }
-                shadeClockWaitTime.Value += 2 * Time.deltaTime;
-                shadowRechargePauseTime += 2 * Time.deltaTime;
+                else
+                {
+                    IncreaseShadowTime(Math.Min(Time.deltaTime, VOID_DASH_LIMIT - (voidDashTimer - Time.deltaTime)));
+                }
             }
 
             var targetVelocity = GetTargetDir() * origMagnitude;
