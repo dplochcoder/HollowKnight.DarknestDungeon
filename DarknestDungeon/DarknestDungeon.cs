@@ -1,4 +1,5 @@
 ﻿using Modding;
+using PurenailCore.ModUtil;
 
 namespace DarknestDungeon
 {
@@ -14,7 +15,9 @@ namespace DarknestDungeon
             ModuleInstaller.Setup();
         }
 
-        public override string GetVersion() => Version.Instance;
+        private static readonly string Version = VersionUtil.ComputeVersion<DarknestDungeon>();
+
+        public override string GetVersion() => Version;
 
         public void OnLoadGlobal(GlobalSettings s) => GS = s ?? new();
 
