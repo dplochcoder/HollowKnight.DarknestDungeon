@@ -4,6 +4,7 @@ using ItemChanger.Extensions;
 using ItemChanger.FsmStateActions;
 using Newtonsoft.Json.Linq;
 using System;
+using System.EnterpriseServices;
 using System.Reflection;
 using UnityEngine;
 
@@ -33,9 +34,9 @@ namespace DarknestDungeon.IC
         private static readonly MethodInfo origDashVectorMethod = typeof(HeroController).GetMethod("OrigDashVector", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly MethodInfo finishedDashingMethod = typeof(HeroController).GetMethod("FinishedDashing", BindingFlags.NonPublic | BindingFlags.Instance);
 
-        private /*const*/ static float VOID_DASH_EXTENSION_RATIO = 1.4f;
-        private /*const*/ static float VOID_DASH_LIMIT = 0.7f;
-        private /*const*/ static float FULL_REVERSAL_PERIOD = 0.1f;
+        private const float VOID_DASH_EXTENSION_RATIO = 1.4f;
+        private const float VOID_DASH_LIMIT = 0.7f;
+        private const float FULL_REVERSAL_PERIOD = 0.1f;
 
         // Must be set before Start().
         public VoidCloakModule Vcm;
@@ -109,6 +110,12 @@ namespace DarknestDungeon.IC
         {
             if (!Vcm.HasVoidCloak) return;
 
+            UpdateVoidCloak();
+            UpdateShadowRechargeAnim();
+        }
+
+        private void UpdateVoidCloak()
+        {
             switch (voidCloakState)
             {
                 case VoidCloakState.Idle:
@@ -139,7 +146,10 @@ namespace DarknestDungeon.IC
                     }
                     break;
             }
+        }
 
+        private void UpdateShadowRechargeAnim()
+        {
             switch (shadowRechargeAnimState)
             {
                 case ShadowRechargeAnimState.Idle:
@@ -202,13 +212,16 @@ namespace DarknestDungeon.IC
         private void VoidDashUpdate()
         {
             dash_timer = 0;
+            bool preVoid = voidDashTimer > hc.DASH_TIME;
             voidDashTimer += Time.deltaTime;
-            if (voidDashTimer > hc.DASH_TIME)
-            {
-                if (doubleJumped) doubleJumped = false;
+            bool postVoid = voidDashTimer > hc.DASH_TIME;
 
-                if (voidDashTimer - hc.DASH_TIME <= Time.deltaTime)
+            if (postVoid)
+            {
+                if (!preVoid)
                 {
+                    if (doubleJumped) doubleJumped = false;
+
                     shadowRechargeAnimState = ShadowRechargeAnimState.AwaitingPause;
                     shadowRechargePauseTime = 0;
                     IncreaseShadowTime(voidDashTimer - hc.DASH_TIME);
