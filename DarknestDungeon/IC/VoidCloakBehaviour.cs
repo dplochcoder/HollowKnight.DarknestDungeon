@@ -49,6 +49,7 @@ namespace DarknestDungeon.IC
         private InputHandler ih;
         private Rigidbody2D rb2d;
         private HeroControllerStates hcs;
+        private GameManager gm;
 
         private VoidCloakState voidCloakState = VoidCloakState.Idle;
         private Vector2 velocity;
@@ -65,6 +66,7 @@ namespace DarknestDungeon.IC
             ih = (InputHandler)inputHandlerField.GetValue(hc);
             rb2d = (Rigidbody2D)rb2dField.GetValue(hc);
             hcs = hc.cState;
+            gm = GameManager.instance;
 
             shadowRecharge = gameObject.FindChild("Effects").FindChild("Shadow Recharge").GetComponent<tk2dSpriteAnimator>();
 
@@ -109,7 +111,7 @@ namespace DarknestDungeon.IC
 
         public void Update()
         {
-            if (!Vcm.HasVoidCloak) return;
+            if (!Vcm.HasVoidCloak || gm.isPaused) return;
 
             UpdateVoidCloak();
             UpdateShadowRechargeAnim();
