@@ -3,3 +3,8 @@
 ################################################################################
 
 /.vs
+/Unity/DarknestDungeon/Library
+/Unity/DarknestDungeon/Logs
+/Unity/DarknestDungeon/Packages
+/Unity/DarknestDungeon/ProjectSettings
+/Unity/DarknestDungeon/UserSettings
