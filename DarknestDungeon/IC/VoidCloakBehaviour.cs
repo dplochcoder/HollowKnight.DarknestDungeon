@@ -195,7 +195,14 @@ namespace DarknestDungeon.IC
             return ((horz != 0 || vert != 0) ? new Vector2(horz, vert) : (velocity.magnitude > 0 ? velocity : OrigDashVector())).normalized;
         }
 
-        private float GetTargetSpeed() => SharpShadowEquipped ? (voidDashTimer > hc.DASH_TIME ? SHARP_SHADOW_TAPER_VELOCITY : SHARP_SHADOW_VELOCITY) : DASH_VELOCITY;
+        private float GetTargetSpeed()
+        {
+            if (SharpShadowEquipped)
+            {
+                return voidDashTimer > hc.DASH_TIME ? SHARP_SHADOW_TAPER_VELOCITY : SHARP_SHADOW_VELOCITY;
+            }
+            return DASH_VELOCITY;
+        }
 
         private void SetDashVelocity(Vector2 v)
         {
