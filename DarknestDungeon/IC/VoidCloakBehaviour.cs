@@ -53,6 +53,7 @@ namespace DarknestDungeon.IC
         private VoidCloakState voidCloakState = VoidCloakState.Idle;
         private Vector2 velocity;
         private float voidDashTimer;
+        private bool wasAirborne;
 
         private ShadowRechargeAnimState shadowRechargeAnimState = ShadowRechargeAnimState.Idle;
         private tk2dSpriteAnimator shadowRecharge;
@@ -179,6 +180,7 @@ namespace DarknestDungeon.IC
         private void StartVoidDash()
         {
             voidCloakState = VoidCloakState.VoidDashing;
+            wasAirborne = !hcs.onGround;
             dash_timer = 0;
             voidDashTimer = Time.deltaTime;
 
@@ -188,10 +190,20 @@ namespace DarknestDungeon.IC
             // TODO: Particle effects
         }
 
+        private bool InputDown => ih.inputActions.down.IsPressed && !ih.inputActions.up.IsPressed;
+        private bool InputDownOnly => InputDown && !ih.inputActions.left.IsPressed && !ih.inputActions.right.IsPressed;
+
         private Vector2 GetTargetDir()
         {
-            int horz = (ih.inputActions.left ? -1 : 0) + (ih.inputActions.right ? 1 : 0);
-            int vert = (ih.inputActions.up ? 1 : 0) + (ih.inputActions.down ? -1 : 0);
+            int horz = (ih.inputActions.left.IsPressed ? -1 : 0) + (ih.inputActions.right.IsPressed ? 1 : 0);
+            int vert = (ih.inputActions.up.IsPressed ? 1 : 0) + (ih.inputActions.down.IsPressed ? -1 : 0);
+
+            // Force horizontal if grounded
+            if (horz == 0 && vert == -1 && hcs.onGround)
+            {
+                horz = hcs.facingRight ? 1 : -1;
+            }
+
             return ((horz != 0 || vert != 0) ? new Vector2(horz, vert) : (velocity.magnitude > 0 ? velocity : OrigDashVector())).normalized;
         }
 
@@ -243,7 +255,16 @@ namespace DarknestDungeon.IC
             var targetVelocity = GetTargetDir() * GetTargetSpeed();
             var diff = targetVelocity - velocity;
             var acc = diff.normalized * 2 * GetTargetSpeed() * Time.deltaTime / FULL_REVERSAL_PERIOD;
-            SetDashVelocity(acc.magnitude > diff.magnitude ? targetVelocity : velocity + acc);
+            SetDashVelocity(acc.sqrMagnitude > diff.sqrMagnitude ? targetVelocity : velocity + acc);
+
+            // We cancel the dash if the down-input is pressed and either:
+            //   a) A regular dash timer has elapsed, or
+            //   b) The dash started airborne, and the player is aiming straight down
+            if (hcs.onGround && InputDown && (postVoid || (wasAirborne && InputDownOnly)))
+            {
+                // Cancel the dash.
+                FinishedVoidDashing();
+            }
         }
 
         private void FinishedVoidDashing()
