@@ -3,6 +3,7 @@ using IL;
 using ItemChanger.Extensions;
 using ItemChanger.FsmStateActions;
 using Newtonsoft.Json.Linq;
+using On;
 using System;
 using System.EnterpriseServices;
 using System.Reflection;
@@ -34,9 +35,12 @@ namespace DarknestDungeon.IC
         private static readonly MethodInfo origDashVectorMethod = typeof(HeroController).GetMethod("OrigDashVector", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly MethodInfo finishedDashingMethod = typeof(HeroController).GetMethod("FinishedDashing", BindingFlags.NonPublic | BindingFlags.Instance);
 
-        private const float VOID_DASH_EXTENSION_RATIO = 1.4f;
-        private const float VOID_DASH_LIMIT = 0.7f;
-        private const float FULL_REVERSAL_PERIOD = 0.1f;
+        private static float VOID_DASH_EXTENSION_RATIO = 2.1f;
+        private static float VOID_DASH_LIMIT = 0.7f;
+        private static float FULL_REVERSAL_PERIOD = 0.1f;
+        private static float DASH_VELOCITY = 20.0f;
+        private static float SHARP_SHADOW_VELOCITY = 28.0f;
+        private static float SHARP_SHADOW_TAPER_VELOCITY = 22.0f;
 
         // Must be set before Start().
         public VoidCloakModule Vcm;
@@ -48,17 +52,11 @@ namespace DarknestDungeon.IC
 
         private VoidCloakState voidCloakState = VoidCloakState.Idle;
         private Vector2 velocity;
-        private float origMagnitude;
         private float voidDashTimer;
 
         private ShadowRechargeAnimState shadowRechargeAnimState = ShadowRechargeAnimState.Idle;
         private tk2dSpriteAnimator shadowRecharge;
         private float shadowRechargePauseTime;
-
-        private class ShadeClockTimerResetAction : Lambda
-        {
-            public ShadeClockTimerResetAction(Action a) : base(a) { }
-        }
 
         public void Start()
         {
@@ -81,6 +79,8 @@ namespace DarknestDungeon.IC
         {
             Vcm.OnTransition -= OnSceneTransition;
         }
+
+        private bool SharpShadowEquipped => PlayerData.instance.GetBool("equippedCharm_16");
 
         private float dash_timer
         {
@@ -183,8 +183,7 @@ namespace DarknestDungeon.IC
             voidDashTimer = Time.deltaTime;
 
             velocity = OrigDashVector();
-            origMagnitude = velocity.magnitude;
-            SetDashVelocity(GetTargetDir() * velocity.magnitude);
+            SetDashVelocity(GetTargetDir() * GetTargetSpeed());
 
             // TODO: Particle effects
         }
@@ -195,6 +194,8 @@ namespace DarknestDungeon.IC
             int vert = (ih.inputActions.up ? 1 : 0) + (ih.inputActions.down ? -1 : 0);
             return ((horz != 0 || vert != 0) ? new Vector2(horz, vert) : (velocity.magnitude > 0 ? velocity : OrigDashVector())).normalized;
         }
+
+        private float GetTargetSpeed() => SharpShadowEquipped ? (voidDashTimer > hc.DASH_TIME ? SHARP_SHADOW_TAPER_VELOCITY : SHARP_SHADOW_VELOCITY) : DASH_VELOCITY;
 
         private void SetDashVelocity(Vector2 v)
         {
@@ -232,9 +233,9 @@ namespace DarknestDungeon.IC
                 }
             }
 
-            var targetVelocity = GetTargetDir() * origMagnitude;
+            var targetVelocity = GetTargetDir() * GetTargetSpeed();
             var diff = targetVelocity - velocity;
-            var acc = diff.normalized * 2 * origMagnitude * Time.deltaTime / FULL_REVERSAL_PERIOD;
+            var acc = diff.normalized * 2 * GetTargetSpeed() * Time.deltaTime / FULL_REVERSAL_PERIOD;
             SetDashVelocity(acc.magnitude > diff.magnitude ? targetVelocity : velocity + acc);
         }
 
