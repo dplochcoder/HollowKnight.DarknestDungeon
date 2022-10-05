@@ -2,7 +2,7 @@
 
 namespace DarknestDungeon.Scripts
 {
-    class SceneDimensions : MonoBehaviour
+    public class PatchTilemapInfo : MonoBehaviour
     {
         public int Width;
         public int Height;

@@ -42,8 +42,24 @@
     <WriteLinesToFile File="$(ExportDir)/VERSION.txt" Lines="@(VersionNumber)" Overwrite="true" Encoding="UTF-8" />
   </Target>
   <ItemGroup>
+    <Compile Remove="UnityScripts\**" />
+    <Compile Remove="Unity\**" />
+    <Compile Remove="Void\**" />
+    <EmbeddedResource Remove="UnityScripts\**" />
+    <EmbeddedResource Remove="Unity\**" />
+    <EmbeddedResource Remove="Void\**" />
+    <None Remove="UnityScripts\**" />
+    <None Remove="Unity\**" />
+    <None Remove="Void\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Void\Assets\Scripts\SceneManagerUpdater.cs" />
+    <Compile Remove="Void\Assets\Scripts\TilemapInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="build.yml" />
     <None Remove="README.md" />
+    <None Remove="Void\Void.userprefs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
@@ -87,6 +103,9 @@
     </Reference>
     <Reference Include="PurenailCore">
       <HintPath>$(HollowKnightRefs)/Mods/PurenailCore/PurenailCore.dll</HintPath>
+    </Reference>
+    <Reference Include="SFCore">
+      <HintPath>$(HollowKnightRefs)/Mods/SFCore/SFCore.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.Composition">
       <HintPath>$(HollowKnightRefs)/System.ComponentModel.Composition.dll</HintPath>

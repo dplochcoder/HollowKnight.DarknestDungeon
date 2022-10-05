@@ -1,0 +1,11 @@
+ManifestFileVersion: 0
+CRC: 943184718
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: mainbundle
+      Dependencies: {}
+    Info_1:
+      Name: scenebundle
+      Dependencies:
+        Dependency_0: mainbundle
