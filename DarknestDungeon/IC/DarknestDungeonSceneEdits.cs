@@ -7,15 +7,9 @@ namespace DarknestDungeon.IC
 {
     public class DarknestDungeonSceneEdits : ItemChanger.Modules.Module
     {
-        public override void Initialize()
-        {
-            On.SceneManager.Start += OnSceneManagerStart;
-        }
+        public override void Initialize() => On.SceneManager.Start += OnSceneManagerStart;
 
-        public override void Unload()
-        {
-            On.SceneManager.Start -= OnSceneManagerStart;
-        }
+        public override void Unload() => On.SceneManager.Start -= OnSceneManagerStart;
 
         private static void OnSceneManagerStart(On.SceneManager.orig_Start orig, SceneManager sm)
         {
