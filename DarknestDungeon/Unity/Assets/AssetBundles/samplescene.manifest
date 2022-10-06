@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 2806648269
+CRC: 2577776164
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 5ce79a06c08b8a89f688db485c1045d9
+    Hash: 93af95365b86fcf460ede92078a3f170
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 8c49787e38a9cdc1fefa95a07e5d902b
+    Hash: 025c44abd33579654fb0f487ff79c3e8
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -21,6 +21,8 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 33
   Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
 - Class: 48
   Script: {instanceID: 0}
 - Class: 61
@@ -28,17 +30,17 @@ ClassTypes:
 - Class: 104
   Script: {instanceID: 0}
 - Class: 114
-  Script: {fileID: -1921515317, guid: 9b2bb66be6cdcee4fb018e91b650a39c, type: 3}
-- Class: 114
-  Script: {fileID: 2007357130, guid: 9b2bb66be6cdcee4fb018e91b650a39c, type: 3}
-- Class: 114
-  Script: {fileID: -906858468, guid: 9b2bb66be6cdcee4fb018e91b650a39c, type: 3}
-- Class: 114
-  Script: {fileID: 1915803999, guid: 9b2bb66be6cdcee4fb018e91b650a39c, type: 3}
-- Class: 114
   Script: {fileID: -394377506, guid: f15b89b0f7abfcc4fb0c0dcfeae1aaa0, type: 3}
 - Class: 114
   Script: {fileID: 1279499223, guid: f15b89b0f7abfcc4fb0c0dcfeae1aaa0, type: 3}
+- Class: 114
+  Script: {fileID: -1921515317, guid: a4e229a459d322f4ebaf7849f6dcbbcc, type: 3}
+- Class: 114
+  Script: {fileID: 2007357130, guid: a4e229a459d322f4ebaf7849f6dcbbcc, type: 3}
+- Class: 114
+  Script: {fileID: -906858468, guid: a4e229a459d322f4ebaf7849f6dcbbcc, type: 3}
+- Class: 114
+  Script: {fileID: 1915803999, guid: a4e229a459d322f4ebaf7849f6dcbbcc, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 157
@@ -55,4 +57,4 @@ SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/Scenes/SampleScene.unity
 Dependencies:
-- C:/Users/danie/source/repos/HollowKnight.DarknestDungeon/DarknestDungeon/Unity/Assets/AssetBundles/mainbundle
+- C:/Users/danie/source/repos/HollowKnight.DarknestDungeon/DarknestDungeon/Unity/Assets/AssetBundles/objectsbundle

@@ -1,10 +1,20 @@
 ﻿using DarknestDungeon.UnityExtensions;
 using ItemChanger;
+using SFCore.MonoBehaviours;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace DarknestDungeon.IC
 {
+    // TileMap gets destroyed and replaced after scene load for no fucking reason so let's deal with that
+    public class TilemapResetCatcher : MonoBehaviour
+    {
+        public TilemapEdit editor;
+
+        public void OnDestroy() => editor.Reset();
+    }
+
     public class TilemapEdit : MonoBehaviour
     {
         public record Rect
@@ -16,9 +26,19 @@ namespace DarknestDungeon.IC
         }
         public List<Rect> ClearRects = new();
 
-        public void Awake()
+        private bool waitingForTilemap = true;
+
+        public void Reset() => waitingForTilemap = true;
+
+        public void FixedUpdate()
         {
-            var tm = GameObject.Find("TileMap").GetComponent<tk2dTileMap>();
+            if (!waitingForTilemap) return;
+
+            var go = GameObject.Find("TileMap");
+            if (go == null) return;
+
+            go.AddComponent<TilemapResetCatcher>().editor = this;
+            var tm = go.GetComponent<tk2dTileMap>();
             foreach (var rect in ClearRects)
             {
                 for (int i = 0; i < rect.Width; i++)
@@ -26,7 +46,7 @@ namespace DarknestDungeon.IC
                         tm.ClearTile(rect.X + i, rect.Y + j, 0);
             }
             tm.ForceBuild();
-            GameObject.Destroy(this);
+            waitingForTilemap = false;
         }
     }
 
@@ -36,8 +56,8 @@ namespace DarknestDungeon.IC
 
         public override GameObject Deploy()
         {
-            var te = GameObject.Find("TileMap").GetOrAddComponent<TilemapEdit>();
-            te.enabled = true;
+            GameObject go = GameObject.Find("_TilemapEdit") ?? new("_TilemapEdit");
+            var te = go.GetOrAddComponent<TilemapEdit>();
             te.ClearRects.Add(ClearRect);
             return null;
         }

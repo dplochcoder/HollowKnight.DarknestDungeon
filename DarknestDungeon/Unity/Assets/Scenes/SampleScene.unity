@@ -151,7 +151,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 145925866}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -906858468, guid: 9b2bb66be6cdcee4fb018e91b650a39c, type: 3}
+  m_Script: {fileID: -906858468, guid: a4e229a459d322f4ebaf7849f6dcbbcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Width: 50
@@ -165,7 +165,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 145925866}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1921515317, guid: 9b2bb66be6cdcee4fb018e91b650a39c, type: 3}
+  m_Script: {fileID: -1921515317, guid: a4e229a459d322f4ebaf7849f6dcbbcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   managerTransform: {fileID: 1257509021}
@@ -178,7 +178,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 145925866}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 2007357130, guid: 9b2bb66be6cdcee4fb018e91b650a39c, type: 3}
+  m_Script: {fileID: 2007357130, guid: a4e229a459d322f4ebaf7849f6dcbbcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   sceneType: 0
@@ -296,7 +296,7 @@ GameObject:
   - component: {fileID: 277583049}
   - component: {fileID: 277583051}
   m_Layer: 0
-  m_Name: LeftTransition
+  m_Name: left1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -311,21 +311,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 277583048}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1915803999, guid: 9b2bb66be6cdcee4fb018e91b650a39c, type: 3}
+  m_Script: {fileID: 1915803999, guid: a4e229a459d322f4ebaf7849f6dcbbcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isADoor: 0
   dontWalkOutOfDoor: 0
   entryDelay: 0
   alwaysEnterRight: 0
-  alwaysEnterLeft: 1
+  alwaysEnterLeft: 0
   hardLandOnExit: 0
   targetScene: Tutorial_01
   entryPoint: right1
   entryOffset: {x: 0, y: 0}
   nonHazardGate: 0
   hazardRespawnMarker: {fileID: 1699281101}
-  respawnFacingRight: 1
+  respawnFacingRight: 0
   atmosSnapshot: {fileID: 0}
   enviroSnapshot: {fileID: 0}
   actorSnapshot: {fileID: 0}
@@ -339,12 +339,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 277583048}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.06, y: -0.01, z: -19.252909}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -27.850391, y: -12.190029, z: 2.8911}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_Father: {fileID: 567885378}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &277583051
 BoxCollider2D:
@@ -372,6 +372,68 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.8992777, y: 3.5180573}
   m_EdgeRadius: 0
+--- !u!1 &567885377
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 567885378}
+  m_Layer: 0
+  m_Name: _Transition Gates
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &567885378
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 567885377}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 27.91039, y: 12.180029, z: -22.144009}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 277583050}
+  - {fileID: 808284289}
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &752640143
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 752640144}
+  m_Layer: 0
+  m_Name: HRMTop
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &752640144
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 752640143}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 24.6, y: 0.9, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &808284286
 GameObject:
   m_ObjectHideFlags: 0
@@ -384,7 +446,7 @@ GameObject:
   - component: {fileID: 808284288}
   - component: {fileID: 808284287}
   m_Layer: 0
-  m_Name: TopTransition
+  m_Name: top1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -425,20 +487,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 808284286}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1915803999, guid: 9b2bb66be6cdcee4fb018e91b650a39c, type: 3}
+  m_Script: {fileID: 1915803999, guid: a4e229a459d322f4ebaf7849f6dcbbcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isADoor: 0
   dontWalkOutOfDoor: 0
   entryDelay: 0
   alwaysEnterRight: 0
-  alwaysEnterLeft: 1
-  hardLandOnExit: 1
+  alwaysEnterLeft: 0
+  hardLandOnExit: 0
   targetScene: Abyss_15
-  entryPoint: top1
+  entryPoint: bot1
   entryOffset: {x: 0, y: 0}
   nonHazardGate: 0
-  hazardRespawnMarker: {fileID: 1699281101}
+  hazardRespawnMarker: {fileID: 752640143}
   respawnFacingRight: 1
   atmosSnapshot: {fileID: 0}
   enviroSnapshot: {fileID: 0}
@@ -453,12 +515,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 808284286}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 24.88, y: 19.42, z: -19.252909}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -3.0303917, y: 7.239971, z: 2.8911}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_Father: {fileID: 567885378}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1257509020
 GameObject:
@@ -516,7 +578,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1272845587}
-  m_Mesh: {fileID: 0}
+  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!114 &1272845589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -594,7 +656,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1699281102}
   m_Layer: 0
-  m_Name: HRM
+  m_Name: HRMLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -612,7 +674,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2027982017
 GameObject:

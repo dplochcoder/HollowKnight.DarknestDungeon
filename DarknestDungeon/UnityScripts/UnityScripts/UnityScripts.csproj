@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>UnityScripts</RootNamespace>
     <AssemblyName>UnityScripts</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -45,10 +48,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PatchSceneManager.cs" />
-    <Compile Include="PatchTransitionPoint.cs" />
-    <Compile Include="PatchTilemapInfo.cs" />
-    <Compile Include="PatchPlayMakerManager.cs" />
+    <Compile Include="DarknestDungeon\Scripts\PatchSceneManager.cs" />
+    <Compile Include="DarknestDungeon\Scripts\PatchTransitionPoint.cs" />
+    <Compile Include="DarknestDungeon\Scripts\PatchTilemapInfo.cs" />
+    <Compile Include="DarknestDungeon\Scripts\PatchPlayMakerManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

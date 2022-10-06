@@ -9,12 +9,12 @@ namespace DarknestDungeon
         // TODO: Load from json
         private static readonly List<string> objectAssetBundles = new()
         {
-            "mainbundle"
+            "objectsbundle"
         };
 
         private static readonly List<string> sceneAssetBundles = new()
         {
-            "scenebundle"
+            "samplescene"
         };
 
         public static readonly AssetBundleLoader Instance = new();
