@@ -44,17 +44,14 @@
   <ItemGroup>
     <Compile Remove="UnityScripts\**" />
     <Compile Remove="Unity\**" />
-    <Compile Remove="Void\**" />
     <EmbeddedResource Remove="UnityScripts\**" />
     <EmbeddedResource Remove="Unity\**" />
-    <EmbeddedResource Remove="Void\**" />
     <None Remove="UnityScripts\**" />
     <None Remove="Unity\**" />
-    <None Remove="Void\**" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="Void\Assets\Scripts\SceneManagerUpdater.cs" />
-    <Compile Remove="Void\Assets\Scripts\TilemapInfo.cs" />
+    <EmbeddedResource Include="Unity\Assets\**\*.json" />
+    <EmbeddedResource Include="Resources\**\*.png" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="build.yml" />

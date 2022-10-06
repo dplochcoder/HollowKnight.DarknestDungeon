@@ -7,10 +7,10 @@ namespace DarknestDungeon.IC
     {
         public static readonly Preloader Instance = new();
 
-        [Preload("Abyss_06_Core", "_SceneManager")]
+        [Preload("Town", "_SceneManager")]
         public GameObject SceneManager { get; private set; }
 
-        [Preload("Abyss_06_Core", "PlayMaker Unity 2D")]
+        [Preload("Town", "_Managers/PlayMaker Unity 2D")]
         public GameObject PlayMaker { get; private set; }
     }
 }
