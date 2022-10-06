@@ -20,7 +20,6 @@ namespace DarknestDungeon
                 return;
             }
 
-            ItemChangerMod.Modules.Add<DarknestDungeonSceneEdits>();
             ItemChangerMod.Modules.Add<VoidCloakModule>();
             Deployers.Install();
             orig(self, permaDeath, bossRush);

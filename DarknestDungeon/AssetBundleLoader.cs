@@ -6,24 +6,32 @@ namespace DarknestDungeon
 {
     public class AssetBundleLoader
     {
-        private static readonly AssetBundleLoader Instance = new();
-
-        private static readonly List<string> assets = new()
+        // TODO: Load from json
+        private static readonly List<string> objectAssetBundles = new()
         {
-            "mainbundle",
+            "mainbundle"
+        };
+
+        private static readonly List<string> sceneAssetBundles = new()
+        {
             "scenebundle"
         };
+
+        public static readonly AssetBundleLoader Instance = new();
+
+        public static void Load() => DarknestDungeon.Log("Loaded AssetBundles");
 
         private Dictionary<string, AssetBundle> bundles = new();
 
         private AssetBundleLoader()
         {
-            foreach (var asset in assets)
+            objectAssetBundles.ForEach(asset =>
             {
                 var ab = LoadAsset(asset);
                 bundles[asset] = ab;
                 ab.LoadAllAssets();
-            }
+            });
+            sceneAssetBundles.ForEach(asset => bundles[asset] = LoadAsset(asset));
         }
 
         private AssetBundle LoadAsset(string name)

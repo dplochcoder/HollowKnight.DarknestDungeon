@@ -4,7 +4,6 @@ using Modding;
 using PurenailCore.ModUtil;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 using ILogger = Modding.ILogger;
 
 namespace DarknestDungeon
@@ -31,6 +30,7 @@ namespace DarknestDungeon
             GS ??= new();
             ModuleInstaller.Setup();
             Deployers.Load();
+            AssetBundleLoader.Load();
 
             if (ModHooks.GetMod("DebugMod") is Mod)
             {

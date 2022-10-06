@@ -10,7 +10,6 @@ namespace DarknestDungeon.IC
         public override GameObject Instantiate()
         {
             var obj = Object.Instantiate(Preloader.Instance.DiveFloor);
-            obj.transform.position = new(X, Y, 0);
             var pbd = obj.GetComponent<PersistentBoolItem>().persistentBoolData;
             pbd.sceneName = SceneName;
             pbd.id = id;

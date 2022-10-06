@@ -50,6 +50,23 @@
       "Y": 9.12,
       "id": "Void_Dive_Floor"
     },
+    "Deploy_Tile_Map_Edit": {
+      "$type": "DarknestDungeon.IC.TileMapEditDeployer, DarknestDungeon",
+      "SceneName": "Abyss_15",
+      "ClearRect": {
+        "X": 137,
+        "Y": 0,
+        "Width": 4,
+        "Height": 10
+      }
+    },
+    "Deploy_Debug_Respawn_Marker": {
+      "$type": "DarknestDungeon.IC.RespawnMarkerDeployer, DarknestDungeon",
+      "SceneName": "Abyss_15",
+      "X": 130,
+      "Y": 11.4,
+      "name": "Debug Respawn Marker"
+    },
     "Deploy_Transition": {
       "$type": "DarknestDungeon.IC.TransitionDeployer, DarknestDungeon",
       "SceneName": "Abyss_15",

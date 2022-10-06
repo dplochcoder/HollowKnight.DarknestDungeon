@@ -1,4 +1,5 @@
-﻿using ItemChanger;
+﻿using DarknestDungeon.UnityExtensions;
+using ItemChanger;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -9,7 +10,7 @@ namespace DarknestDungeon.IC
         public void Update()
         {
             var parent = GameObject.Find("_Transition Gates") ?? new("_Transition Gates");
-            gameObject.transform.SetParent(parent.transform);
+            gameObject.SetParent(parent);
             GameObject.Destroy(this);
         }
     }
