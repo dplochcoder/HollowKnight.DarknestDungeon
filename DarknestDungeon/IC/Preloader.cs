@@ -12,5 +12,8 @@ namespace DarknestDungeon.IC
 
         [Preload("Town", "_Managers/PlayMaker Unity 2D")]
         public GameObject PlayMaker { get; private set; }
+
+        [Preload("Abyss_17", "Quake Floor")]
+        public GameObject DiveFloor { get; private set; }
     }
 }

@@ -1,0 +1,54 @@
+﻿{
+  "Abyss_15": {
+    "Destroy_Dream_Field": {
+      "$type": "ItemChanger.Deployers.ObjectDestroyer, ItemChanger",
+      "SceneName": "Abyss_15",
+      "ObjectName": "Dream Enter Abyss",
+      "NameMatchType": "FirstName"
+    },
+    "Destroy_Black_Egg": {
+      "$type": "ItemChanger.Deployers.ObjectDestroyer, ItemChanger",
+      "SceneName": "Abyss_15",
+      "ObjectName": "black_egg",
+      "NameMatchType": "FirstName"
+    },
+    "Destroy_Black_Egg_2": {
+      "$type": "ItemChanger.Deployers.ObjectDestroyer, ItemChanger",
+      "SceneName": "Abyss_15",
+      "ObjectName": "black_egg (1)",
+      "NameMatchType": "FirstName"
+    },
+    "Destroy_Egg_Colliderg4": {
+      "$type": "ItemChanger.Deployers.ObjectDestroyer, ItemChanger",
+      "SceneName": "Abyss_15",
+      "ObjectName": "Egg Collider",
+      "NameMatchType": "FirstName"
+    },
+    "Destroy_Mirror": {
+      "$type": "ItemChanger.Deployers.ObjectDestroyer, ItemChanger",
+      "SceneName": "Abyss_15",
+      "ObjectName": "Mirror",
+      "NameMatchType": "FirstName"
+    },
+    "Destroy_Walk_Area": {
+      "$type": "ItemChanger.Deployers.ObjectDestroyer, ItemChanger",
+      "SceneName": "Abyss_15",
+      "ObjectName": "/_Areas/Walk Area",
+      "NameMatchType": "Path"
+    },
+    "Destroy_Soul_Totem": {
+      "$type": "ItemChanger.Deployers.SoulTotemDeployer, ItemChanger",
+      "SceneName": "Abyss_15",
+      "SoulTotemSubtype": "D",
+      "X": 143.6,
+      "Y": 13
+    }
+    "Deploy_Dive_Floor": {
+      "$type": "DarknestDungeon.IC.DiveFloorDeployer, DarknestDungeon",
+      "SceneName": "Abyss_15",
+      "X": 142.5,
+      "Y": 10.08,
+      "id": "Void_Dive_Floor"
+    }
+  }
+}

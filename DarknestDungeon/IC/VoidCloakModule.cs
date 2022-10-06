@@ -33,6 +33,14 @@ namespace DarknestDungeon.IC
             Events.RemoveFsmEdit(new FsmID("Knight", "ProxyFSM"), HookVoidCloak);
         }
 
+        public void HookVoidCloak(GameObject knight)
+        {
+            if (knight == null) return;
+
+            var vcb = knight.GetComponent<VoidCloakBehaviour>() ?? knight.AddComponent<VoidCloakBehaviour>();
+            vcb.Vcm = this;
+        }
+
         private bool OverrideGetBool(string boolName, bool orig) => boolName == nameof(HasVoidCloak) ? HasVoidCloak : orig;
 
         private bool OverrideSetBool(string boolName, bool value)
@@ -45,9 +53,6 @@ namespace DarknestDungeon.IC
 
         private void OnSceneTransition(Transition t) => OnTransition?.Invoke();
 
-        private void HookVoidCloak(PlayMakerFSM fsm)
-        {
-            fsm.gameObject.AddComponent<VoidCloakBehaviour>().Vcm = this;
-        }
+        private void HookVoidCloak(PlayMakerFSM fsm) => HookVoidCloak(fsm.gameObject);
     }
 }

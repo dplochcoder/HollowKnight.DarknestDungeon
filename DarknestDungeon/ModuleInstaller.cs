@@ -1,4 +1,5 @@
-﻿using DarknestDungeon.IC;
+﻿using DarknestDungeon.Data;
+using DarknestDungeon.IC;
 using ItemChanger;
 
 namespace DarknestDungeon
@@ -8,20 +9,20 @@ namespace DarknestDungeon
 
         public static void Setup()
         {
-            On.UIManager.StartNewGame += InstallModule;
+            On.UIManager.StartNewGame += InstallModules;
         }
 
-        private static void InstallModule(On.UIManager.orig_StartNewGame orig, UIManager self, bool permaDeath, bool bossRush)
+        private static void InstallModules(On.UIManager.orig_StartNewGame orig, UIManager self, bool permaDeath, bool bossRush)
         {
-            if (DarknestDungeon.GS.Enabled)
+            if (!DarknestDungeon.GS.Enabled)
             {
-                var mod = ItemChangerMod.Modules.Add<VoidCloakModule>();
-                if (DarknestDungeon.GS.GiveVoidCloak)
-                {
-                    mod.HasVoidCloak = true;
-                }
+                orig(self, permaDeath, bossRush);
+                return;
             }
 
+            ItemChangerMod.Modules.Add<DarknestDungeonSceneEdits>();
+            ItemChangerMod.Modules.Add<VoidCloakModule>();
+            Deployers.Install();
             orig(self, permaDeath, bossRush);
         }
     }
