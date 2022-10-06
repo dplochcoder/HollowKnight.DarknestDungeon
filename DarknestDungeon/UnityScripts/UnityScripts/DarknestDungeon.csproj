@@ -7,8 +7,8 @@
     <ProjectGuid>{B6E04777-9F38-4C4C-B234-B880853B4AF7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UnityScripts</RootNamespace>
-    <AssemblyName>UnityScripts</AssemblyName>
+    <RootNamespace>DarknestDungeon</RootNamespace>
+    <AssemblyName>DarknestDungeon</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -48,10 +48,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DarknestDungeon\Scripts\PatchSceneManager.cs" />
-    <Compile Include="DarknestDungeon\Scripts\PatchTransitionPoint.cs" />
-    <Compile Include="DarknestDungeon\Scripts\PatchTilemapInfo.cs" />
-    <Compile Include="DarknestDungeon\Scripts\PatchPlayMakerManager.cs" />
+    <Compile Include="Scripts\PatchSceneManager.cs" />
+    <Compile Include="Scripts\PatchTransitionPoint.cs" />
+    <Compile Include="Scripts\PatchTilemapInfo.cs" />
+    <Compile Include="Scripts\PatchPlayMakerManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

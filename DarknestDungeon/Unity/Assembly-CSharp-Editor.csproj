@@ -288,11 +288,11 @@
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\15.0\Editor\SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
+    <Reference Include="DarknestDungeon">
+      <HintPath>Assets\Assemblies\DarknestDungeon.dll</HintPath>
+    </Reference>
     <Reference Include="SFCore">
       <HintPath>Assets\Assemblies\SFCore.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityScripts">
-      <HintPath>Assets\Assemblies\UnityScripts.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>Library\PackageCache\com.unity.ext.nunit@1.0.6\net35\unity-custom\nunit.framework.dll</HintPath>
