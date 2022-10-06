@@ -18,7 +18,7 @@
       "ObjectName": "black_egg (1)",
       "NameMatchType": "FirstName"
     },
-    "Destroy_Egg_Colliderg4": {
+    "Destroy_Egg_Collider": {
       "$type": "ItemChanger.Deployers.ObjectDestroyer, ItemChanger",
       "SceneName": "Abyss_15",
       "ObjectName": "Egg Collider",
@@ -33,21 +33,21 @@
     "Destroy_Walk_Area": {
       "$type": "ItemChanger.Deployers.ObjectDestroyer, ItemChanger",
       "SceneName": "Abyss_15",
-      "ObjectName": "/_Areas/Walk Area",
+      "ObjectName": "_Areas/Walk Area",
       "NameMatchType": "Path"
     },
-    "Destroy_Soul_Totem": {
+    "Deploy_Soul_Totem": {
       "$type": "ItemChanger.Deployers.SoulTotemDeployer, ItemChanger",
       "SceneName": "Abyss_15",
-      "SoulTotemSubtype": "D",
-      "X": 143.6,
-      "Y": 13
-    }
+      "SoulTotemSubtype": "A",
+      "X": 145.4,
+      "Y": 12.2
+    },
     "Deploy_Dive_Floor": {
       "$type": "DarknestDungeon.IC.DiveFloorDeployer, DarknestDungeon",
       "SceneName": "Abyss_15",
-      "X": 142.5,
-      "Y": 10.08,
+      "X": 139.5,
+      "Y": 9.08,
       "id": "Void_Dive_Floor"
     }
   }

@@ -31,7 +31,7 @@ namespace DarknestDungeon.IC
         private static void EditBirthplaceTilemap(tk2dTileMap map)
         {
             // Clear out the dive section
-            for (int x = 140; x < 145; x++)
+            for (int x = 137; x < 142; x++)
                 for (int y = 0; y < 10; y++)
                     map.ClearTile(x, y, 0);
 
