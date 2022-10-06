@@ -46,9 +46,6 @@ namespace DarknestDungeon
 
         public MenuScreen GetMenuScreen(MenuScreen modListMenu, ModToggleDelegates? toggleDelegates)
         {
-            Tilemap m;
-            tk2dTileMap tm;
-
             ModMenuScreenBuilder builder = new("Darknest Dungeon", modListMenu);
             builder.AddHorizontalOption(new()
             {

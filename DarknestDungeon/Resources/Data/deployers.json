@@ -33,8 +33,8 @@
     "Destroy_Walk_Area": {
       "$type": "ItemChanger.Deployers.ObjectDestroyer, ItemChanger",
       "SceneName": "Abyss_15",
-      "ObjectName": "_Areas/Walk Area",
-      "NameMatchType": "Path"
+      "ObjectName": "Walk Area",
+      "NameMatchType": "NameSubstring"
     },
     "Deploy_Soul_Totem": {
       "$type": "ItemChanger.Deployers.SoulTotemDeployer, ItemChanger",
@@ -49,6 +49,17 @@
       "X": 139.5,
       "Y": 9.08,
       "id": "Void_Dive_Floor"
+    },
+    "Deploy_Transition": {
+      "$type": "DarknestDungeon.IC.TransitionDeployer, DarknestDungeon",
+      "SceneName": "Abyss_15",
+      "X": 139.5,
+      "Y": 0.5,
+      "width": 5,
+      "height": 1,
+      "Gate": "bot1",
+      "TargetScene": "SampleScene",
+      "TargetGate": "top1"
     }
   }
 }
