@@ -51,7 +51,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Scripts\PatchDiveFloor.cs" />
+    <Compile Include="Scripts\SoulTotem.cs" />
+    <Compile Include="Scripts\DiveFloor.cs" />
     <Compile Include="Scripts\PatchSceneManager.cs" />
     <Compile Include="Scripts\PatchTransitionPoint.cs" />
     <Compile Include="Scripts\PatchTilemapInfo.cs" />

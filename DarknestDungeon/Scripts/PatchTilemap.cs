@@ -44,10 +44,10 @@ namespace DarknestDungeon.Scripts
             gameObject.tag = "TileMap";
             GameManager.instance.RefreshTilemapInfo(gameObject.scene.name);
 
-            GameObject.Destroy(oldMap);
-            GameObject.Destroy(gameObject.GetComponent<TilemapRenderer>());
-            GameObject.Destroy(parent);
-            GameObject.Destroy(this);
+            Destroy(oldMap);
+            Destroy(gameObject.GetComponent<TilemapRenderer>());
+            Destroy(parent);
+            Destroy(this);
         }
     }
 }

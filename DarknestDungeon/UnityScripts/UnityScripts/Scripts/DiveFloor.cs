@@ -2,7 +2,7 @@
 
 namespace DarknestDungeon.Scripts
 {
-    public class PatchDiveFloor : MonoBehaviour
+    public class DiveFloor : MonoBehaviour
     {
         public string id;
     }

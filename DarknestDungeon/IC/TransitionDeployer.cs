@@ -11,7 +11,7 @@ namespace DarknestDungeon.IC
         {
             var parent = GameObject.Find("_Transition Gates") ?? new("_Transition Gates");
             gameObject.SetParent(parent);
-            GameObject.Destroy(this);
+            Destroy(this);
         }
     }
 

@@ -26,7 +26,7 @@ namespace DarknestDungeon.Data
 
         public static void Run()
         {
-            var root = InferGitRoot(System.IO.Directory.GetCurrentDirectory());
+            var root = InferGitRoot(Directory.GetCurrentDirectory());
 
             var deployersPath = Path.Combine(root, "DarknestDungeon/Resources/Data/deployers.json");
             File.Delete(deployersPath);
