@@ -1,5 +1,4 @@
-﻿using ItemChanger.Extensions;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Audio;
 
 namespace DarknestDungeon.Scripts
@@ -77,15 +76,13 @@ namespace DarknestDungeon.Scripts
             tp.entryPoint = entryPoint;
             tp.entryOffset = entryOffset;
             tp.nonHazardGate = nonHazardGate;
+            tp.respawnMarker = hazardRespawnMarker.GetHRM();
             tp.atmosSnapshot = atmosSnapshot;
             tp.enviroSnapshot = enviroSnapshot;
             tp.actorSnapshot = actorSnapshot;
             tp.musicSnapshot = musicSnapshot;
             tp.sceneLoadVisualization = (GameManager.SceneLoadVisualizations)sceneLoadVisualization;
             tp.forceWaitFetch = forceWaitFetch;
-
-            hazardRespawnMarker.Init();
-            tp.respawnMarker = hazardRespawnMarker.gameObject.GetComponent<HazardRespawnMarker>();
         }
     }
 }

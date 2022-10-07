@@ -8,7 +8,13 @@ namespace DarknestDungeon.Scripts
 
         private bool init = false;
 
-        public void Init()
+        public HazardRespawnMarker GetHRM()
+        {
+            Init();
+            return gameObject.GetComponent<HazardRespawnMarker>();
+        }
+
+        private void Init()
         {
             if (init) return;
             init = true;
