@@ -1,52 +1,11 @@
 {
   "Abyss_15": {
-    "Deploy_Debug_Respawn_Marker": {
+    "Debug_Respawn_Marker": {
       "$type": "DarknestDungeon.IC.RespawnMarkerDeployer, DarknestDungeon",
       "name": "Debug Respawn Marker",
       "SceneName": "Abyss_15",
       "X": 130.0,
       "Y": 11.4,
-      "Test": null
-    },
-    "Deploy_Dive_Floor": {
-      "$type": "DarknestDungeon.IC.DiveFloorDeployer, DarknestDungeon",
-      "id": "Void_Dive_Floor",
-      "SceneName": "Abyss_15",
-      "X": 139.0,
-      "Y": 9.12,
-      "Test": null
-    },
-    "Deploy_Soul_Totem": {
-      "$type": "ItemChanger.Deployers.SoulTotemDeployer, ItemChanger",
-      "SoulTotemSubtype": "A",
-      "SceneName": "Abyss_15",
-      "X": 145.4,
-      "Y": 12.2,
-      "Test": null
-    },
-    "Deploy_Tile_Map_Edit": {
-      "$type": "DarknestDungeon.IC.TileMapEditDeployer, DarknestDungeon",
-      "ClearRect": {
-        "X": 137,
-        "Y": 0,
-        "Width": 4,
-        "Height": 10
-      },
-      "SceneName": "Abyss_15",
-      "X": 0.0,
-      "Y": 0.0,
-      "Test": null
-    },
-    "Deploy_Transition": {
-      "$type": "DarknestDungeon.IC.TransitionDeployer, DarknestDungeon",
-      "width": 4.0,
-      "height": 2.0,
-      "Gate": "bot1",
-      "TargetScene": "VoidDescent01",
-      "TargetGate": "top1",
-      "SceneName": "Abyss_15",
-      "X": 139.0,
-      "Y": 1.0,
       "Test": null
     },
     "Destroy_Black_Egg": {
@@ -84,6 +43,47 @@
       "SceneName": "Abyss_15",
       "ObjectName": "Walk Area",
       "MatchType": "FirstName"
+    },
+    "Dive_Floor": {
+      "$type": "DarknestDungeon.IC.DiveFloorDeployer, DarknestDungeon",
+      "id": "Void_Dive_Floor",
+      "SceneName": "Abyss_15",
+      "X": 139.0,
+      "Y": 9.12,
+      "Test": null
+    },
+    "Soul_Totem": {
+      "$type": "ItemChanger.Deployers.SoulTotemDeployer, ItemChanger",
+      "SoulTotemSubtype": "A",
+      "SceneName": "Abyss_15",
+      "X": 145.4,
+      "Y": 12.2,
+      "Test": null
+    },
+    "Tile_Map_Edit": {
+      "$type": "DarknestDungeon.IC.TileMapEditDeployer, DarknestDungeon",
+      "ClearRect": {
+        "X": 137,
+        "Y": 0,
+        "Width": 4,
+        "Height": 10
+      },
+      "SceneName": "Abyss_15",
+      "X": 0.0,
+      "Y": 0.0,
+      "Test": null
+    },
+    "Void_Transition": {
+      "$type": "DarknestDungeon.IC.TransitionDeployer, DarknestDungeon",
+      "width": 4.0,
+      "height": 2.0,
+      "Gate": "bot1",
+      "TargetScene": "VoidDescent01",
+      "TargetGate": "top1",
+      "SceneName": "Abyss_15",
+      "X": 139.0,
+      "Y": 1.0,
+      "Test": null
     }
   }
 }
