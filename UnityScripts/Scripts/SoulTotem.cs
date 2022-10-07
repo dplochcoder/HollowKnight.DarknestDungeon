@@ -2,6 +2,7 @@
 
 namespace DarknestDungeon.Scripts
 {
+    [RequireComponent(typeof(SpriteRenderer))]
     public class SoulTotem : MonoBehaviour
     {
         public enum SoulTotemSubtype
