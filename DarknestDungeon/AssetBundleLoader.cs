@@ -14,6 +14,7 @@ namespace DarknestDungeon
 
         private const string PREFIX = "DarknestDungeon.Unity.Assets.AssetBundles.";
 
+        // TODO: Load scenes lazily?
         private AssetBundleLoader()
         {
             foreach (var str in typeof(AssetBundleLoader).Assembly.GetManifestResourceNames())
