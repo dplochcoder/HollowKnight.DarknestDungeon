@@ -37,7 +37,7 @@ namespace DarknestDungeon
 
         private AssetBundle LoadAsset(string name)
         {
-            using StreamReader sr = new(typeof(AssetBundleLoader).Assembly.GetManifestResourceStream($"DarknestDungeon.Unity.Assets.AssetBundles.{name}"));
+            using StreamReader sr = new(typeof(AssetBundleLoader).Assembly.GetManifestResourceStream(name));
             return AssetBundle.LoadFromStream(sr.BaseStream);
         }
 
