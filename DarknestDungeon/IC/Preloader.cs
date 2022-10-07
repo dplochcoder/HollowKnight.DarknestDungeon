@@ -18,5 +18,8 @@ namespace DarknestDungeon.IC
 
         [Preload("Abyss_17", "Quake Floor")]
         public GameObject DiveFloor { get; private set; }
+
+        [Preload("Abyss_15", "TileMap")]
+        public GameObject TileMap { get; private set; }
     }
 }

@@ -1,10 +1,8 @@
 ﻿using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace DarknestDungeon.Scripts
 {
-    public class PatchTilemapInfo : MonoBehaviour
-    {
-        public int Width;
-        public int Height;
-    }
+    [RequireComponent(typeof(Tilemap))]
+    public class PatchTilemap : MonoBehaviour { }
 }

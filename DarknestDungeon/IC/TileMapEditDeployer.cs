@@ -1,7 +1,5 @@
 ﻿using DarknestDungeon.UnityExtensions;
 using ItemChanger;
-using SFCore.MonoBehaviours;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
