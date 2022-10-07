@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3250346331
+CRC: 2455857126
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: eb724d77ceb0408a9f0f1e6925a9b57e
+    Hash: 8efa71dbcefe6f5508cad460da85120a
   TypeTreeHash:
     serializedVersion: 2
     Hash: b2bcfe79fe99a8aeda3aef2f25441236
@@ -66,5 +66,6 @@ ClassTypes:
 SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/Scenes/VoidDescent01.unity
+- Assets/Scenes/VoidDescent02.unity
 Dependencies:
 - C:/Users/danie/source/repos/HollowKnight.DarknestDungeon/DarknestDungeon/Unity/Assets/AssetBundles/objectsbundle
