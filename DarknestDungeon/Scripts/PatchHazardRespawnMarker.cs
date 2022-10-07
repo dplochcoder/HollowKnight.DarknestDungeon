@@ -15,7 +15,6 @@ namespace DarknestDungeon.Scripts
 
             var hrm = gameObject.AddComponent<HazardRespawnMarker>();
             hrm.respawnFacingRight = respawnFacingRight;
-            Destroy(this);
         }
 
         private void Awake() => Init();
