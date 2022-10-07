@@ -34,7 +34,7 @@ namespace DarknestDungeon.Data
             JsonUtil.Serialize(Deployers.Data, deployersPath);
 
             // Copy DLL
-            var outputDll = Path.Combine(root, "DarknestDungeon/UnityScripts/bin/Debug/DarknestDungeon.dll");
+            var outputDll = Path.Combine(root, "UnityScripts/bin/Debug/DarknestDungeon.dll");
             var inputDll = Path.Combine(root, "DarknestDungeon/Unity/Assets/Assemblies/DarknestDungeon.dll");
             File.Delete(inputDll);
             File.Copy(outputDll, inputDll);
