@@ -222,7 +222,6 @@ GameObject:
   - component: {fileID: 145925870}
   - component: {fileID: 145925869}
   - component: {fileID: 145925868}
-  - component: {fileID: 145925867}
   m_Layer: 0
   m_Name: __Initializer
   m_TagString: Untagged
@@ -230,20 +229,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &145925867
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 145925866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -906858468, guid: a4e229a459d322f4ebaf7849f6dcbbcc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Width: 50
-  Height: 500
 --- !u!114 &145925868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -484,7 +469,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 363343485}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5, y: 0, z: 0}
+  m_LocalPosition: {x: 5, y: -1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1100114022}
@@ -111575,8 +111560,8 @@ Tilemap:
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
   m_Color: {r: 0, g: 0, b: 0, a: 1}
-  m_Origin: {x: -7, y: -1, z: 0}
-  m_Size: {x: 67, y: 512, z: 1}
+  m_Origin: {x: 0, y: -1, z: 0}
+  m_Size: {x: 60, y: 500, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:

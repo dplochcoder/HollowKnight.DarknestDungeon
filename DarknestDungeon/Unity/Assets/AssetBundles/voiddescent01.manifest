@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 2741133407
+CRC: 103149189
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 0c93c158bb70984167768082389177eb
+    Hash: ac47220d5cebe96a364dfc1bc3b860a0
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 557fea616f1e1afff1557959aacc8278
+    Hash: 77f1744eeb1587fa7008bc5291ac53b2
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -38,8 +38,6 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 2007357130, guid: a4e229a459d322f4ebaf7849f6dcbbcc, type: 3}
 - Class: 114
-  Script: {fileID: -906858468, guid: a4e229a459d322f4ebaf7849f6dcbbcc, type: 3}
-- Class: 114
   Script: {fileID: 1915803999, guid: a4e229a459d322f4ebaf7849f6dcbbcc, type: 3}
 - Class: 114
   Script: {fileID: 898408174, guid: a4e229a459d322f4ebaf7849f6dcbbcc, type: 3}
@@ -63,6 +61,6 @@ ClassTypes:
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
-- Assets/Scenes/SampleScene.unity
+- Assets/Scenes/VoidDescent01.unity
 Dependencies:
 - C:/Users/danie/source/repos/HollowKnight.DarknestDungeon/DarknestDungeon/Unity/Assets/AssetBundles/objectsbundle

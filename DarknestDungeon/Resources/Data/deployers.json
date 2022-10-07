@@ -75,7 +75,7 @@
       "width": 4,
       "height": 2,
       "Gate": "bot1",
-      "TargetScene": "SampleScene",
+      "TargetScene": "VoidDescent01",
       "TargetGate": "top1"
     }
   }

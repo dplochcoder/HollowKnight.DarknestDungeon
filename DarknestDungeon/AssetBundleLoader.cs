@@ -14,7 +14,7 @@ namespace DarknestDungeon
 
         private static readonly List<string> sceneAssetBundles = new()
         {
-            "VoidDescent01"
+            "voiddescent01"
         };
 
         public static readonly AssetBundleLoader Instance = new();
