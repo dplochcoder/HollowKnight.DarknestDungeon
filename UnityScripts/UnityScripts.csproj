@@ -51,6 +51,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Scripts\PatchHazardRespawnMarker.cs" />
     <Compile Include="Scripts\SoulTotem.cs" />
     <Compile Include="Scripts\DiveFloor.cs" />
     <Compile Include="Scripts\PatchSceneManager.cs" />

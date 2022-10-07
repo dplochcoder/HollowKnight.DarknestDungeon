@@ -9,7 +9,10 @@ namespace DarknestDungeon.Data
 
         public static void Load()
         {
-            DarknestDungeon.Log("Deployers loaded");
+            if (DarknestDungeon.Instance != null)
+            {
+                DarknestDungeon.Log("Deployers loaded");
+            }
         }
 
         public static void Install()

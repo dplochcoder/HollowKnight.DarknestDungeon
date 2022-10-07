@@ -36,8 +36,7 @@ namespace DarknestDungeon.Scripts
         [Space(5f)]
         public bool nonHazardGate;
 
-        public GameObject hazardRespawnMarker;
-        public bool respawnFacingRight;
+        public PatchHazardRespawnMarker hazardRespawnMarker;
 
         [Header("Set Audio Snapshots")]
         [Space(5f)]
@@ -78,20 +77,15 @@ namespace DarknestDungeon.Scripts
             tp.entryPoint = entryPoint;
             tp.entryOffset = entryOffset;
             tp.nonHazardGate = nonHazardGate;
-            tp.respawnMarker = ConfigureRespawnMarker(hazardRespawnMarker, respawnFacingRight);
             tp.atmosSnapshot = atmosSnapshot;
             tp.enviroSnapshot = enviroSnapshot;
             tp.actorSnapshot = actorSnapshot;
             tp.musicSnapshot = musicSnapshot;
             tp.sceneLoadVisualization = (GameManager.SceneLoadVisualizations)sceneLoadVisualization;
             tp.forceWaitFetch = forceWaitFetch;
-        }
 
-        private HazardRespawnMarker ConfigureRespawnMarker(GameObject obj, bool respawnFacingRight)
-        {
-            var hrm = obj.GetOrAddComponent<HazardRespawnMarker>();
-            hrm.respawnFacingRight = respawnFacingRight;
-            return hrm;
+            hazardRespawnMarker.Init();
+            tp.respawnMarker = hazardRespawnMarker.gameObject.GetComponent<HazardRespawnMarker>();
         }
     }
 }

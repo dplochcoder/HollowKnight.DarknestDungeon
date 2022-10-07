@@ -1,4 +1,4 @@
-﻿using DarknestDungeon.IC;
+﻿using DarknestDungeon.IC.Deployers;
 using DarknestDungeon.UnityExtensions;
 
 namespace DarknestDungeon.Scripts

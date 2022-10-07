@@ -3,7 +3,7 @@ using ItemChanger;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace DarknestDungeon.IC
+namespace DarknestDungeon.IC.Deployers
 {
     // TileMap gets destroyed and replaced after scene load for no fucking reason so let's deal with that
     public class TilemapResetCatcher : MonoBehaviour

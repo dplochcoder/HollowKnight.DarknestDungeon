@@ -1,7 +1,7 @@
 ﻿using ItemChanger;
 using UnityEngine;
 
-namespace DarknestDungeon.IC
+namespace DarknestDungeon.IC.Deployers
 {
     public record DiveFloorDeployer : Deployer
     {

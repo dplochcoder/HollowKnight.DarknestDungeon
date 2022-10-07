@@ -1,7 +1,7 @@
 {
   "Abyss_15": {
     "Debug_Respawn_Marker": {
-      "$type": "DarknestDungeon.IC.RespawnMarkerDeployer, DarknestDungeon",
+      "$type": "DarknestDungeon.IC.Deployers.RespawnMarkerDeployer, DarknestDungeon",
       "name": "Debug Respawn Marker",
       "SceneName": "Abyss_15",
       "X": 130.0,
@@ -45,7 +45,7 @@
       "MatchType": "FirstName"
     },
     "Dive_Floor": {
-      "$type": "DarknestDungeon.IC.DiveFloorDeployer, DarknestDungeon",
+      "$type": "DarknestDungeon.IC.Deployers.DiveFloorDeployer, DarknestDungeon",
       "id": "Void_Dive_Floor",
       "SceneName": "Abyss_15",
       "X": 139.0,
@@ -61,7 +61,7 @@
       "Test": null
     },
     "Tile_Map_Edit": {
-      "$type": "DarknestDungeon.IC.TileMapEditDeployer, DarknestDungeon",
+      "$type": "DarknestDungeon.IC.Deployers.TileMapEditDeployer, DarknestDungeon",
       "ClearRect": {
         "X": 137,
         "Y": 0,
@@ -74,7 +74,7 @@
       "Test": null
     },
     "Void_Transition": {
-      "$type": "DarknestDungeon.IC.TransitionDeployer, DarknestDungeon",
+      "$type": "DarknestDungeon.IC.Deployers.TransitionDeployer, DarknestDungeon",
       "width": 4.0,
       "height": 2.0,
       "Gate": "bot1",

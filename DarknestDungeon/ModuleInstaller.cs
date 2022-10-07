@@ -1,5 +1,4 @@
-﻿using DarknestDungeon.Data;
-using DarknestDungeon.IC;
+﻿using DarknestDungeon.IC;
 using ItemChanger;
 
 namespace DarknestDungeon
@@ -21,7 +20,7 @@ namespace DarknestDungeon
             }
 
             ItemChangerMod.Modules.Add<VoidCloakModule>();
-            Deployers.Install();
+            Data.Deployers.Install();
             orig(self, permaDeath, bossRush);
         }
     }

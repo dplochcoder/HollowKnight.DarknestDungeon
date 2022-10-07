@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 
 namespace DarknestDungeon.Data
 {
@@ -26,6 +21,7 @@ namespace DarknestDungeon.Data
 
         public static void Run()
         {
+            Deployers.Load();
             var root = InferGitRoot(Directory.GetCurrentDirectory());
 
             // Normalize deployers

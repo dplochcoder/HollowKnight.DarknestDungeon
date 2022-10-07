@@ -35,8 +35,7 @@ namespace DarknestDungeon.Scripts
         [Space(5f)]
         public bool nonHazardGate;
 
-        public GameObject hazardRespawnMarker;
-        public bool respawnFacingRight;
+        public PatchHazardRespawnMarker hazardRespawnMarker;
 
         [Header("Set Audio Snapshots")]
         [Space(5f)]

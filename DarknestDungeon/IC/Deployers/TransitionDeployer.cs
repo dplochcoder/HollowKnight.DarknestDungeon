@@ -3,7 +3,7 @@ using ItemChanger;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace DarknestDungeon.IC
+namespace DarknestDungeon.IC.Deployers
 {
     class TransitionReparent : MonoBehaviour
     {

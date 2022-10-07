@@ -1,5 +1,4 @@
-﻿using DarknestDungeon.Data;
-using ItemChanger.Internal.Menu;
+﻿using ItemChanger.Internal.Menu;
 using Modding;
 using PurenailCore.ModUtil;
 using System.Collections.Generic;
@@ -29,7 +28,7 @@ namespace DarknestDungeon
 
             GS ??= new();
             ModuleInstaller.Setup();
-            Deployers.Load();
+            Data.Deployers.Load();
             AssetBundleLoader.Load();
 
             if (ModHooks.GetMod("DebugMod") is Mod)
