@@ -1,8 +1,10 @@
 ﻿using DarknestDungeon.UnityExtensions;
 using ItemChanger.Deployers;
+using UnityEngine;
 
 namespace DarknestDungeon.Scripts
 {
+    [RequireComponent(typeof(SpriteRenderer))]
     public class SoulTotem : DeployerMonobehaviour<SoulTotemDeployer>
     {
         public enum SoulTotemSubtype
@@ -24,5 +26,10 @@ namespace DarknestDungeon.Scripts
         {
             SoulTotemSubtype = (ItemChanger.SoulTotemSubtype)TotemType
         };
+
+        public override void ModifyDeployment(GameObject obj)
+        {
+            obj.GetComponent<SpriteRenderer>().flipX = gameObject.GetComponent<SpriteRenderer>().flipX;
+        }
     }
 }

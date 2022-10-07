@@ -542,7 +542,7 @@ Transform:
   - {fileID: 1118302953}
   - {fileID: 1689150595}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &280096739
 GameObject:
@@ -35156,7 +35156,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &977178117
 GameObject:
@@ -35350,9 +35350,9 @@ MonoBehaviour:
   alwaysEnterRight: 0
   alwaysEnterLeft: 0
   hardLandOnExit: 0
-  targetScene: 
-  entryPoint: 
-  entryOffset: {x: 0, y: 0}
+  targetScene: VoidDescent01
+  entryPoint: bot1
+  entryOffset: {x: 0, y: 7.5}
   nonHazardGate: 0
   hazardRespawnMarker: {fileID: 1643466963}
   atmosSnapshot: {fileID: 0}
@@ -35641,8 +35641,8 @@ MonoBehaviour:
   alwaysEnterRight: 0
   alwaysEnterLeft: 0
   hardLandOnExit: 0
-  targetScene: 
-  entryPoint: 
+  targetScene: VoidDescent03
+  entryPoint: top1
   entryOffset: {x: 0, y: 0}
   nonHazardGate: 0
   hazardRespawnMarker: {fileID: 977178119}

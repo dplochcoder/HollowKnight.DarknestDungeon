@@ -14,10 +14,12 @@ namespace DarknestDungeon.UnityExtensions
                 Y = gameObject.transform.position.y
             };
             ModifyDeployer(ref deployer);
-            deployer.Deploy();
+            ModifyDeployment(deployer.Deploy());
             Destroy(gameObject);
         }
 
         public abstract void ModifyDeployer(ref T deployer);
+
+        public virtual void ModifyDeployment(GameObject obj) { }
     }
 }
