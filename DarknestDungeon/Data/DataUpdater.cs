@@ -9,7 +9,7 @@ namespace DarknestDungeon.Data
 {
     public static class DataUpdater
     {
-        private static string InferGitRoot(string path)
+        public static string InferGitRoot(string path)
         {
             var info = Directory.GetParent(path);
             while (info != null)
@@ -28,9 +28,16 @@ namespace DarknestDungeon.Data
         {
             var root = InferGitRoot(Directory.GetCurrentDirectory());
 
+            // Normalize deployers
             var deployersPath = Path.Combine(root, "DarknestDungeon/Resources/Data/deployers.json");
             File.Delete(deployersPath);
             JsonUtil.Serialize(Deployers.Data, deployersPath);
+
+            // Copy DLL
+            var outputDll = Path.Combine(root, "DarknestDungeon/UnityScripts/bin/Debug/DarknestDungeon.dll");
+            var inputDll = Path.Combine(root, "DarknestDungeon/Unity/Assets/Assemblies/DarknestDungeon.dll");
+            File.Delete(inputDll);
+            File.Copy(outputDll, inputDll);
         }
     }
 }
