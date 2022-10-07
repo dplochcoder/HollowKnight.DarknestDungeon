@@ -14,6 +14,12 @@ namespace DarknestDungeon
             return _js.Deserialize<T>(jtr);
         }
 
+        public static void Serialize(object o, string fileName)
+        {
+            using StreamWriter sw = new(File.OpenWrite(Path.Combine(Path.GetDirectoryName(typeof(JsonUtil).Assembly.Location), fileName)));
+            _js.Serialize(sw, o);
+        }
+
         internal static readonly JsonSerializer _js;
 
         static JsonUtil()

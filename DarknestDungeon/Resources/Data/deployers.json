@@ -1,82 +1,89 @@
-﻿{
+{
   "Abyss_15": {
-    "Destroy_Dream_Field": {
-      "$type": "ItemChanger.Deployers.ObjectDestroyer, ItemChanger",
+    "Deploy_Debug_Respawn_Marker": {
+      "$type": "DarknestDungeon.IC.RespawnMarkerDeployer, DarknestDungeon",
+      "name": "Debug Respawn Marker",
       "SceneName": "Abyss_15",
-      "ObjectName": "Dream Enter Abyss",
-      "NameMatchType": "FirstName"
-    },
-    "Destroy_Black_Egg": {
-      "$type": "ItemChanger.Deployers.ObjectDestroyer, ItemChanger",
-      "SceneName": "Abyss_15",
-      "ObjectName": "black_egg",
-      "NameMatchType": "FirstName"
-    },
-    "Destroy_Black_Egg_2": {
-      "$type": "ItemChanger.Deployers.ObjectDestroyer, ItemChanger",
-      "SceneName": "Abyss_15",
-      "ObjectName": "black_egg (1)",
-      "NameMatchType": "FirstName"
-    },
-    "Destroy_Egg_Collider": {
-      "$type": "ItemChanger.Deployers.ObjectDestroyer, ItemChanger",
-      "SceneName": "Abyss_15",
-      "ObjectName": "Egg Collider",
-      "NameMatchType": "FirstName"
-    },
-    "Destroy_Mirror": {
-      "$type": "ItemChanger.Deployers.ObjectDestroyer, ItemChanger",
-      "SceneName": "Abyss_15",
-      "ObjectName": "Mirror",
-      "NameMatchType": "FirstName"
-    },
-    "Destroy_Walk_Area": {
-      "$type": "ItemChanger.Deployers.ObjectDestroyer, ItemChanger",
-      "SceneName": "Abyss_15",
-      "ObjectName": "Walk Area",
-      "NameMatchType": "NameSubstring"
-    },
-    "Deploy_Soul_Totem": {
-      "$type": "ItemChanger.Deployers.SoulTotemDeployer, ItemChanger",
-      "SceneName": "Abyss_15",
-      "SoulTotemSubtype": "A",
-      "X": 145.4,
-      "Y": 12.2
+      "X": 130.0,
+      "Y": 11.4,
+      "Test": null
     },
     "Deploy_Dive_Floor": {
       "$type": "DarknestDungeon.IC.DiveFloorDeployer, DarknestDungeon",
+      "id": "Void_Dive_Floor",
       "SceneName": "Abyss_15",
-      "X": 139,
+      "X": 139.0,
       "Y": 9.12,
-      "id": "Void_Dive_Floor"
+      "Test": null
+    },
+    "Deploy_Soul_Totem": {
+      "$type": "ItemChanger.Deployers.SoulTotemDeployer, ItemChanger",
+      "SoulTotemSubtype": "A",
+      "SceneName": "Abyss_15",
+      "X": 145.4,
+      "Y": 12.2,
+      "Test": null
     },
     "Deploy_Tile_Map_Edit": {
       "$type": "DarknestDungeon.IC.TileMapEditDeployer, DarknestDungeon",
-      "SceneName": "Abyss_15",
       "ClearRect": {
         "X": 137,
         "Y": 0,
         "Width": 4,
         "Height": 10
-      }
-    },
-    "Deploy_Debug_Respawn_Marker": {
-      "$type": "DarknestDungeon.IC.RespawnMarkerDeployer, DarknestDungeon",
+      },
       "SceneName": "Abyss_15",
-      "X": 130,
-      "Y": 11.4,
-      "name": "Debug Respawn Marker"
+      "X": 0.0,
+      "Y": 0.0,
+      "Test": null
     },
     "Deploy_Transition": {
       "$type": "DarknestDungeon.IC.TransitionDeployer, DarknestDungeon",
-      "SceneName": "Abyss_15",
-      "X": 139,
-      "Y": 1,
-      "width": 4,
-      "height": 2,
+      "width": 4.0,
+      "height": 2.0,
       "Gate": "bot1",
       "TargetScene": "VoidDescent01",
-      "TargetGate": "top1"
+      "TargetGate": "top1",
+      "SceneName": "Abyss_15",
+      "X": 139.0,
+      "Y": 1.0,
+      "Test": null
+    },
+    "Destroy_Black_Egg": {
+      "$type": "ItemChanger.Deployers.ObjectDestroyer, ItemChanger",
+      "SceneName": "Abyss_15",
+      "ObjectName": "black_egg",
+      "MatchType": "FirstName"
+    },
+    "Destroy_Black_Egg_2": {
+      "$type": "ItemChanger.Deployers.ObjectDestroyer, ItemChanger",
+      "SceneName": "Abyss_15",
+      "ObjectName": "black_egg (1)",
+      "MatchType": "FirstName"
+    },
+    "Destroy_Dream_Field": {
+      "$type": "ItemChanger.Deployers.ObjectDestroyer, ItemChanger",
+      "SceneName": "Abyss_15",
+      "ObjectName": "Dream Enter Abyss",
+      "MatchType": "FirstName"
+    },
+    "Destroy_Egg_Collider": {
+      "$type": "ItemChanger.Deployers.ObjectDestroyer, ItemChanger",
+      "SceneName": "Abyss_15",
+      "ObjectName": "Egg Collider",
+      "MatchType": "FirstName"
+    },
+    "Destroy_Mirror": {
+      "$type": "ItemChanger.Deployers.ObjectDestroyer, ItemChanger",
+      "SceneName": "Abyss_15",
+      "ObjectName": "Mirror",
+      "MatchType": "FirstName"
+    },
+    "Destroy_Walk_Area": {
+      "$type": "ItemChanger.Deployers.ObjectDestroyer, ItemChanger",
+      "SceneName": "Abyss_15",
+      "ObjectName": "Walk Area",
+      "MatchType": "FirstName"
     }
   }
 }
