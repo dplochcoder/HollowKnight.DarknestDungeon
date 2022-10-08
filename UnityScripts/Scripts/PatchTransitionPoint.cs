@@ -15,6 +15,8 @@ namespace DarknestDungeon.Scripts
         [Tooltip("The wait time before entering from this gate (not the target gate).")]
         public float entryDelay;
 
+        public Vector2 entryOffset;
+
         public bool alwaysEnterRight;
 
         public bool alwaysEnterLeft;
@@ -28,8 +30,6 @@ namespace DarknestDungeon.Scripts
         public string targetScene;
 
         public string entryPoint;
-
-        public Vector2 entryOffset;
 
         [Header("Hazard Respawn")]
         [Space(5f)]

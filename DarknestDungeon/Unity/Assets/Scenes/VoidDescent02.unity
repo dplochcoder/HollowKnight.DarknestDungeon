@@ -165,7 +165,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -280,7 +280,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -34865,8 +34865,8 @@ Tilemap:
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
   m_Color: {r: 0, g: 0, b: 0, a: 1}
-  m_Origin: {x: 0, y: -2, z: 0}
-  m_Size: {x: 90, y: 103, z: 1}
+  m_Origin: {x: 0, y: 0, z: 0}
+  m_Size: {x: 90, y: 80, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
@@ -34928,7 +34928,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -34999,7 +34999,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -35301,7 +35301,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -35409,7 +35409,7 @@ MonoBehaviour:
   hardLandOnExit: 0
   targetScene: VoidDescent01
   entryPoint: bot1
-  entryOffset: {x: 0, y: 7.5}
+  entryOffset: {x: 0, y: 0}
   nonHazardGate: 0
   hazardRespawnMarker: {fileID: 1643466963}
   atmosSnapshot: {fileID: 0}
@@ -35504,7 +35504,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -35709,11 +35709,11 @@ MonoBehaviour:
   dontWalkOutOfDoor: 0
   entryDelay: 0
   alwaysEnterRight: 0
-  alwaysEnterLeft: 0
+  alwaysEnterLeft: 1
   hardLandOnExit: 0
   targetScene: VoidDescent03
   entryPoint: top1
-  entryOffset: {x: 0, y: 0}
+  entryOffset: {x: 0, y: 2.5}
   nonHazardGate: 0
   hazardRespawnMarker: {fileID: 977178119}
   atmosSnapshot: {fileID: 0}
