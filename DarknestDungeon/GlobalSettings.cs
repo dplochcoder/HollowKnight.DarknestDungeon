@@ -2,6 +2,6 @@
 {
     public class GlobalSettings
     {
-        public bool Enabled = true;
+        public bool Enabled = false;
     }
 }
