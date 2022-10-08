@@ -16,7 +16,7 @@ namespace DarknestDungeon.Scripts
 
         private void Awake()
         {
-            var scp = GameObject.FindObjectOfType<SceneParticlesController>();
+            var scp = FindObjectOfType<SceneParticlesController>();
             scp.DisableParticles();
 
             // TODO: Create void particle fields

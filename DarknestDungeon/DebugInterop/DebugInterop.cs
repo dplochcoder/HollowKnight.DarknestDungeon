@@ -38,7 +38,7 @@ namespace DarknestDungeon.DebugInterop
         [BindableMethod(name = "Give Void Cloak", category = "DarknestDungeon")]
         public static void GiveVoidCloak()
         {
-            DarknestDungeon.Log("Giving Void Cloak");
+            Console.AddLine("Giving Void Cloak");
             var mod = ItemChangerMod.Modules.GetOrAdd<VoidCloakModule>();
             mod.HookVoidCloak(GameObject.Find("/Knight"));
             mod.HasVoidCloak = true;
@@ -47,7 +47,7 @@ namespace DarknestDungeon.DebugInterop
         [BindableMethod(name = "Take Void Cloak", category = "DarknestDungeon")]
         public static void TakeVoidCloak()
         {
-            DarknestDungeon.Log("Taking Void Cloak");
+            Console.AddLine("Taking Void Cloak");
             var vcm = ItemChangerMod.Modules.Get<VoidCloakModule>();
             if (vcm != null) vcm.HasVoidCloak = false;
         }

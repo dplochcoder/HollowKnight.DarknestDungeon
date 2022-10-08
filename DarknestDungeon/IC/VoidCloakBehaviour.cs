@@ -1,4 +1,5 @@
 ﻿using ItemChanger.Extensions;
+using MonoMod.RuntimeDetour;
 using System;
 using System.Reflection;
 using UnityEngine;
@@ -21,13 +22,22 @@ namespace DarknestDungeon.IC
             AwaitingUnpause
         }
 
+        private enum JumpHoldState
+        {
+            Idle,
+            HoldingJump
+        }
+
         private static readonly FieldInfo inputHandlerField = typeof(HeroController).GetField("inputHandler", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly FieldInfo rb2dField = typeof(HeroController).GetField("rb2d", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly FieldInfo dashTimerField = typeof(HeroController).GetField("dash_timer", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly FieldInfo shadowDashTimerField = typeof(HeroController).GetField("shadowDashTimer", BindingFlags.NonPublic | BindingFlags.Instance);
+        private static readonly FieldInfo jumpStepsField = typeof(HeroController).GetField("jump_steps", BindingFlags.NonPublic | BindingFlags.Instance);
+        private static readonly FieldInfo jumpedStepsField = typeof(HeroController).GetField("jumped_steps", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly FieldInfo doubleJumpedField = typeof(HeroController).GetField("doubleJumped", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly MethodInfo origDashVectorMethod = typeof(HeroController).GetMethod("OrigDashVector", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly MethodInfo finishedDashingMethod = typeof(HeroController).GetMethod("FinishedDashing", BindingFlags.NonPublic | BindingFlags.Instance);
+        private static readonly MethodInfo jumpMethod = typeof(HeroController).GetMethod("Jump", BindingFlags.NonPublic | BindingFlags.Instance);
 
         private static float VOID_DASH_EXTENSION_RATIO = 2.1f;
         private static float VOID_DASH_LIMIT = 0.7f;
@@ -54,6 +64,8 @@ namespace DarknestDungeon.IC
         private tk2dSpriteAnimator shadowRecharge;
         private float shadowRechargePauseTime;
 
+        private JumpHoldState jumpHoldState = JumpHoldState.Idle;
+
         public void Start()
         {
             hc = gameObject.GetComponent<HeroController>();
@@ -65,6 +77,9 @@ namespace DarknestDungeon.IC
             shadowRecharge = gameObject.FindChild("Effects").FindChild("Shadow Recharge").GetComponent<tk2dSpriteAnimator>();
 
             Vcm.OnTransition += OnSceneTransition;
+            On.HeroController.FixedUpdate += OverrideFixedUpdate;
+            On.HeroController.LookForInput += OverrideLookForInput;
+            On.HeroController.JumpReleased += OverrideJumpReleased;
         }
 
         private void OnSceneTransition()
@@ -72,9 +87,38 @@ namespace DarknestDungeon.IC
             if (voidCloakState == VoidCloakState.VoidDashing) FinishedVoidDashing();
         }
 
-        public void OnDestroy()
+        private void OverrideFixedUpdate(On.HeroController.orig_FixedUpdate orig, HeroController self)
+        {
+            orig(self);
+            if (hc.hero_state == GlobalEnums.ActorStates.no_input && jumpHoldState == JumpHoldState.HoldingJump)
+            {
+                // Simulate jump.
+                Jump();
+            }
+        }
+
+        private bool absorbingJumps = false;
+
+        private void OverrideLookForInput(On.HeroController.orig_LookForInput orig, HeroController self)
+        {
+            absorbingJumps = true;
+            orig(self);
+            absorbingJumps = false;
+        }
+
+        private void OverrideJumpReleased(On.HeroController.orig_JumpReleased orig, HeroController self)
+        {
+            if (!absorbingJumps || jumpHoldState != JumpHoldState.HoldingJump)
+            {
+                orig(self);
+            }
+        }
+
+        private void OnDestroy()
         {
             Vcm.OnTransition -= OnSceneTransition;
+            On.HeroController.LookForInput -= OverrideLookForInput;
+            On.HeroController.JumpReleased -= OverrideJumpReleased;
         }
 
         private bool SharpShadowEquipped => PlayerData.instance.GetBool("equippedCharm_16");
@@ -91,6 +135,18 @@ namespace DarknestDungeon.IC
             set { shadowDashTimerField.SetValue(hc, value); }
         }
 
+        private int jump_steps
+        {
+            get { return (int)jumpStepsField.GetValue(hc); }
+            set { jumpStepsField.SetValue(hc, value); }
+        }
+
+        private int jumped_steps
+        {
+            get { return (int)jumpedStepsField.GetValue(hc); }
+            set { jumpedStepsField.SetValue(hc, value); }
+        }
+
         private bool doubleJumped
         {
             get { return (bool)doubleJumpedField.GetValue(hc); }
@@ -101,6 +157,8 @@ namespace DarknestDungeon.IC
 
         private Vector2 OrigDashVector() => (Vector2) origDashVectorMethod.Invoke(hc, emptyArr);
 
+        private void Jump() => jumpMethod.Invoke(hc, emptyArr);
+
         private void FinishedDashing() => finishedDashingMethod.Invoke(hc, emptyArr);
 
         public void Update()
@@ -109,6 +167,7 @@ namespace DarknestDungeon.IC
 
             UpdateVoidCloak();
             UpdateShadowRechargeAnim();
+            UpdateJumpHold();
         }
 
         private void UpdateVoidCloak()
@@ -122,12 +181,7 @@ namespace DarknestDungeon.IC
                     }
                     break;
                 case VoidCloakState.VoidDashing:
-                    if (!ih.inputActions.dash.IsPressed && voidDashTimer <= hc.DASH_TIME)
-                    {
-                        voidCloakState = VoidCloakState.VoidEarlyRelease;
-                        dash_timer = voidDashTimer;
-                    }
-                    else if (!ih.inputActions.dash.IsPressed || voidDashTimer > VOID_DASH_LIMIT)
+                    if (!ih.inputActions.dash.IsPressed || voidDashTimer > VOID_DASH_LIMIT)
                     {
                         FinishedVoidDashing();
                     }
@@ -169,6 +223,27 @@ namespace DarknestDungeon.IC
                     {
                         shadowRechargePauseTime -= Time.deltaTime;
                     }
+                    break;
+            }
+        }
+
+        private float? prevJumpHoldY = null;
+
+        private void UpdateJumpHold()
+        {
+            switch (jumpHoldState)
+            {
+                case JumpHoldState.Idle:
+                    prevJumpHoldY = null;
+                    break;
+                case JumpHoldState.HoldingJump:
+                    float newJumpHoldY = hc.gameObject.transform.position.y;
+                    if (hcs.dashing || hcs.touchingWall || (prevJumpHoldY != null && prevJumpHoldY > newJumpHoldY))
+                    {
+                        DarknestDungeon.Log("WFTWHYAREWEFLYING");
+                        jumpHoldState = JumpHoldState.Idle;
+                    }
+                    prevJumpHoldY = newJumpHoldY;
                     break;
             }
         }
@@ -265,11 +340,26 @@ namespace DarknestDungeon.IC
 
         private void FinishedVoidDashing()
         {
-            Vcm.DashVelocityOverride = null;
-            FinishedDashing();
-            voidCloakState = VoidCloakState.Idle;
+            if (voidCloakState == VoidCloakState.VoidDashing && voidDashTimer <= hc.DASH_TIME)
+            {
+                dash_timer = voidDashTimer;
+                voidCloakState = VoidCloakState.VoidEarlyRelease;
+            }
+            else
+            {
+                if (velocity.y > 0)
+                {
+                    // Fake-jump
+                    jumpHoldState = JumpHoldState.HoldingJump;
+                    hcs.jumping = true;
+                    jump_steps = 3;
+                    jumped_steps = 3;
+                }
 
-            // TODO: Airborne velocity
+                Vcm.DashVelocityOverride = null;
+                FinishedDashing();
+                voidCloakState = VoidCloakState.Idle;
+            }
         }
     }
 }
