@@ -274,6 +274,11 @@ namespace DarknestDungeon.IC
             {
                 horz = hcs.facingRight ? 1 : -1;
             }
+            else if (voidDashTimer <= hc.DASH_TIME && vert == -1 && horz != 0)
+            {
+                // Suppress down-angle until a little later, to allow standard QoL spike tunnels
+                vert = 0;
+            }
 
             return ((horz != 0 || vert != 0) ? new Vector2(horz, vert) : (velocity.magnitude > 0 ? velocity : OrigDashVector())).normalized;
         }
