@@ -378,7 +378,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 134869213}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 59.5, y: 7, z: 0}
+  m_LocalPosition: {x: 67.5, y: 7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 863663074}
@@ -521,15 +521,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 689394190094182309, guid: 49b4e6b5ebc9d8d4e86b1607bd72cdb3, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 689394190094182309, guid: 49b4e6b5ebc9d8d4e86b1607bd72cdb3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 13.27
+      value: 77.61
       objectReference: {fileID: 0}
     - target: {fileID: 689394190094182309, guid: 49b4e6b5ebc9d8d4e86b1607bd72cdb3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 51.95
+      value: 31.21
       objectReference: {fileID: 0}
     - target: {fileID: 689394190094182309, guid: 49b4e6b5ebc9d8d4e86b1607bd72cdb3, type: 3}
       propertyPath: m_LocalPosition.z
@@ -565,7 +565,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1112169886032498987, guid: 49b4e6b5ebc9d8d4e86b1607bd72cdb3, type: 3}
       propertyPath: m_Name
-      value: Hidden Totem
+      value: Refresh Totem
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 49b4e6b5ebc9d8d4e86b1607bd72cdb3, type: 3}
@@ -35404,12 +35404,12 @@ MonoBehaviour:
   isADoor: 0
   dontWalkOutOfDoor: 0
   entryDelay: 0
+  entryOffset: {x: 0, y: 0}
   alwaysEnterRight: 0
   alwaysEnterLeft: 0
   hardLandOnExit: 0
   targetScene: VoidDescent01
   entryPoint: bot1
-  entryOffset: {x: 0, y: 0}
   nonHazardGate: 0
   hazardRespawnMarker: {fileID: 1643466963}
   atmosSnapshot: {fileID: 0}
@@ -35542,7 +35542,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2017509514438391713, guid: e224621f57dd750418b184a82478098c, type: 3}
       propertyPath: m_Name
-      value: Refresh Totem
+      value: Hidden Totem
       objectReference: {fileID: 0}
     - target: {fileID: 4264560720765077430, guid: e224621f57dd750418b184a82478098c, type: 3}
       propertyPath: m_RootOrder
@@ -35550,11 +35550,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4264560720765077430, guid: e224621f57dd750418b184a82478098c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 78.38
+      value: 13.07
       objectReference: {fileID: 0}
     - target: {fileID: 4264560720765077430, guid: e224621f57dd750418b184a82478098c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 30.95
+      value: 52.5
       objectReference: {fileID: 0}
     - target: {fileID: 4264560720765077430, guid: e224621f57dd750418b184a82478098c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -35708,12 +35708,12 @@ MonoBehaviour:
   isADoor: 0
   dontWalkOutOfDoor: 0
   entryDelay: 0
+  entryOffset: {x: 0, y: 2.5}
   alwaysEnterRight: 0
   alwaysEnterLeft: 1
   hardLandOnExit: 0
   targetScene: VoidDescent03
   entryPoint: top1
-  entryOffset: {x: 0, y: 2.5}
   nonHazardGate: 0
   hazardRespawnMarker: {fileID: 977178119}
   atmosSnapshot: {fileID: 0}

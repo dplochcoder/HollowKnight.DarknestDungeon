@@ -19,9 +19,15 @@ namespace DarknestDungeon.IC.Deployers
     {
         public float width;
         public float height;
+
         public string Gate;
         public string TargetScene;
         public string TargetGate;
+
+        public bool alwaysEnterLeft;
+        public bool alwaysEnterRight;
+        public float entryOffsetX;
+        public float entryOffsetY;
 
         public override GameObject Instantiate()
         {
@@ -31,6 +37,9 @@ namespace DarknestDungeon.IC.Deployers
             var tp = gate.GetComponent<TransitionPoint>();
             tp.targetScene = TargetScene;
             tp.entryPoint = TargetGate;
+            tp.alwaysEnterLeft = alwaysEnterLeft;
+            tp.alwaysEnterRight = alwaysEnterRight;
+            tp.entryOffset = new(entryOffsetX, entryOffsetY);
 
             var bc2d = gate.GetComponent<BoxCollider2D>();
             bc2d.size = new(width, height);
