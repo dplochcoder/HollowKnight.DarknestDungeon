@@ -1,6 +1,5 @@
 ﻿using DarknestDungeon.UnityExtensions;
 using ItemChanger.Deployers;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace DarknestDungeon.Scripts
@@ -23,12 +22,12 @@ namespace DarknestDungeon.Scripts
 
         public SoulTotemSubtype TotemType;
 
-        public override void ModifyDeployer(ref SoulTotemDeployer deployer) => deployer = deployer with
+        protected override void ModifyDeployer(ref SoulTotemDeployer deployer) => deployer = deployer with
         {
             SoulTotemSubtype = (ItemChanger.SoulTotemSubtype)TotemType
         };
 
-        public override void ModifyDeployment(GameObject obj)
+        protected override void ModifyDeployment(GameObject obj)
         {
             obj.transform.SetPositionZ(0.01f);
             obj.GetComponent<SpriteRenderer>().flipX = gameObject.GetComponent<SpriteRenderer>().flipX;

@@ -47,5 +47,12 @@ namespace DarknestDungeon.IC.Deployers
             gate.AddComponent<TransitionReparent>();
             return gate;
         }
+
+        public override GameObject Deploy()
+        {
+            var obj = base.Deploy();
+            obj.name = Gate;
+            return obj;
+        }
     }
 }

@@ -63,7 +63,7 @@ namespace DarknestDungeon.Scripts
 
         public bool forceWaitFetch;
 
-        public void Awake()
+        private void Awake()
         {
             var tp = gameObject.AddComponent<TransitionPoint>();
             tp.isADoor = isADoor;

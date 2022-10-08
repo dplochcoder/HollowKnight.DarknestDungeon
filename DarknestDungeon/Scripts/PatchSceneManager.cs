@@ -91,7 +91,7 @@ namespace DarknestDungeon.Scripts
         public bool manualMapTrigger = false;
         public float musicTransitionTime = 3.0f;
 
-        public void Awake()
+        private void Awake()
         {
             GameObject actualSceneManager = Instantiate(IC.Preloader.Instance.SceneManager);
             actualSceneManager.SetActive(false);

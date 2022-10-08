@@ -9,7 +9,7 @@ namespace DarknestDungeon.Scripts
     [RequireComponent(typeof(Tilemap))]
     public class PatchTilemap : MonoBehaviour
     {
-        public void Awake()
+        private void Awake()
         {
             var oldMap = gameObject.GetComponent<Tilemap>();
             var newMap = gameObject.AddComponent<tk2dTileMap>();

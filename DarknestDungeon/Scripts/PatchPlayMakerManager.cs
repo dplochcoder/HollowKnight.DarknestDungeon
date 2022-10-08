@@ -7,7 +7,7 @@ namespace DarknestDungeon.Scripts
     {
         public Transform managerTransform;
 
-        public void Awake()
+        private void Awake()
         {
             GameObject tmpPmu2D = Instantiate(Preloader.Instance.PlayMaker, managerTransform);
             tmpPmu2D.SetActive(true);

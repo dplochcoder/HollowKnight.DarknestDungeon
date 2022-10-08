@@ -5,7 +5,7 @@ namespace DarknestDungeon.UnityExtensions
 {
     public abstract class DeployerMonobehaviour<T> : MonoBehaviour where T : Deployer, new()
     {
-        public void Awake()
+        private void Awake()
         {
             T deployer = new()
             {
@@ -18,8 +18,8 @@ namespace DarknestDungeon.UnityExtensions
             Destroy(gameObject);
         }
 
-        public abstract void ModifyDeployer(ref T deployer);
+        protected abstract void ModifyDeployer(ref T deployer);
 
-        public virtual void ModifyDeployment(GameObject obj) { }
+        protected virtual void ModifyDeployment(GameObject obj) { }
     }
 }

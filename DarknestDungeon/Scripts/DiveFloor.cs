@@ -7,6 +7,6 @@ namespace DarknestDungeon.Scripts
     {
         public string id;
 
-        public override void ModifyDeployer(ref DiveFloorDeployer deployer) => deployer.id = id;
+        protected override void ModifyDeployer(ref DiveFloorDeployer deployer) => deployer.id = id;
     }
 }
