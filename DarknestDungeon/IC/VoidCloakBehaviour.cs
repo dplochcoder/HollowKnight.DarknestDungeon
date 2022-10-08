@@ -59,12 +59,14 @@ namespace DarknestDungeon.IC
         private Vector2 velocity;
         private float voidDashTimer;
         private bool wasAirborne;
+        private bool escapedQoL;
 
         private ShadowRechargeAnimState shadowRechargeAnimState = ShadowRechargeAnimState.Idle;
         private tk2dSpriteAnimator shadowRecharge;
         private float shadowRechargePauseTime;
 
         private JumpHoldState jumpHoldState = JumpHoldState.Idle;
+        private bool absorbingJumps = false;
 
         public void Start()
         {
@@ -96,8 +98,6 @@ namespace DarknestDungeon.IC
                 Jump();
             }
         }
-
-        private bool absorbingJumps = false;
 
         private void OverrideLookForInput(On.HeroController.orig_LookForInput orig, HeroController self)
         {
@@ -254,6 +254,7 @@ namespace DarknestDungeon.IC
             wasAirborne = !hcs.onGround;
             dash_timer = 0;
             voidDashTimer = Time.deltaTime;
+            escapedQoL = false;
 
             velocity = OrigDashVector();
             SetDashVelocity(GetTargetDir() * GetTargetSpeed());
@@ -274,10 +275,17 @@ namespace DarknestDungeon.IC
             {
                 horz = hcs.facingRight ? 1 : -1;
             }
-            else if (voidDashTimer <= hc.DASH_TIME && vert == -1 && horz != 0)
+            else if (!escapedQoL)
             {
-                // Suppress down-angle until a little later, to allow standard QoL spike tunnels
-                vert = 0;
+                if (voidDashTimer > hc.DASH_TIME || (vert == 1) || (vert == -1 && horz == 0))
+                {
+                    escapedQoL = true;
+                }
+                else if (vert == -1 && horz != 0)
+                {
+                    // Suppress down-angle until a little later, to allow standard QoL spike tunnels
+                    vert = 0;
+                }
             }
 
             return ((horz != 0 || vert != 0) ? new Vector2(horz, vert) : (velocity.magnitude > 0 ? velocity : OrigDashVector())).normalized;
