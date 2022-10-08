@@ -76,7 +76,7 @@
     "Void_Transition": {
       "$type": "DarknestDungeon.IC.Deployers.TransitionDeployer, DarknestDungeon",
       "width": 4.0,
-      "height": 2.0,
+      "height": 1.0,
       "Gate": "bot1",
       "TargetScene": "VoidDescent01",
       "TargetGate": "top1",
@@ -86,7 +86,7 @@
       "entryOffsetY": 7.5,
       "SceneName": "Abyss_15",
       "X": 139.0,
-      "Y": 1.0,
+      "Y": 0.5,
       "Test": null
     }
   }
