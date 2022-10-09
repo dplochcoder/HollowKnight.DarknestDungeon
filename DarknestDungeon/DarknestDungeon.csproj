@@ -345,6 +345,9 @@
     <Reference Include="UnityEngine.XRModule">
       <HintPath>$(HollowKnightRefs)/UnityEngine.XRModule.dll</HintPath>
     </Reference>
+    <Reference Include="WeaverCore">
+      <HintPath>$(HollowKnightRefs)/Mods/WeaverCore/WeaverCore.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />

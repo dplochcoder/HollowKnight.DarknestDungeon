@@ -24,3 +24,6 @@
 /DataUpdater/obj
 /UnityScripts/bin/Debug
 /UnityScripts/obj/Debug
+/DarknestDungeon/Unity/Assets/WeaverCore
+/DarknestDungeon/Unity/*.csproj
+/DarknestDungeon/Unity/*.sln
