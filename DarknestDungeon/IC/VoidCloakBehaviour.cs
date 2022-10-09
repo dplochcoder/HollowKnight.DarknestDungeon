@@ -1,5 +1,4 @@
 ﻿using ItemChanger.Extensions;
-using MonoMod.RuntimeDetour;
 using System;
 using System.Reflection;
 using UnityEngine;
