@@ -191,7 +191,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 27753309}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1915803999, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Script: {fileID: 11500000, guid: 1935117cb984ef84ea8efb90e8a04e0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isADoor: 0
@@ -203,13 +203,15 @@ MonoBehaviour:
   hardLandOnExit: 0
   targetScene: VoidDescent04
   entryPoint: top2
+  alwaysUnloadUnusedAssets: 0
   nonHazardGate: 0
-  hazardRespawnMarker: {fileID: 1653043610}
+  respawnMarker: {fileID: 1653043611}
   atmosSnapshot: {fileID: 0}
   enviroSnapshot: {fileID: 0}
   actorSnapshot: {fileID: 0}
   musicSnapshot: {fileID: 0}
   sceneLoadVisualization: 0
+  customFade: 0
   forceWaitFetch: 0
 --- !u!1 &221596714
 GameObject:
@@ -253,7 +255,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 239019629}
-  - component: {fileID: 239019630}
+  - component: {fileID: 239019631}
   m_Layer: 0
   m_Name: hrm
   m_TagString: Untagged
@@ -275,7 +277,7 @@ Transform:
   m_Father: {fileID: 419949665}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &239019630
+--- !u!114 &239019631
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -284,7 +286,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 239019628}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -124944320, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Script: {fileID: 11500000, guid: b740941a83cf17343b19f8559dc97b50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   respawnFacingRight: 0
@@ -15761,7 +15763,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 419949664}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1915803999, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Script: {fileID: 11500000, guid: 1935117cb984ef84ea8efb90e8a04e0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isADoor: 0
@@ -15773,13 +15775,15 @@ MonoBehaviour:
   hardLandOnExit: 0
   targetScene: VoidEntrance_Miniboss
   entryPoint: left1
+  alwaysUnloadUnusedAssets: 0
   nonHazardGate: 0
-  hazardRespawnMarker: {fileID: 239019630}
+  respawnMarker: {fileID: 239019631}
   atmosSnapshot: {fileID: 0}
   enviroSnapshot: {fileID: 0}
   actorSnapshot: {fileID: 0}
   musicSnapshot: {fileID: 0}
   sceneLoadVisualization: 0
+  customFade: 0
   forceWaitFetch: 0
 --- !u!1 &514201174
 GameObject:
@@ -15849,7 +15853,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 514201174}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1915803999, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Script: {fileID: 11500000, guid: 1935117cb984ef84ea8efb90e8a04e0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isADoor: 0
@@ -15861,13 +15865,15 @@ MonoBehaviour:
   hardLandOnExit: 0
   targetScene: VoidDescent03
   entryPoint: right1
+  alwaysUnloadUnusedAssets: 0
   nonHazardGate: 0
-  hazardRespawnMarker: {fileID: 741718578}
+  respawnMarker: {fileID: 741718579}
   atmosSnapshot: {fileID: 0}
   enviroSnapshot: {fileID: 0}
   actorSnapshot: {fileID: 0}
   musicSnapshot: {fileID: 0}
   sceneLoadVisualization: 0
+  customFade: 0
   forceWaitFetch: 0
 --- !u!1 &741718576
 GameObject:
@@ -15878,7 +15884,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 741718577}
-  - component: {fileID: 741718578}
+  - component: {fileID: 741718579}
   m_Layer: 0
   m_Name: hrm
   m_TagString: Untagged
@@ -15900,7 +15906,7 @@ Transform:
   m_Father: {fileID: 514201175}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &741718578
+--- !u!114 &741718579
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -15909,7 +15915,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 741718576}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -124944320, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Script: {fileID: 11500000, guid: b740941a83cf17343b19f8559dc97b50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   respawnFacingRight: 1
@@ -16041,7 +16047,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1653043609}
-  - component: {fileID: 1653043610}
+  - component: {fileID: 1653043611}
   m_Layer: 0
   m_Name: hrm
   m_TagString: Untagged
@@ -16063,7 +16069,7 @@ Transform:
   m_Father: {fileID: 27753310}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1653043610
+--- !u!114 &1653043611
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -16072,7 +16078,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1653043608}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -124944320, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Script: {fileID: 11500000, guid: b740941a83cf17343b19f8559dc97b50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   respawnFacingRight: 0

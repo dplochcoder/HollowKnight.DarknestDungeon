@@ -27,3 +27,5 @@
 /DarknestDungeon/Unity/Assets/WeaverCore
 /DarknestDungeon/Unity/*.csproj
 /DarknestDungeon/Unity/*.sln
+/DarknestDungeonUnityScripts/bin/Debug
+/DarknestDungeonUnityScripts/obj/Debug

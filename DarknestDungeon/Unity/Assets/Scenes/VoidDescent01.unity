@@ -191,7 +191,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 141501980}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1915803999, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Script: {fileID: 11500000, guid: 1935117cb984ef84ea8efb90e8a04e0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isADoor: 0
@@ -203,13 +203,15 @@ MonoBehaviour:
   hardLandOnExit: 0
   targetScene: VoidDescent02
   entryPoint: top1
+  alwaysUnloadUnusedAssets: 0
   nonHazardGate: 0
-  hazardRespawnMarker: {fileID: 217853835}
+  respawnMarker: {fileID: 217853835}
   atmosSnapshot: {fileID: 0}
   enviroSnapshot: {fileID: 0}
   actorSnapshot: {fileID: 0}
   musicSnapshot: {fileID: 0}
   sceneLoadVisualization: 0
+  customFade: 0
   forceWaitFetch: 0
 --- !u!1 &158988803
 GameObject:
@@ -295,7 +297,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 217853833}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -124944320, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Script: {fileID: 11500000, guid: b740941a83cf17343b19f8559dc97b50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   respawnFacingRight: 1
@@ -507,7 +509,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 752640143}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -124944320, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Script: {fileID: 11500000, guid: b740941a83cf17343b19f8559dc97b50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   respawnFacingRight: 0
@@ -608,7 +610,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 808284286}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1915803999, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Script: {fileID: 11500000, guid: 1935117cb984ef84ea8efb90e8a04e0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isADoor: 0
@@ -620,13 +622,15 @@ MonoBehaviour:
   hardLandOnExit: 0
   targetScene: Abyss_15
   entryPoint: bot1
+  alwaysUnloadUnusedAssets: 0
   nonHazardGate: 0
-  hazardRespawnMarker: {fileID: 752640145}
+  respawnMarker: {fileID: 752640145}
   atmosSnapshot: {fileID: 0}
   enviroSnapshot: {fileID: 0}
   actorSnapshot: {fileID: 0}
   musicSnapshot: {fileID: 0}
   sceneLoadVisualization: 0
+  customFade: 0
   forceWaitFetch: 0
 --- !u!4 &808284289
 Transform:

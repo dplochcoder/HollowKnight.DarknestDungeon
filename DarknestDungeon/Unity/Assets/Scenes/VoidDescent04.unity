@@ -84450,7 +84450,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 927261318}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -124944320, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Script: {fileID: 11500000, guid: b740941a83cf17343b19f8559dc97b50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   respawnFacingRight: 1
@@ -84494,7 +84494,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1092045513}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -124944320, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Script: {fileID: 11500000, guid: b740941a83cf17343b19f8559dc97b50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   respawnFacingRight: 1
@@ -84566,7 +84566,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1637762805}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1915803999, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Script: {fileID: 11500000, guid: 1935117cb984ef84ea8efb90e8a04e0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isADoor: 0
@@ -84578,13 +84578,15 @@ MonoBehaviour:
   hardLandOnExit: 0
   targetScene: VoidDescent03
   entryPoint: bot1
+  alwaysUnloadUnusedAssets: 0
   nonHazardGate: 0
-  hazardRespawnMarker: {fileID: 1092045515}
+  respawnMarker: {fileID: 1092045515}
   atmosSnapshot: {fileID: 0}
   enviroSnapshot: {fileID: 0}
   actorSnapshot: {fileID: 0}
   musicSnapshot: {fileID: 0}
   sceneLoadVisualization: 0
+  customFade: 0
   forceWaitFetch: 0
 --- !u!1 &1758084027
 GameObject:
@@ -84698,7 +84700,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2139058265}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1915803999, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Script: {fileID: 11500000, guid: 1935117cb984ef84ea8efb90e8a04e0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isADoor: 0
@@ -84707,14 +84709,16 @@ MonoBehaviour:
   entryOffset: {x: 0, y: 0}
   alwaysEnterRight: 0
   alwaysEnterLeft: 0
-  hardLandOnExit: 1
+  hardLandOnExit: 0
   targetScene: VoidDescent05_Bench
   entryPoint: bot1
+  alwaysUnloadUnusedAssets: 0
   nonHazardGate: 0
-  hazardRespawnMarker: {fileID: 927261320}
+  respawnMarker: {fileID: 927261320}
   atmosSnapshot: {fileID: 0}
   enviroSnapshot: {fileID: 0}
   actorSnapshot: {fileID: 0}
   musicSnapshot: {fileID: 0}
   sceneLoadVisualization: 0
+  customFade: 0
   forceWaitFetch: 0

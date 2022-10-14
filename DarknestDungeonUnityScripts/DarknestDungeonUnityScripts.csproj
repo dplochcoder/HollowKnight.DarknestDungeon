@@ -52,12 +52,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Scripts\PatchSceneParticleManager.cs" />
-    <Compile Include="Scripts\PatchHazardRespawnTrigger.cs" />
-    <Compile Include="Scripts\PatchHazardRespawnMarker.cs" />
     <Compile Include="Scripts\SoulTotem.cs" />
     <Compile Include="Scripts\DiveFloor.cs" />
     <Compile Include="Scripts\PatchSceneManager.cs" />
-    <Compile Include="Scripts\PatchTransitionPoint.cs" />
     <Compile Include="Scripts\PatchTilemapInfo.cs" />
     <Compile Include="Scripts\PatchPlayMakerManager.cs" />
   </ItemGroup>

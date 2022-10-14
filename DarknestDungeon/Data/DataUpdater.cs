@@ -2,6 +2,8 @@
 
 namespace DarknestDungeon.Data
 {
+    using JsonUtil = PurenailCore.SystemUtil.JsonUtil<DarknestDungeon>;
+
     public static class DataUpdater
     {
         public static string InferGitRoot(string path)
@@ -29,9 +31,14 @@ namespace DarknestDungeon.Data
             File.Delete(deployersPath);
             JsonUtil.Serialize(Deployers.Data, deployersPath);
 
-            // Copy DLL
-            var outputDll = Path.Combine(root, "UnityScripts/bin/Debug/DarknestDungeon.dll");
-            var inputDll = Path.Combine(root, "DarknestDungeon/Unity/Assets/Assemblies/DarknestDungeon.dll");
+            // Copy DLLs
+            CopyDll(root, "DarknestDungeonUnityScripts/bin/Debug/DarknestDungeon.dll", "DarknestDungeon/Unity/Assets/Assemblies/DarknestDungeon.dll");
+        }
+
+        private static void CopyDll(string root, string src, string dst)
+        {
+            var outputDll = Path.Combine(root, src);
+            var inputDll = Path.Combine(root, dst);
             File.Delete(inputDll);
             File.Copy(outputDll, inputDll);
         }

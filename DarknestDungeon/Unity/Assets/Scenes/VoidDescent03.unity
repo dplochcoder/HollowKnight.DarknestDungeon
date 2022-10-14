@@ -220,7 +220,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 190412178}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -124944320, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Script: {fileID: 11500000, guid: b740941a83cf17343b19f8559dc97b50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   respawnFacingRight: 1
@@ -36042,7 +36042,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 719970341}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -124944320, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Script: {fileID: 11500000, guid: b740941a83cf17343b19f8559dc97b50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   respawnFacingRight: 1
@@ -36116,7 +36116,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1177530788}
-  - component: {fileID: 1177530789}
+  - component: {fileID: 1177530791}
   - component: {fileID: 1177530790}
   m_Layer: 0
   m_Name: bot1
@@ -36140,35 +36140,6 @@ Transform:
   m_Father: {fileID: 221596715}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1177530789
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1177530787}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1915803999, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isADoor: 0
-  dontWalkOutOfDoor: 0
-  entryDelay: 0
-  entryOffset: {x: 0, y: 2.5}
-  alwaysEnterRight: 1
-  alwaysEnterLeft: 0
-  hardLandOnExit: 0
-  targetScene: VoidDescent04
-  entryPoint: top1
-  nonHazardGate: 0
-  hazardRespawnMarker: {fileID: 719970343}
-  atmosSnapshot: {fileID: 0}
-  enviroSnapshot: {fileID: 0}
-  actorSnapshot: {fileID: 0}
-  musicSnapshot: {fileID: 0}
-  sceneLoadVisualization: 0
-  forceWaitFetch: 0
 --- !u!61 &1177530790
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -36195,6 +36166,37 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 4, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1177530791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1177530787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1935117cb984ef84ea8efb90e8a04e0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isADoor: 0
+  dontWalkOutOfDoor: 0
+  entryDelay: 0
+  entryOffset: {x: 0, y: 2.5}
+  alwaysEnterRight: 1
+  alwaysEnterLeft: 0
+  hardLandOnExit: 0
+  targetScene: VoidDescent04
+  entryPoint: top1
+  alwaysUnloadUnusedAssets: 0
+  nonHazardGate: 0
+  respawnMarker: {fileID: 719970343}
+  atmosSnapshot: {fileID: 0}
+  enviroSnapshot: {fileID: 0}
+  actorSnapshot: {fileID: 0}
+  musicSnapshot: {fileID: 0}
+  sceneLoadVisualization: 0
+  customFade: 0
+  forceWaitFetch: 0
 --- !u!1001 &1520252398
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -36265,7 +36267,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1713094617}
-  - component: {fileID: 1713094618}
+  - component: {fileID: 1713094620}
   - component: {fileID: 1713094619}
   m_Layer: 0
   m_Name: right1
@@ -36289,35 +36291,6 @@ Transform:
   m_Father: {fileID: 221596715}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1713094618
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1713094616}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1915803999, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isADoor: 0
-  dontWalkOutOfDoor: 0
-  entryDelay: 0
-  entryOffset: {x: 0, y: 0}
-  alwaysEnterRight: 0
-  alwaysEnterLeft: 0
-  hardLandOnExit: 0
-  targetScene: VoidDescent05_Bench
-  entryPoint: left1
-  nonHazardGate: 0
-  hazardRespawnMarker: {fileID: 1744747790}
-  atmosSnapshot: {fileID: 0}
-  enviroSnapshot: {fileID: 0}
-  actorSnapshot: {fileID: 0}
-  musicSnapshot: {fileID: 0}
-  sceneLoadVisualization: 0
-  forceWaitFetch: 0
 --- !u!61 &1713094619
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -36344,6 +36317,37 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 5}
   m_EdgeRadius: 0
+--- !u!114 &1713094620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713094616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1935117cb984ef84ea8efb90e8a04e0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isADoor: 0
+  dontWalkOutOfDoor: 0
+  entryDelay: 0
+  entryOffset: {x: 0, y: 0}
+  alwaysEnterRight: 0
+  alwaysEnterLeft: 0
+  hardLandOnExit: 0
+  targetScene: VoidDescent05_Bench
+  entryPoint: left1
+  alwaysUnloadUnusedAssets: 0
+  nonHazardGate: 0
+  respawnMarker: {fileID: 1744747790}
+  atmosSnapshot: {fileID: 0}
+  enviroSnapshot: {fileID: 0}
+  actorSnapshot: {fileID: 0}
+  musicSnapshot: {fileID: 0}
+  sceneLoadVisualization: 0
+  customFade: 0
+  forceWaitFetch: 0
 --- !u!1 &1744747788
 GameObject:
   m_ObjectHideFlags: 0
@@ -36384,7 +36388,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1744747788}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -124944320, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Script: {fileID: 11500000, guid: b740941a83cf17343b19f8559dc97b50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   respawnFacingRight: 0
@@ -36441,7 +36445,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2096027225}
-  - component: {fileID: 2096027226}
+  - component: {fileID: 2096027228}
   - component: {fileID: 2096027227}
   m_Layer: 0
   m_Name: top1
@@ -36465,35 +36469,6 @@ Transform:
   m_Father: {fileID: 221596715}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2096027226
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2096027224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1915803999, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isADoor: 0
-  dontWalkOutOfDoor: 0
-  entryDelay: 0
-  entryOffset: {x: 0, y: 0}
-  alwaysEnterRight: 0
-  alwaysEnterLeft: 0
-  hardLandOnExit: 0
-  targetScene: VoidDescent02
-  entryPoint: bot1
-  nonHazardGate: 0
-  hazardRespawnMarker: {fileID: 190412180}
-  atmosSnapshot: {fileID: 0}
-  enviroSnapshot: {fileID: 0}
-  actorSnapshot: {fileID: 0}
-  musicSnapshot: {fileID: 0}
-  sceneLoadVisualization: 0
-  forceWaitFetch: 0
 --- !u!61 &2096027227
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -36520,6 +36495,37 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 4, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &2096027228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2096027224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1935117cb984ef84ea8efb90e8a04e0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isADoor: 0
+  dontWalkOutOfDoor: 0
+  entryDelay: 0
+  entryOffset: {x: 0, y: 0}
+  alwaysEnterRight: 0
+  alwaysEnterLeft: 0
+  hardLandOnExit: 0
+  targetScene: VoidDescent02
+  entryPoint: bot1
+  alwaysUnloadUnusedAssets: 0
+  nonHazardGate: 0
+  respawnMarker: {fileID: 190412180}
+  atmosSnapshot: {fileID: 0}
+  enviroSnapshot: {fileID: 0}
+  actorSnapshot: {fileID: 0}
+  musicSnapshot: {fileID: 0}
+  sceneLoadVisualization: 0
+  customFade: 0
+  forceWaitFetch: 0
 --- !u!1001 &2114367640
 PrefabInstance:
   m_ObjectHideFlags: 0

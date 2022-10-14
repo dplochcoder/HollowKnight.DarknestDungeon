@@ -191,10 +191,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 16545379}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1123404226, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Script: {fileID: 11500000, guid: 8fda2510f5456d147ac72d2f9a86e067, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RespawnMarker: {fileID: 1283631744}
+  respawnMarker: {fileID: 1283631744}
+  fireOnce: 0
 --- !u!1 &58914407
 GameObject:
   m_ObjectHideFlags: 0
@@ -235,7 +236,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 58914407}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -124944320, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Script: {fileID: 11500000, guid: b740941a83cf17343b19f8559dc97b50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   respawnFacingRight: 1
@@ -306,10 +307,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 95948019}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1123404226, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Script: {fileID: 11500000, guid: 8fda2510f5456d147ac72d2f9a86e067, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RespawnMarker: {fileID: 124247477}
+  respawnMarker: {fileID: 124247477}
+  fireOnce: 0
 --- !u!1 &124247475
 GameObject:
   m_ObjectHideFlags: 0
@@ -350,7 +352,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 124247475}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -124944320, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Script: {fileID: 11500000, guid: b740941a83cf17343b19f8559dc97b50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   respawnFacingRight: 1
@@ -394,7 +396,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 134869213}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -124944320, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Script: {fileID: 11500000, guid: b740941a83cf17343b19f8559dc97b50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   respawnFacingRight: 1
@@ -26790,10 +26792,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 443645784}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1123404226, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Script: {fileID: 11500000, guid: 8fda2510f5456d147ac72d2f9a86e067, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RespawnMarker: {fileID: 58914409}
+  respawnMarker: {fileID: 58914409}
+  fireOnce: 0
 --- !u!1 &591233009
 GameObject:
   m_ObjectHideFlags: 0
@@ -26862,10 +26865,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 591233009}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1123404226, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Script: {fileID: 11500000, guid: 8fda2510f5456d147ac72d2f9a86e067, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RespawnMarker: {fileID: 134869215}
+  respawnMarker: {fileID: 134869215}
+  fireOnce: 0
 --- !u!1 &863663073
 GameObject:
   m_ObjectHideFlags: 0
@@ -26943,7 +26947,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 977178117}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -124944320, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Script: {fileID: 11500000, guid: b740941a83cf17343b19f8559dc97b50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   respawnFacingRight: 0
@@ -27014,10 +27018,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1044918799}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1123404226, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Script: {fileID: 11500000, guid: 8fda2510f5456d147ac72d2f9a86e067, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RespawnMarker: {fileID: 124247477}
+  respawnMarker: {fileID: 124247477}
+  fireOnce: 0
 --- !u!1001 &1102752031
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27143,7 +27148,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1118302952}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1915803999, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Script: {fileID: 11500000, guid: 1935117cb984ef84ea8efb90e8a04e0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isADoor: 0
@@ -27155,13 +27160,15 @@ MonoBehaviour:
   hardLandOnExit: 0
   targetScene: VoidDescent01
   entryPoint: bot1
+  alwaysUnloadUnusedAssets: 0
   nonHazardGate: 0
-  hazardRespawnMarker: {fileID: 1643466963}
+  respawnMarker: {fileID: 1643466963}
   atmosSnapshot: {fileID: 0}
   enviroSnapshot: {fileID: 0}
   actorSnapshot: {fileID: 0}
   musicSnapshot: {fileID: 0}
   sceneLoadVisualization: 0
+  customFade: 0
   forceWaitFetch: 0
 --- !u!1 &1283631742
 GameObject:
@@ -27203,7 +27210,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1283631742}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -124944320, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Script: {fileID: 11500000, guid: b740941a83cf17343b19f8559dc97b50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   respawnFacingRight: 0
@@ -27337,10 +27344,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1506632427}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1123404226, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Script: {fileID: 11500000, guid: 8fda2510f5456d147ac72d2f9a86e067, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RespawnMarker: {fileID: 2116138478}
+  respawnMarker: {fileID: 2116138478}
+  fireOnce: 0
 --- !u!1001 &1565824491
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27438,7 +27446,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1643466961}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -124944320, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Script: {fileID: 11500000, guid: b740941a83cf17343b19f8559dc97b50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   respawnFacingRight: 1
@@ -27510,7 +27518,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1689150594}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1915803999, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Script: {fileID: 11500000, guid: 1935117cb984ef84ea8efb90e8a04e0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isADoor: 0
@@ -27522,13 +27530,15 @@ MonoBehaviour:
   hardLandOnExit: 0
   targetScene: VoidDescent03
   entryPoint: top1
+  alwaysUnloadUnusedAssets: 0
   nonHazardGate: 0
-  hazardRespawnMarker: {fileID: 977178119}
+  respawnMarker: {fileID: 977178119}
   atmosSnapshot: {fileID: 0}
   enviroSnapshot: {fileID: 0}
   actorSnapshot: {fileID: 0}
   musicSnapshot: {fileID: 0}
   sceneLoadVisualization: 0
+  customFade: 0
   forceWaitFetch: 0
 --- !u!1 &1758084027
 GameObject:
@@ -27675,7 +27685,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2116138476}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -124944320, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Script: {fileID: 11500000, guid: b740941a83cf17343b19f8559dc97b50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   respawnFacingRight: 1

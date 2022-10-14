@@ -12,7 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataUpdater", "DataUpdater\DataUpdater.csproj", "{925A8CBE-FB0B-4C62-9F67-EEBEF7E867B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityScripts", "UnityScripts\UnityScripts.csproj", "{B6E04777-9F38-4C4C-B234-B880853B4AF7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DarknestDungeonUnityScripts", "DarknestDungeonUnityScripts\DarknestDungeonUnityScripts.csproj", "{B6E04777-9F38-4C4C-B234-B880853B4AF7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

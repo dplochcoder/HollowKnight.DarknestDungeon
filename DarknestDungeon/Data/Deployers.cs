@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 namespace DarknestDungeon.Data
 {
+    using JsonUtil = PurenailCore.SystemUtil.JsonUtil<DarknestDungeon>;
+
     public static class Deployers
     {
         public static readonly SortedDictionary<string, SortedDictionary<string, IDeployer>> Data = JsonUtil.DeserializeEmbedded<SortedDictionary<string, SortedDictionary<string, IDeployer>>>("DarknestDungeon.Resources.Data.deployers.json");
