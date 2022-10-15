@@ -1,7 +1,7 @@
 {
-  "Entrance": {
-    "name": "Void Entrance",
-    "areaName": "Basin",
+  "Void_Entrance": {
+    "name": "Entrance",
+    "areaName": "Void",
     "sceneName": "VoidDescent05_Bench",
     "respawnMarker": "BenchDeployer-VoidDescent05_Bench-(10,8)",
     "respawnType": 1,

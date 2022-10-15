@@ -10,7 +10,7 @@ namespace DarknestDungeon
         [Preload("Abyss_17", "Quake Floor")]
         public GameObject DiveFloor { get; private set; }
 
-        [Preload("Tutorial_01", "Health Cocoon")]
+        [Preload("Tutorial_01", "_Props/Health Cocoon")]
         public GameObject Lifeblood2 { get; private set; }
 
         [Preload("Fungus3_30", "Health Cocoon")]
