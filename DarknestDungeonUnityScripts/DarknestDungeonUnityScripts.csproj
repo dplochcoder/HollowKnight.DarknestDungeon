@@ -51,6 +51,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Scripts\LifebloodCocoon.cs" />
     <Compile Include="Scripts\PatchSceneParticleManager.cs" />
     <Compile Include="Scripts\SoulTotem.cs" />
     <Compile Include="Scripts\DiveFloor.cs" />

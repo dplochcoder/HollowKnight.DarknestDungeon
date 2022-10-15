@@ -20,11 +20,11 @@ namespace DarknestDungeon
 
         public static new void Log(string msg) => ((ILogger)Instance).Log(msg);
 
-        public override List<(string, string)> GetPreloadNames() => IC.Preloader.Instance.GetPreloadNames();
+        public override List<(string, string)> GetPreloadNames() => Preloader.Instance.GetPreloadNames();
 
         public override void Initialize(Dictionary<string, Dictionary<string, GameObject>> preloadedObjects)
         {
-            IC.Preloader.Instance.Initialize(preloadedObjects);
+            Preloader.Instance.Initialize(preloadedObjects);
 
             GS ??= new();
             ModuleInstaller.Setup();

@@ -1,5 +1,4 @@
-﻿using DarknestDungeon.IC;
-using SFCore.Utils;
+﻿using SFCore.Utils;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 

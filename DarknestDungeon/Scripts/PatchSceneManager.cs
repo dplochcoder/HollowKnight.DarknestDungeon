@@ -93,7 +93,7 @@ namespace DarknestDungeon.Scripts
 
         private void Awake()
         {
-            GameObject actualSceneManager = Instantiate(IC.Preloader.Instance.SceneManager);
+            GameObject actualSceneManager = Instantiate(Preloader.Instance.SceneManager);
             actualSceneManager.SetActive(false);
             actualSceneManager.name = "_SceneManager";
 

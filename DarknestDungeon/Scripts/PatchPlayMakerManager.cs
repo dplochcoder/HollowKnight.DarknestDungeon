@@ -1,5 +1,4 @@
-﻿using DarknestDungeon.IC;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace DarknestDungeon.Scripts
 {
