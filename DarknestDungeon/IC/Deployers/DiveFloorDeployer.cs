@@ -3,17 +3,10 @@ using UnityEngine;
 
 namespace DarknestDungeon.IC.Deployers
 {
-    public record DiveFloorDeployer : Deployer
+    public record DiveFloorDeployer : PersistentBoolDeployer
     {
-        public string id;
+        protected override GameObject Template() => Preloader.Instance.DiveFloor;
 
-        public override GameObject Instantiate()
-        {
-            var obj = Object.Instantiate(Preloader.Instance.DiveFloor);
-            var pbd = obj.GetComponent<PersistentBoolItem>().persistentBoolData;
-            pbd.sceneName = SceneName;
-            pbd.id = id;
-            return obj;
-        }
+        protected override bool SemiPersistent() => false;
     }
 }

@@ -47,6 +47,7 @@
     "Dive_Floor": {
       "$type": "DarknestDungeon.IC.Deployers.DiveFloorDeployer, DarknestDungeon",
       "id": "Void_Dive_Floor",
+      "semiPersistent": null,
       "SceneName": "Abyss_15",
       "X": 139.0,
       "Y": 9.12,
