@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using Mono.Security.Protocol.Tls;
+using System.IO;
 
 namespace DarknestDungeon.Data
 {
@@ -24,15 +25,24 @@ namespace DarknestDungeon.Data
         public static void Run()
         {
             Deployers.Load();
+            Benches.Load();
             var root = InferGitRoot(Directory.GetCurrentDirectory());
 
             // Normalize deployers
             var deployersPath = Path.Combine(root, "DarknestDungeon/Resources/Data/deployers.json");
-            File.Delete(deployersPath);
-            JsonUtil.Serialize(Deployers.Data, deployersPath);
+            UpdateJson(deployersPath, Deployers.Data);
+
+            var benchesPath = Path.Combine(root, "DarknestDungeon/Resources/Data/benches.json");
+            UpdateJson(benchesPath, Benches.Data);
 
             // Copy DLLs
             CopyDll(root, "DarknestDungeonUnityScripts/bin/Debug/DarknestDungeon.dll", "DarknestDungeon/Unity/Assets/Assemblies/DarknestDungeon.dll");
+        }
+
+        private static void UpdateJson<T>(string path, T data)
+        {
+            File.Delete(path);
+            JsonUtil.Serialize(data, path);
         }
 
         private static void CopyDll(string root, string src, string dst)

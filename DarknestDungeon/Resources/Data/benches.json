@@ -1,0 +1,16 @@
+{
+  "Entrance": {
+    "name": "Void Entrance",
+    "areaName": "Basin",
+    "sceneName": "VoidDescent05_Bench",
+    "respawnMarker": "BenchDeployer-VoidDescent05_Bench-(10,8)",
+    "respawnType": 1,
+    "mapZone": "ABYSS",
+    "style": "Right",
+    "specificOffset": {
+      "x": 0.0,
+      "y": -0.68,
+      "z": 0.0
+    }
+  }
+}

@@ -4,3 +4,4 @@ SFCore
 DebugMod
 Benchwarp
 WeaverCore
+BenchRando

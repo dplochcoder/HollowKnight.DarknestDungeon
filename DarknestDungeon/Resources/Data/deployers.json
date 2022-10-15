@@ -89,5 +89,16 @@
       "Y": 0.5,
       "Test": null
     }
+  },
+  "VoidDescent05_Bench": {
+    "Bench": {
+      "$type": "BenchRando.IC.BenchDeployer, BenchRando",
+      "NearStyle": "right",
+      "FarStyle": "right",
+      "SceneName": "VoidDescent05_Bench",
+      "X": 10.0,
+      "Y": 8.4,
+      "Test": null
+    }
   }
 }
