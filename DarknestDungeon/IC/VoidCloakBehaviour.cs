@@ -40,6 +40,7 @@ namespace DarknestDungeon.IC
 
         private static float VOID_DASH_EXTENSION_RATIO = 2.1f;
         private static float VOID_DASH_LIMIT = 0.7f;
+        private static float WALL_IMMUNITY_LIMIT = 0.04f;
         private static float FULL_REVERSAL_PERIOD = 0.1f;
         private static float DASH_VELOCITY = 20.0f;
         private static float SHARP_SHADOW_VELOCITY = 28.0f;
@@ -57,7 +58,10 @@ namespace DarknestDungeon.IC
         private VoidCloakState voidCloakState = VoidCloakState.Idle;
         private Vector2 velocity;
         private float voidDashTimer;
+        private float wallImmunityTimer;
         private bool wasAirborne;
+        private bool wasWallClingRight;
+        private bool wasWallClingLeft;
         private bool escapedQoL;
 
         private ShadowRechargeAnimState shadowRechargeAnimState = ShadowRechargeAnimState.Idle;
@@ -182,14 +186,7 @@ namespace DarknestDungeon.IC
                     }
                     break;
                 case VoidCloakState.VoidDashing:
-                    if (!ih.inputActions.dash.IsPressed || voidDashTimer > VOID_DASH_LIMIT)
-                    {
-                        FinishedVoidDashing(false);
-                    }
-                    else
-                    {
-                        VoidDashUpdate();
-                    }
+                    VoidDashUpdate();
                     break;
                 case VoidCloakState.VoidEarlyRelease:
                     if (!hcs.shadowDashing)
@@ -255,6 +252,9 @@ namespace DarknestDungeon.IC
         {
             voidCloakState = VoidCloakState.VoidDashing;
             wasAirborne = !hcs.onGround;
+            wallImmunityTimer = 0;
+            wasWallClingLeft = hcs.touchingWall && hcs.facingRight;
+            wasWallClingRight = hcs.touchingWall && !hcs.facingRight;
             dash_timer = 0;
             voidDashTimer = Time.deltaTime;
             escapedQoL = false;
@@ -272,6 +272,9 @@ namespace DarknestDungeon.IC
         {
             int horz = (ih.inputActions.left.IsPressed ? -1 : 0) + (ih.inputActions.right.IsPressed ? 1 : 0);
             int vert = (ih.inputActions.up.IsPressed ? 1 : 0) + (ih.inputActions.down.IsPressed ? -1 : 0);
+
+            // Force horizontal if coming off of wall.
+            horz = (wallImmunityTimer < WALL_IMMUNITY_LIMIT) ? (wasWallClingLeft ? 1 : (wasWallClingRight ? -1 : horz));
 
             // Force horizontal if grounded
             if (horz == 0 && vert == -1 && hcs.onGround)
@@ -318,17 +321,22 @@ namespace DarknestDungeon.IC
 
         private void VoidDashUpdate()
         {
+            if (!ih.inputActions.dash.IsPressed || voidDashTimer > VOID_DASH_LIMIT)
+            {
+                FinishedVoidDashing(false);
+                return;
+            }
+
             dash_timer = 0;
             bool preVoid = voidDashTimer > hc.DASH_TIME;
             voidDashTimer += Time.deltaTime;
+            wallImmunityTimer += Time.deltaTime;
             bool postVoid = voidDashTimer > hc.DASH_TIME;
 
             if (postVoid)
             {
                 if (!preVoid)
                 {
-                    if (doubleJumped) doubleJumped = false;
-
                     shadowRechargeAnimState = ShadowRechargeAnimState.AwaitingPause;
                     shadowRechargePauseTime = 0;
                     IncreaseShadowTime(voidDashTimer - hc.DASH_TIME);
@@ -347,7 +355,7 @@ namespace DarknestDungeon.IC
             // We cancel the dash if the down-input is pressed and either:
             //   a) A regular dash timer has elapsed, or
             //   b) The dash started airborne, and the player is aiming straight down
-            if (!hcs.shadowDashing || (hcs.onGround && InputDown && (postVoid || (wasAirborne && InputDownOnly))))
+            if (!hcs.shadowDashing || (hcs.touchingWall && wallImmunityTimer < WALL_IMMUNITY_LIMIT) || (hcs.onGround && InputDown && (postVoid || (wasAirborne && InputDownOnly))))
             {
                 // Cancel the dash.
                 FinishedVoidDashing(false);
@@ -356,6 +364,8 @@ namespace DarknestDungeon.IC
 
         private void FinishedVoidDashing(bool forceCancel)
         {
+            if (voidCloakState == VoidCloakState.Idle) return;
+
             if (!forceCancel && voidCloakState == VoidCloakState.VoidDashing && voidDashTimer <= hc.DASH_TIME)
             {
                 dash_timer = voidDashTimer;
@@ -372,6 +382,7 @@ namespace DarknestDungeon.IC
                     jumped_steps = 3;
                 }
 
+                doubleJumped = false;
                 Vcm.DashVelocityOverride = null;
                 FinishedDashing();
                 voidCloakState = VoidCloakState.Idle;
