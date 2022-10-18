@@ -40,6 +40,7 @@ namespace DarknestDungeon.IC
 
         private static float VOID_DASH_EXTENSION_RATIO = 2.1f;
         private static float VOID_DASH_LIMIT = 0.7f;
+        private static float SHADE_CLOAK_ANIMATION_LEAD = 1.4f;
         private static float WALL_LAUNCH_LIMIT = 0.04f;
         private static float FULL_REVERSAL_PERIOD = 0.1f;
         private static float DASH_VELOCITY = 20.0f;
@@ -68,7 +69,6 @@ namespace DarknestDungeon.IC
         private ShadowRechargeAnimState shadowRechargeAnimState = ShadowRechargeAnimState.Idle;
         private GameObject shadowRecharge;
         private tk2dSpriteAnimator shadowRechargeAnimator;
-        private float shadowRechargePauseTime;
 
         private JumpHoldState jumpHoldState = JumpHoldState.Idle;
         private bool absorbingJumps = false;
@@ -97,7 +97,7 @@ namespace DarknestDungeon.IC
         private void OverrideFixedUpdate(On.HeroController.orig_FixedUpdate orig, HeroController self)
         {
             orig(self);
-            if (hc.hero_state == GlobalEnums.ActorStates.no_input && jumpHoldState == JumpHoldState.HoldingJump)
+            if (hc.hero_state == ActorStates.no_input && jumpHoldState == JumpHoldState.HoldingJump)
             {
                 // Simulate jump.
                 Jump();
@@ -225,16 +225,11 @@ namespace DarknestDungeon.IC
                     }
                     break;
                 case ShadowRechargeAnimState.AwaitingUnpause:
-                    if (shadowRechargePauseTime <= 0f)
+                    if (shadowDashTimer <= SHADE_CLOAK_ANIMATION_LEAD)
                     {
                         shadowRechargeAnimState = ShadowRechargeAnimState.Idle;
                         shadowRecharge.SetActive(true);
                         shadowRechargeAnimator.Resume();
-                        shadowRechargePauseTime = 0f;
-                    }
-                    else
-                    {
-                        shadowRechargePauseTime -= Time.deltaTime;
                     }
                     break;
             }
@@ -333,31 +328,12 @@ namespace DarknestDungeon.IC
             else if (v.x < 0) hc.FaceLeft();
         }
 
-        private void IncreaseShadowTime(float delta)
-        {
-            // TODO: Why does the animation desync?
-            shadowRechargePauseTime += VOID_DASH_EXTENSION_RATIO * delta;
-            shadowDashTimer += VOID_DASH_EXTENSION_RATIO * delta;
-        }
+        private void IncreaseShadowTime(float delta) => shadowDashTimer += VOID_DASH_EXTENSION_RATIO * delta;
 
         private void VoidDashUpdate()
         {
             dash_timer = 0;
             voidDashTimer += Time.deltaTime;
-
-            if (voidDashTimer > hc.DASH_TIME)
-            {
-                if (shadowRechargeAnimState != ShadowRechargeAnimState.AwaitingPause)
-                {
-                    shadowRechargeAnimState = ShadowRechargeAnimState.AwaitingPause;
-                    shadowRechargePauseTime = 0;
-                    IncreaseShadowTime(voidDashTimer - hc.DASH_TIME);
-                }
-                else
-                {
-                    IncreaseShadowTime(Math.Min(Time.deltaTime, VOID_DASH_LIMIT - (voidDashTimer - Time.deltaTime)));
-                }
-            }
 
             if (!voidEarlyReleased && (!ih.inputActions.dash.IsPressed || voidDashTimer > VOID_DASH_LIMIT))
             {
@@ -368,6 +344,19 @@ namespace DarknestDungeon.IC
             {
                 FinishedVoidDashing(false);
                 return;
+            }
+
+            if (voidDashTimer > hc.DASH_TIME)
+            {
+                if (shadowRechargeAnimState == ShadowRechargeAnimState.Idle)
+                {
+                    shadowRechargeAnimState = ShadowRechargeAnimState.AwaitingPause;
+                    IncreaseShadowTime(voidDashTimer - hc.DASH_TIME);
+                }
+                else
+                {
+                    IncreaseShadowTime(Math.Min(Time.deltaTime, VOID_DASH_LIMIT - (voidDashTimer - Time.deltaTime)));
+                }
             }
 
             wallLaunchTimer += Time.deltaTime;
