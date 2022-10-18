@@ -61,7 +61,8 @@ namespace DarknestDungeon.IC
         private bool escapedQoL;
 
         private ShadowRechargeAnimState shadowRechargeAnimState = ShadowRechargeAnimState.Idle;
-        private tk2dSpriteAnimator shadowRecharge;
+        private GameObject shadowRecharge;
+        private tk2dSpriteAnimator shadowRechargeAnimator;
         private float shadowRechargePauseTime;
 
         private JumpHoldState jumpHoldState = JumpHoldState.Idle;
@@ -75,7 +76,8 @@ namespace DarknestDungeon.IC
             hcs = hc.cState;
             gm = GameManager.instance;
 
-            shadowRecharge = gameObject.FindChild("Effects").FindChild("Shadow Recharge").GetComponent<tk2dSpriteAnimator>();
+            shadowRecharge = gameObject.FindChild("Effects").FindChild("Shadow Recharge");
+            shadowRechargeAnimator = shadowRecharge.GetComponent<tk2dSpriteAnimator>();
 
             Vcm.OnTransition += OnSceneTransition;
             On.HeroController.FixedUpdate += OverrideFixedUpdate;
@@ -205,17 +207,19 @@ namespace DarknestDungeon.IC
                 case ShadowRechargeAnimState.Idle:
                     break;
                 case ShadowRechargeAnimState.AwaitingPause:
-                    if (shadowRecharge.Playing)
+                    if (shadowRechargeAnimator.Playing)
                     {
                         shadowRechargeAnimState = ShadowRechargeAnimState.AwaitingUnpause;
-                        shadowRecharge.Pause();
+                        shadowRechargeAnimator.Pause();
+                        shadowRecharge.SetActive(false);
                     }
                     break;
                 case ShadowRechargeAnimState.AwaitingUnpause:
                     if (shadowRechargePauseTime <= 0f)
                     {
                         shadowRechargeAnimState = ShadowRechargeAnimState.Idle;
-                        shadowRecharge.Resume();
+                        shadowRecharge.SetActive(true);
+                        shadowRechargeAnimator.Resume();
                         shadowRechargePauseTime = 0f;
                     }
                     else

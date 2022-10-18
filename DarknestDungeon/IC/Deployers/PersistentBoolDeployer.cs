@@ -1,4 +1,5 @@
 ﻿using ItemChanger;
+using System.Runtime.Remoting;
 using UnityEngine;
 
 namespace DarknestDungeon.IC.Deployers
@@ -19,14 +20,12 @@ namespace DarknestDungeon.IC.Deployers
             var obj = Object.Instantiate(Template());
             var pbi = obj.GetComponent<PersistentBoolItem>();
             pbi.semiPersistent = isSemiPersistent;
+
             var pbd = pbi.persistentBoolData;
             pbd.sceneName = SceneName;
-
-            // FUCKFUCKFUCKFUCKFUCKFUCKFUCK
-            DarknestDungeon.Log($"HI I AM SETTING THE ID: {id}");
-
             pbd.id = id;
             pbd.semiPersistent = isSemiPersistent;
+
             return obj;
         }
     }

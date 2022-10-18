@@ -13,7 +13,6 @@ namespace DarknestDungeon.Scripts
 
         protected override void ModifyDeployer(ref LifebloodCocoonDeployer deployer)
         {
-            HealthCocoon
             deployer.id = id;
             deployer.lifebloodType = lifeblood == 2 ? LifebloodCocoonDeployer.LifebloodType.TWO_LIFEBLOOD : LifebloodCocoonDeployer.LifebloodType.THREE_LIFEBLOOD;
         }
