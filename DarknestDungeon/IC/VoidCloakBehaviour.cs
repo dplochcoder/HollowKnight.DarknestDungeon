@@ -34,7 +34,6 @@ namespace DarknestDungeon.IC
         private static readonly FieldInfo jumpStepsField = typeof(HeroController).GetField("jump_steps", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly FieldInfo jumpedStepsField = typeof(HeroController).GetField("jumped_steps", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly FieldInfo doubleJumpedField = typeof(HeroController).GetField("doubleJumped", BindingFlags.NonPublic | BindingFlags.Instance);
-        private static readonly MethodInfo origDashVectorMethod = typeof(HeroController).GetMethod("OrigDashVector", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly MethodInfo checkStillTouchingWallMethod = typeof(HeroController).GetMethod("CheckStillTouchingWall", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly MethodInfo finishedDashingMethod = typeof(HeroController).GetMethod("FinishedDashing", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly MethodInfo jumpMethod = typeof(HeroController).GetMethod("Jump", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -180,8 +179,6 @@ namespace DarknestDungeon.IC
 
         private static readonly object[] emptyArr = new object[0];
 
-        private Vector2 OrigDashVector() => (Vector2) origDashVectorMethod.Invoke(hc, emptyArr);
-
         private bool CheckStillTouchingWall(CollisionSide side, bool checkTop = false) => (bool)checkStillTouchingWallMethod.Invoke(hc, new object[] { side, checkTop });
 
         private void Jump() => jumpMethod.Invoke(hc, emptyArr);
@@ -275,7 +272,7 @@ namespace DarknestDungeon.IC
             voidEscapedQoL = false;
             voidEarlyReleased = false;
 
-            velocity = OrigDashVector();
+            velocity = new(0, 0);
             SetDashVelocity(GetTargetDir() * GetTargetSpeed());
 
             // TODO: Particle effects
@@ -310,7 +307,11 @@ namespace DarknestDungeon.IC
                 }
             }
 
-            return ((horz != 0 || vert != 0) ? new Vector2(horz, vert) : (velocity.magnitude > 0 ? velocity : OrigDashVector())).normalized;
+            if (horz != 0 || vert != 0) return new Vector2(horz, vert).normalized;
+            if (velocity.magnitude > 0) return velocity.normalized;
+            if (hc.dashingDown) return new(0, -1);
+            if (hcs.facingRight) return new(1, 0);
+            return new(-1, 0);
         }
 
         private float GetTargetSpeed()
@@ -392,7 +393,7 @@ namespace DarknestDungeon.IC
         {
             if (voidCloakState == VoidCloakState.Idle) return;
 
-            if (allowEarlyRelease && !voidEarlyReleased && voidCloakState == VoidCloakState.VoidDashing && voidDashTimer <= hc.DASH_TIME)
+            if (allowEarlyRelease && !voidEarlyReleased && voidDashTimer <= hc.DASH_TIME)
             {
                 voidEarlyReleased = true;
             }
