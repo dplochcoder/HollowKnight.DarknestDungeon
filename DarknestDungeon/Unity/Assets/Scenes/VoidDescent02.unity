@@ -27524,7 +27524,7 @@ MonoBehaviour:
   isADoor: 0
   dontWalkOutOfDoor: 0
   entryDelay: 0
-  entryOffset: {x: 0, y: 2.5}
+  entryOffset: {x: 0, y: 3.5}
   alwaysEnterRight: 0
   alwaysEnterLeft: 1
   hardLandOnExit: 0
