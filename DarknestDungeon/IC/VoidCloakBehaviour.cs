@@ -87,7 +87,7 @@ namespace DarknestDungeon.IC
 
         private void OnSceneTransition()
         {
-            if (voidCloakState == VoidCloakState.VoidDashing) FinishedVoidDashing();
+            if (voidCloakState == VoidCloakState.VoidDashing) FinishedVoidDashing(true);
         }
 
         private void OverrideFixedUpdate(On.HeroController.orig_FixedUpdate orig, HeroController self)
@@ -184,7 +184,7 @@ namespace DarknestDungeon.IC
                 case VoidCloakState.VoidDashing:
                     if (!ih.inputActions.dash.IsPressed || voidDashTimer > VOID_DASH_LIMIT)
                     {
-                        FinishedVoidDashing();
+                        FinishedVoidDashing(false);
                     }
                     else
                     {
@@ -194,7 +194,7 @@ namespace DarknestDungeon.IC
                 case VoidCloakState.VoidEarlyRelease:
                     if (!hcs.shadowDashing)
                     {
-                        FinishedVoidDashing();
+                        FinishedVoidDashing(false);
                     }
                     break;
             }
@@ -347,23 +347,23 @@ namespace DarknestDungeon.IC
             // We cancel the dash if the down-input is pressed and either:
             //   a) A regular dash timer has elapsed, or
             //   b) The dash started airborne, and the player is aiming straight down
-            if (hcs.onGround && InputDown && (postVoid || (wasAirborne && InputDownOnly)))
+            if (!hcs.shadowDashing || (hcs.onGround && InputDown && (postVoid || (wasAirborne && InputDownOnly))))
             {
                 // Cancel the dash.
-                FinishedVoidDashing();
+                FinishedVoidDashing(false);
             }
         }
 
-        private void FinishedVoidDashing()
+        private void FinishedVoidDashing(bool forceCancel)
         {
-            if (voidCloakState == VoidCloakState.VoidDashing && voidDashTimer <= hc.DASH_TIME)
+            if (!forceCancel && voidCloakState == VoidCloakState.VoidDashing && voidDashTimer <= hc.DASH_TIME)
             {
                 dash_timer = voidDashTimer;
                 voidCloakState = VoidCloakState.VoidEarlyRelease;
             }
             else
             {
-                if (velocity.y > 0)
+                if (velocity.y > 0 && !forceCancel)
                 {
                     // Fake-jump
                     jumpHoldState = JumpHoldState.HoldingJump;
