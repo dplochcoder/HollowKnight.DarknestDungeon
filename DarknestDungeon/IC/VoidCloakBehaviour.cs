@@ -1,4 +1,5 @@
-﻿using ItemChanger.Extensions;
+﻿using GlobalEnums;
+using ItemChanger.Extensions;
 using System;
 using System.Reflection;
 using UnityEngine;
@@ -35,12 +36,13 @@ namespace DarknestDungeon.IC
         private static readonly FieldInfo jumpedStepsField = typeof(HeroController).GetField("jumped_steps", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly FieldInfo doubleJumpedField = typeof(HeroController).GetField("doubleJumped", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly MethodInfo origDashVectorMethod = typeof(HeroController).GetMethod("OrigDashVector", BindingFlags.NonPublic | BindingFlags.Instance);
+        private static readonly MethodInfo checkStillTouchingWallMethod = typeof(HeroController).GetMethod("CheckStillTouchingWall", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly MethodInfo finishedDashingMethod = typeof(HeroController).GetMethod("FinishedDashing", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly MethodInfo jumpMethod = typeof(HeroController).GetMethod("Jump", BindingFlags.NonPublic | BindingFlags.Instance);
 
         private static float VOID_DASH_EXTENSION_RATIO = 2.1f;
         private static float VOID_DASH_LIMIT = 0.7f;
-        private static float WALL_IMMUNITY_LIMIT = 0.04f;
+        private static float WALL_LAUNCH_LIMIT = 0.04f;
         private static float FULL_REVERSAL_PERIOD = 0.1f;
         private static float DASH_VELOCITY = 20.0f;
         private static float SHARP_SHADOW_VELOCITY = 28.0f;
@@ -58,7 +60,7 @@ namespace DarknestDungeon.IC
         private VoidCloakState voidCloakState = VoidCloakState.Idle;
         private Vector2 velocity;
         private float voidDashTimer;
-        private float wallImmunityTimer;
+        private float wallLaunchTimer;
         private bool wasAirborne;
         private bool wasWallClingRight;
         private bool wasWallClingLeft;
@@ -87,6 +89,7 @@ namespace DarknestDungeon.IC
             On.HeroController.FixedUpdate += OverrideFixedUpdate;
             On.HeroController.LookForInput += OverrideLookForInput;
             On.HeroController.JumpReleased += OverrideJumpReleased;
+            On.HeroController.Dash += OverrideDash;
         }
 
         private void OnSceneTransition()
@@ -101,6 +104,16 @@ namespace DarknestDungeon.IC
             {
                 // Simulate jump.
                 Jump();
+            }
+        }
+
+        private void OverrideDash(On.HeroController.orig_Dash orig, HeroController self)
+        {
+            orig(self);
+
+            if (voidCloakState == VoidCloakState.VoidDashing && (hcs.facingRight && CheckStillTouchingWall(CollisionSide.right)) || (!hcs.facingRight && CheckStillTouchingWall(CollisionSide.left)))
+            {
+                FinishedVoidDashing(true);
             }
         }
 
@@ -122,8 +135,10 @@ namespace DarknestDungeon.IC
         private void OnDestroy()
         {
             Vcm.OnTransition -= OnSceneTransition;
+            On.HeroController.FixedUpdate -= OverrideFixedUpdate;
             On.HeroController.LookForInput -= OverrideLookForInput;
             On.HeroController.JumpReleased -= OverrideJumpReleased;
+            On.HeroController.Dash -= OverrideDash;
         }
 
         private bool SharpShadowEquipped => PlayerData.instance.GetBool("equippedCharm_16");
@@ -161,6 +176,8 @@ namespace DarknestDungeon.IC
         private static readonly object[] emptyArr = new object[0];
 
         private Vector2 OrigDashVector() => (Vector2) origDashVectorMethod.Invoke(hc, emptyArr);
+
+        private bool CheckStillTouchingWall(CollisionSide side, bool checkTop = false) => (bool)checkStillTouchingWallMethod.Invoke(hc, new object[] { side, checkTop });
 
         private void Jump() => jumpMethod.Invoke(hc, emptyArr);
 
@@ -240,7 +257,6 @@ namespace DarknestDungeon.IC
                     float newJumpHoldY = hc.gameObject.transform.position.y;
                     if (hcs.dashing || hcs.touchingWall || (prevJumpHoldY != null && prevJumpHoldY > newJumpHoldY))
                     {
-                        DarknestDungeon.Log("WFTWHYAREWEFLYING");
                         jumpHoldState = JumpHoldState.Idle;
                     }
                     prevJumpHoldY = newJumpHoldY;
@@ -252,7 +268,7 @@ namespace DarknestDungeon.IC
         {
             voidCloakState = VoidCloakState.VoidDashing;
             wasAirborne = !hcs.onGround;
-            wallImmunityTimer = 0;
+            wallLaunchTimer = 0;
             wasWallClingLeft = hcs.touchingWall && hcs.facingRight;
             wasWallClingRight = hcs.touchingWall && !hcs.facingRight;
             dash_timer = 0;
@@ -274,7 +290,7 @@ namespace DarknestDungeon.IC
             int vert = (ih.inputActions.up.IsPressed ? 1 : 0) + (ih.inputActions.down.IsPressed ? -1 : 0);
 
             // Force horizontal if coming off of wall.
-            horz = (wallImmunityTimer < WALL_IMMUNITY_LIMIT) ? (wasWallClingLeft ? 1 : (wasWallClingRight ? -1 : horz));
+            horz = (wallLaunchTimer < WALL_LAUNCH_LIMIT) ? (wasWallClingLeft ? 1 : (wasWallClingRight ? -1 : horz)) : horz;
 
             // Force horizontal if grounded
             if (horz == 0 && vert == -1 && hcs.onGround)
@@ -311,6 +327,9 @@ namespace DarknestDungeon.IC
             velocity = v;
             Vcm.DashVelocityOverride = v;
             rb2d.velocity = v;
+
+            if (v.x > 0) hc.FaceRight();
+            else if (v.x < 0) hc.FaceLeft();
         }
 
         private void IncreaseShadowTime(float delta)
@@ -330,7 +349,7 @@ namespace DarknestDungeon.IC
             dash_timer = 0;
             bool preVoid = voidDashTimer > hc.DASH_TIME;
             voidDashTimer += Time.deltaTime;
-            wallImmunityTimer += Time.deltaTime;
+            wallLaunchTimer += Time.deltaTime;
             bool postVoid = voidDashTimer > hc.DASH_TIME;
 
             if (postVoid)
@@ -355,7 +374,7 @@ namespace DarknestDungeon.IC
             // We cancel the dash if the down-input is pressed and either:
             //   a) A regular dash timer has elapsed, or
             //   b) The dash started airborne, and the player is aiming straight down
-            if (!hcs.shadowDashing || (hcs.touchingWall && wallImmunityTimer < WALL_IMMUNITY_LIMIT) || (hcs.onGround && InputDown && (postVoid || (wasAirborne && InputDownOnly))))
+            if (!hcs.shadowDashing || (hcs.onGround && InputDown && (postVoid || (wasAirborne && InputDownOnly))))
             {
                 // Cancel the dash.
                 FinishedVoidDashing(false);
@@ -373,6 +392,11 @@ namespace DarknestDungeon.IC
             }
             else
             {
+                doubleJumped = false;
+                Vcm.DashVelocityOverride = null;
+                FinishedDashing();
+                voidCloakState = VoidCloakState.Idle;
+
                 if (velocity.y > 0 && !forceCancel)
                 {
                     // Fake-jump
@@ -381,11 +405,6 @@ namespace DarknestDungeon.IC
                     jump_steps = 3;
                     jumped_steps = 3;
                 }
-
-                doubleJumped = false;
-                Vcm.DashVelocityOverride = null;
-                FinishedDashing();
-                voidCloakState = VoidCloakState.Idle;
             }
         }
     }
