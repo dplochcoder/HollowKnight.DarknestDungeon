@@ -11,8 +11,7 @@ namespace DarknestDungeon.IC
         private enum VoidCloakState
         {
             Idle,
-            VoidDashing,
-            VoidEarlyRelease
+            VoidDashing
         }
 
         private enum ShadowRechargeAnimState
@@ -64,7 +63,8 @@ namespace DarknestDungeon.IC
         private bool wasAirborne;
         private bool wasWallClingRight;
         private bool wasWallClingLeft;
-        private bool escapedQoL;
+        private bool voidEscapedQoL;
+        private bool voidEarlyReleased;
 
         private ShadowRechargeAnimState shadowRechargeAnimState = ShadowRechargeAnimState.Idle;
         private GameObject shadowRecharge;
@@ -87,9 +87,10 @@ namespace DarknestDungeon.IC
 
             Vcm.OnTransition += OnSceneTransition;
             On.HeroController.FixedUpdate += OverrideFixedUpdate;
+            On.HeroController.Dash += OverrideDash;
+            On.HeroController.ResetMotion += OverrideResetMotion;
             On.HeroController.LookForInput += OverrideLookForInput;
             On.HeroController.JumpReleased += OverrideJumpReleased;
-            On.HeroController.Dash += OverrideDash;
         }
 
         private void OnSceneTransition()
@@ -117,6 +118,12 @@ namespace DarknestDungeon.IC
             }
         }
 
+        private void OverrideResetMotion(On.HeroController.orig_ResetMotion orig, HeroController self)
+        {
+            FinishedVoidDashing(true);
+            orig(self);
+        }
+
         private void OverrideLookForInput(On.HeroController.orig_LookForInput orig, HeroController self)
         {
             absorbingJumps = true;
@@ -136,9 +143,10 @@ namespace DarknestDungeon.IC
         {
             Vcm.OnTransition -= OnSceneTransition;
             On.HeroController.FixedUpdate -= OverrideFixedUpdate;
+            On.HeroController.Dash -= OverrideDash;
+            On.HeroController.ResetMotion -= OverrideResetMotion;
             On.HeroController.LookForInput -= OverrideLookForInput;
             On.HeroController.JumpReleased -= OverrideJumpReleased;
-            On.HeroController.Dash -= OverrideDash;
         }
 
         private bool SharpShadowEquipped => PlayerData.instance.GetBool("equippedCharm_16");
@@ -205,12 +213,6 @@ namespace DarknestDungeon.IC
                 case VoidCloakState.VoidDashing:
                     VoidDashUpdate();
                     break;
-                case VoidCloakState.VoidEarlyRelease:
-                    if (!hcs.shadowDashing)
-                    {
-                        FinishedVoidDashing(false);
-                    }
-                    break;
             }
         }
 
@@ -273,7 +275,8 @@ namespace DarknestDungeon.IC
             wasWallClingRight = hcs.touchingWall && !hcs.facingRight;
             dash_timer = 0;
             voidDashTimer = Time.deltaTime;
-            escapedQoL = false;
+            voidEscapedQoL = false;
+            voidEarlyReleased = false;
 
             velocity = OrigDashVector();
             SetDashVelocity(GetTargetDir() * GetTargetSpeed());
@@ -297,11 +300,11 @@ namespace DarknestDungeon.IC
             {
                 horz = hcs.facingRight ? 1 : -1;
             }
-            else if (!escapedQoL)
+            else if (!voidEscapedQoL)
             {
                 if (voidDashTimer > hc.DASH_TIME || (vert == 1) || (vert == -1 && horz == 0))
                 {
-                    escapedQoL = true;
+                    voidEscapedQoL = true;
                 }
                 else if (vert == -1 && horz != 0)
                 {
@@ -340,15 +343,17 @@ namespace DarknestDungeon.IC
 
         private void VoidDashUpdate()
         {
-            if (!ih.inputActions.dash.IsPressed || voidDashTimer > VOID_DASH_LIMIT)
+            dash_timer = 0;
+            bool preVoid = voidDashTimer > hc.DASH_TIME;
+            voidDashTimer += Time.deltaTime;
+
+            if ((!voidEarlyReleased && (!ih.inputActions.dash.IsPressed || voidDashTimer > VOID_DASH_LIMIT))
+                || (voidEarlyReleased && voidDashTimer > hc.DASH_TIME))
             {
                 FinishedVoidDashing(false);
                 return;
             }
 
-            dash_timer = 0;
-            bool preVoid = voidDashTimer > hc.DASH_TIME;
-            voidDashTimer += Time.deltaTime;
             wallLaunchTimer += Time.deltaTime;
             bool postVoid = voidDashTimer > hc.DASH_TIME;
 
@@ -366,14 +371,16 @@ namespace DarknestDungeon.IC
                 }
             }
 
-            var targetVelocity = GetTargetDir() * GetTargetSpeed();
-            var diff = targetVelocity - velocity;
-            var acc = diff.normalized * 2 * GetTargetSpeed() * Time.deltaTime / FULL_REVERSAL_PERIOD;
-            SetDashVelocity(acc.sqrMagnitude > diff.sqrMagnitude ? targetVelocity : velocity + acc);
+            // Velocity cannot be changed if we did an early release.
+            if (!voidEarlyReleased)
+            {
+                var targetVelocity = GetTargetDir() * GetTargetSpeed();
+                var diff = targetVelocity - velocity;
+                var acc = diff.normalized * 2 * GetTargetSpeed() * Time.deltaTime / FULL_REVERSAL_PERIOD;
+                SetDashVelocity(acc.sqrMagnitude > diff.sqrMagnitude ? targetVelocity : velocity + acc);
+            }
 
-            // We cancel the dash if the down-input is pressed and either:
-            //   a) A regular dash timer has elapsed, or
-            //   b) The dash started airborne, and the player is aiming straight down
+            // Cancel the dash in certain down-input situations.
             if (!hcs.shadowDashing || (hcs.onGround && InputDown && (postVoid || (wasAirborne && InputDownOnly))))
             {
                 // Cancel the dash.
@@ -387,24 +394,24 @@ namespace DarknestDungeon.IC
 
             if (!forceCancel && voidCloakState == VoidCloakState.VoidDashing && voidDashTimer <= hc.DASH_TIME)
             {
-                dash_timer = voidDashTimer;
-                voidCloakState = VoidCloakState.VoidEarlyRelease;
+                voidEarlyReleased = true;
             }
             else
             {
-                doubleJumped = false;
-                Vcm.DashVelocityOverride = null;
-                FinishedDashing();
-                voidCloakState = VoidCloakState.Idle;
-
                 if (velocity.y > 0 && !forceCancel)
                 {
                     // Fake-jump
+                    SetDashVelocity(velocity);
                     jumpHoldState = JumpHoldState.HoldingJump;
                     hcs.jumping = true;
                     jump_steps = 3;
                     jumped_steps = 3;
                 }
+
+                doubleJumped = false;
+                Vcm.DashVelocityOverride = null;
+                FinishedDashing();
+                voidCloakState = VoidCloakState.Idle;
             }
         }
     }
