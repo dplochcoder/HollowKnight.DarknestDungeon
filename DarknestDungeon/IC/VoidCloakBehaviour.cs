@@ -93,10 +93,7 @@ namespace DarknestDungeon.IC
             On.HeroController.JumpReleased += OverrideJumpReleased;
         }
 
-        private void OnSceneTransition()
-        {
-            if (voidCloakState == VoidCloakState.VoidDashing) FinishedVoidDashing(true);
-        }
+        private void OnSceneTransition() => FinishedVoidDashing(false);
 
         private void OverrideFixedUpdate(On.HeroController.orig_FixedUpdate orig, HeroController self)
         {
@@ -114,13 +111,13 @@ namespace DarknestDungeon.IC
 
             if (voidCloakState == VoidCloakState.VoidDashing && (hcs.facingRight && CheckStillTouchingWall(CollisionSide.right)) || (!hcs.facingRight && CheckStillTouchingWall(CollisionSide.left)))
             {
-                FinishedVoidDashing(true);
+                FinishedVoidDashing(false);
             }
         }
 
         private void OverrideResetMotion(On.HeroController.orig_ResetMotion orig, HeroController self)
         {
-            FinishedVoidDashing(true);
+            FinishedVoidDashing(false);
             orig(self);
         }
 
@@ -337,6 +334,7 @@ namespace DarknestDungeon.IC
 
         private void IncreaseShadowTime(float delta)
         {
+            // TODO: Why does the animation desync?
             shadowRechargePauseTime += VOID_DASH_EXTENSION_RATIO * delta;
             shadowDashTimer += VOID_DASH_EXTENSION_RATIO * delta;
         }
@@ -344,22 +342,11 @@ namespace DarknestDungeon.IC
         private void VoidDashUpdate()
         {
             dash_timer = 0;
-            bool preVoid = voidDashTimer > hc.DASH_TIME;
             voidDashTimer += Time.deltaTime;
 
-            if ((!voidEarlyReleased && (!ih.inputActions.dash.IsPressed || voidDashTimer > VOID_DASH_LIMIT))
-                || (voidEarlyReleased && voidDashTimer > hc.DASH_TIME))
+            if (voidDashTimer > hc.DASH_TIME)
             {
-                FinishedVoidDashing(false);
-                return;
-            }
-
-            wallLaunchTimer += Time.deltaTime;
-            bool postVoid = voidDashTimer > hc.DASH_TIME;
-
-            if (postVoid)
-            {
-                if (!preVoid)
+                if (shadowRechargeAnimState != ShadowRechargeAnimState.AwaitingPause)
                 {
                     shadowRechargeAnimState = ShadowRechargeAnimState.AwaitingPause;
                     shadowRechargePauseTime = 0;
@@ -371,6 +358,19 @@ namespace DarknestDungeon.IC
                 }
             }
 
+            if (!voidEarlyReleased && (!ih.inputActions.dash.IsPressed || voidDashTimer > VOID_DASH_LIMIT))
+            {
+                FinishedVoidDashing(true);
+                return;
+            }
+            else if (voidEarlyReleased && voidDashTimer > hc.DASH_TIME)
+            {
+                FinishedVoidDashing(false);
+                return;
+            }
+
+            wallLaunchTimer += Time.deltaTime;
+
             // Velocity cannot be changed if we did an early release.
             if (!voidEarlyReleased)
             {
@@ -381,24 +381,24 @@ namespace DarknestDungeon.IC
             }
 
             // Cancel the dash in certain down-input situations.
-            if (!hcs.shadowDashing || (hcs.onGround && InputDown && (postVoid || (wasAirborne && InputDownOnly))))
+            if (!hcs.shadowDashing || (hcs.onGround && InputDown && (voidDashTimer > hc.DASH_TIME || (wasAirborne && InputDownOnly))))
             {
                 // Cancel the dash.
-                FinishedVoidDashing(false);
+                FinishedVoidDashing(true);
             }
         }
 
-        private void FinishedVoidDashing(bool forceCancel)
+        private void FinishedVoidDashing(bool allowEarlyRelease)
         {
             if (voidCloakState == VoidCloakState.Idle) return;
 
-            if (!forceCancel && voidCloakState == VoidCloakState.VoidDashing && voidDashTimer <= hc.DASH_TIME)
+            if (allowEarlyRelease && !voidEarlyReleased && voidCloakState == VoidCloakState.VoidDashing && voidDashTimer <= hc.DASH_TIME)
             {
                 voidEarlyReleased = true;
             }
             else
             {
-                if (velocity.y > 0 && !forceCancel)
+                if (velocity.y > 0 && allowEarlyRelease)
                 {
                     // Fake-jump
                     SetDashVelocity(velocity);

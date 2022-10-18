@@ -20,6 +20,7 @@ namespace DarknestDungeon
             }
 
             ItemChangerMod.CreateSettingsProfile(false);
+            ItemChangerMod.Modules.Add<FixLifebloodCocoonsModule>();
             ItemChangerMod.Modules.Add<VoidCloakModule>();
 
             Data.Benches.Install();
