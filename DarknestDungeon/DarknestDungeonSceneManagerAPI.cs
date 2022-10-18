@@ -8,15 +8,13 @@ namespace DarknestDungeon
 {
     public class DarknestDungeonSceneManagerAPI : SMA
     {
-        public static void Load() => overrideAPI = new DarknestDungeonSceneManagerAPI(overrideAPI);
+        public static void Load() => overrideAPI = new DarknestDungeonSceneManagerAPI();
 
-        private readonly SMA parent;
         private AssetBundle shared;
         private Dictionary<string, AssetBundle?> sceneBundles = new();
 
-        private DarknestDungeonSceneManagerAPI(SMA parent)
+        private DarknestDungeonSceneManagerAPI()
         {
-            this.parent = parent;
             shared = LoadAsset("objectsbundle");
             shared.LoadAllAssets();
 
