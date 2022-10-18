@@ -30,7 +30,7 @@ namespace DarknestDungeon
             ModuleInstaller.Setup();
             Data.Deployers.Load();
             Data.Benches.Load();
-            AssetBundleLoader.Load();
+            DarknestDungeonSceneManagerAPI.Load();
 
             if (ModHooks.GetMod("DebugMod") is Mod)
             {
