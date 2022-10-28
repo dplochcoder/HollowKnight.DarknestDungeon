@@ -11,7 +11,7 @@ namespace DarknestDungeon.IC
         // ID for the flame currently on the player. Cleared when warping.
         public string? TemporaryFlameId;
 
-        public HashSet<string> ClaimedFlameIds = new();
+        public HashSet<string> UsedFlameIds = new();
         public HashSet<string> LitTorchIds = new();
 
         public delegate void VoidFlameStateChange(bool hasVoidFlame);
@@ -48,7 +48,7 @@ namespace DarknestDungeon.IC
 
         public bool HeroHasVoidFlame => TemporaryFlameId != null;
 
-        public bool IsFlameClaimed(string id) => TemporaryFlameId == id || ClaimedFlameIds.Contains(id);
+        public bool IsFlameUsed(string id) => TemporaryFlameId == id || UsedFlameIds.Contains(id);
 
         public bool IsTorchLit(string id) => LitTorchIds.Contains(id);
 
@@ -56,7 +56,7 @@ namespace DarknestDungeon.IC
 
         public void ClaimTemporaryFlame(string flameId)
         {
-            if (TemporaryFlameId != null || ClaimedFlameIds.Contains(flameId)) return;
+            if (TemporaryFlameId != null || UsedFlameIds.Contains(flameId)) return;
 
             TemporaryFlameId = flameId;
             tempFlameHook ??= GameManager.instance.AddSelfDeletingHook(() => LoseTemporaryFlame());
@@ -84,6 +84,7 @@ namespace DarknestDungeon.IC
 
             var oldFlameId = TemporaryFlameId;
             TemporaryFlameId = null;
+            UsedFlameIds.Add(oldFlameId);
             LitTorchIds.Add(torchId);
             tempFlameHook?.Unhook();
             tempFlameHook = null;
