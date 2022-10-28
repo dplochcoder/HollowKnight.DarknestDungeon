@@ -74,7 +74,7 @@ namespace DarknestDungeon.Hero
         private JumpHoldState jumpHoldState = JumpHoldState.Idle;
         private bool absorbingJumps = false;
 
-        public void Start()
+        private void Start()
         {
             hc = gameObject.GetComponent<HeroController>();
             ih = (InputHandler)inputHandlerField.GetValue(hc);

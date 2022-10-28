@@ -1,5 +1,5 @@
-﻿using SFCore.Utils;
-using System.Collections.Generic;
+﻿using DarknestDungeon.UnityExtensions;
+using SFCore.Utils;
 using UnityEngine;
 
 namespace DarknestDungeon.IC
@@ -19,16 +19,7 @@ namespace DarknestDungeon.IC
 
             if (!before && after)
             {
-                // Self-deleting hook hack.
-                List<GameManager.ResetSemiPersistentState> list = new();
-                GameManager.ResetSemiPersistentState hook = () =>
-                {
-                    self.SetAttr("activated", false);
-                    GameManager.instance.ResetSemiPersistentObjects -= list[0];
-                };
-                list.Add(hook);
-
-                GameManager.instance.ResetSemiPersistentObjects += hook;
+                GameManager.instance.AddSelfDeletingHook(() => self.SetAttr("activated", false));
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using DarknestDungeon.Hero;
+using DarknestDungeon.UnityExtensions;
 using ItemChanger;
 using Modding;
 using Newtonsoft.Json;
@@ -22,7 +23,7 @@ namespace DarknestDungeon.IC
             ModHooks.SetPlayerBoolHook += OverrideSetBool;
             ModHooks.DashVectorHook += OverrideDashVelocity;
             Events.OnBeginSceneTransition += OnSceneTransition;
-            Events.AddFsmEdit(new FsmID("Knight", "ProxyFSM"), HookVoidCloak);
+            Events.AddFsmEdit(HeroUtil.KnightFsmID, HookVoidCloak);
         }
 
         public override void Unload()
@@ -31,16 +32,16 @@ namespace DarknestDungeon.IC
             ModHooks.SetPlayerBoolHook -= OverrideSetBool;
             ModHooks.DashVectorHook -= OverrideDashVelocity;
             Events.OnBeginSceneTransition -= OnSceneTransition;
-            Events.RemoveFsmEdit(new FsmID("Knight", "ProxyFSM"), HookVoidCloak);
+            Events.RemoveFsmEdit(HeroUtil.KnightFsmID, HookVoidCloak);
         }
 
         public void HookVoidCloak(GameObject knight)
         {
             if (knight == null) return;
-
-            var vcb = knight.GetComponent<VoidCloakBehaviour>() ?? knight.AddComponent<VoidCloakBehaviour>();
-            vcb.Vcm = this;
+            knight.GetOrAddComponent<VoidCloakBehaviour>().Vcm = this;
         }
+
+        private void HookVoidCloak(PlayMakerFSM fsm) => HookVoidCloak(fsm.gameObject);
 
         private bool OverrideGetBool(string boolName, bool orig) => boolName == nameof(HasVoidCloak) ? HasVoidCloak : orig;
 
@@ -53,7 +54,5 @@ namespace DarknestDungeon.IC
         private Vector2 OverrideDashVelocity(Vector2 v) => DashVelocityOverride ?? v;
 
         private void OnSceneTransition(Transition t) => OnTransition?.Invoke();
-
-        private void HookVoidCloak(PlayMakerFSM fsm) => HookVoidCloak(fsm.gameObject);
     }
 }
