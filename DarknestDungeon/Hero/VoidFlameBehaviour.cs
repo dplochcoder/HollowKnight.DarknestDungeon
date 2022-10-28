@@ -1,11 +1,4 @@
 ﻿using DarknestDungeon.IC;
-using GlobalEnums;
-using ItemChanger.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace DarknestDungeon.Hero
@@ -15,8 +8,45 @@ namespace DarknestDungeon.Hero
         // Must be set before Start().
         public VoidFlameModule Vfm;
 
-        private void Start() { }
+        private HeroController hc;
 
-        private void OnDestroy() { }
+        private void Start()
+        {
+            hc = gameObject.GetComponent<HeroController>();
+
+            hc.OnTakenDamage += SurrenderVoidFlameDamage;
+            On.HeroController.EnterSceneDreamGate += SurrenderVoidFlameDreamgate;
+
+            VoidFlameModule.OnVoidFlameStateChange += ToggleVoidFlame;
+
+            ToggleVoidFlame(Vfm.HeroHasVoidFlame);
+        }
+
+        private void OnDestroy()
+        {
+            hc.OnTakenDamage -= SurrenderVoidFlameDamage;
+            On.HeroController.EnterSceneDreamGate -= SurrenderVoidFlameDreamgate;
+
+            VoidFlameModule.OnVoidFlameStateChange -= ToggleVoidFlame;
+        }
+
+        private void SurrenderVoidFlame(bool damage)
+        {
+            if (!Vfm.LoseTemporaryFlame()) return;
+
+            // TODO: UI treatment if not due to damage
+        }
+
+        private void SurrenderVoidFlameDamage() => SurrenderVoidFlame(true);
+
+        private void SurrenderVoidFlameDreamgate(On.HeroController.orig_EnterSceneDreamGate orig, HeroController self) {
+            orig(self);
+            SurrenderVoidFlame(false);
+        }
+
+        private void ToggleVoidFlame(bool haveFlame)
+        {
+            // TODO
+        }
     }
 }

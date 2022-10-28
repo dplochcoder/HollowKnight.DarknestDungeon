@@ -2,7 +2,9 @@
 using DebugMod;
 using ItemChanger;
 using Modding;
+using System.Runtime.CompilerServices;
 using UnityEngine;
+using Random = System.Random;
 
 namespace DarknestDungeon.DebugInterop
 {
@@ -50,6 +52,28 @@ namespace DarknestDungeon.DebugInterop
             Console.AddLine("Taking Void Cloak");
             var vcm = ItemChangerMod.Modules.Get<VoidCloakModule>();
             if (vcm != null) vcm.HasVoidCloak = false;
+        }
+
+        private const string DEBUG_FLAME_ID = "DebugFlame";
+
+        [BindableMethod(name = "Give Random Void Flame", category = "DarknestDungeon")]
+        public static void GiveRandomVoidFlame()
+        {
+            Console.AddLine("Giving Void Flame");
+            var vfm = ItemChangerMod.Modules.GetOrAdd<VoidFlameModule>();
+            if (!vfm.HeroHasVoidFlame)
+            {
+                vfm.UsedFlameIds.Remove(DEBUG_FLAME_ID);
+                vfm.ClaimTemporaryFlame(DEBUG_FLAME_ID);
+            }
+        }
+
+        [BindableMethod(name = "Take Void Flame", category = "DarknestDungeon")]
+        public static void TakeVoidFlame()
+        {
+            Console.AddLine("Taking Void Flame");
+            var vfm = ItemChangerMod.Modules.Get<VoidFlameModule>();
+            if (vfm != null) vfm.LoseTemporaryFlame();
         }
     }
 }

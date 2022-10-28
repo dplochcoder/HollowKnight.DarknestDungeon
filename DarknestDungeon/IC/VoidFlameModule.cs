@@ -1,5 +1,6 @@
 ﻿using DarknestDungeon.Hero;
 using ItemChanger;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using UnityEngine;
 using static DarknestDungeon.UnityExtensions.Extensions;
@@ -46,6 +47,7 @@ namespace DarknestDungeon.IC
 
         public void HookVoidFlame(PlayMakerFSM fsm) => HookVoidFlame(fsm.gameObject);
 
+        [JsonIgnore]
         public bool HeroHasVoidFlame => TemporaryFlameId != null;
 
         public bool IsFlameUsed(string id) => TemporaryFlameId == id || UsedFlameIds.Contains(id);
@@ -54,20 +56,21 @@ namespace DarknestDungeon.IC
 
         private GMHookReference? tempFlameHook;
 
-        public void ClaimTemporaryFlame(string flameId)
+        public bool ClaimTemporaryFlame(string flameId)
         {
-            if (TemporaryFlameId != null || UsedFlameIds.Contains(flameId)) return;
+            if (TemporaryFlameId != null || UsedFlameIds.Contains(flameId)) return false;
 
             TemporaryFlameId = flameId;
             tempFlameHook ??= GameManager.instance.AddSelfDeletingHook(() => LoseTemporaryFlame());
 
             OnTemporaryFlameObtained?.Invoke(flameId);
             OnVoidFlameStateChange?.Invoke(true);
+            return true;
         }
 
-        public void LoseTemporaryFlame()
+        public bool LoseTemporaryFlame()
         {
-            if (TemporaryFlameId == null) return;
+            if (TemporaryFlameId == null) return false;
 
             var oldFlameId = TemporaryFlameId;
             TemporaryFlameId = null;
@@ -76,11 +79,12 @@ namespace DarknestDungeon.IC
 
             OnTemporaryFlameLost?.Invoke(oldFlameId);
             OnVoidFlameStateChange?.Invoke(false);
+            return true;
         }
 
-        public void LightTorch(string torchId)
+        public bool LightTorch(string torchId)
         {
-            if (TemporaryFlameId == null || LitTorchIds.Contains(torchId)) return;
+            if (TemporaryFlameId == null || LitTorchIds.Contains(torchId)) return false;
 
             var oldFlameId = TemporaryFlameId;
             TemporaryFlameId = null;
@@ -91,6 +95,7 @@ namespace DarknestDungeon.IC
 
             OnTorchLit?.Invoke(oldFlameId, torchId);
             OnVoidFlameStateChange?.Invoke(false);
+            return true;
         }
     }
 }
