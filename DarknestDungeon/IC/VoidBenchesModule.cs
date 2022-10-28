@@ -16,14 +16,14 @@ namespace DarknestDungeon.IC
 
             Events.BenchInjectors += YieldVoidBenches;
             Events.BenchInjectors += YieldWaterwaysBench;
-            Events.BenchSuppressors += IsWaterwaysBench;
+            Events.BenchSuppressors += IsWaterwaysAreaBench;
         }
 
         public override void Unload()
         {
             Events.BenchInjectors -= YieldVoidBenches;
             Events.BenchInjectors -= YieldWaterwaysBench;
-            Events.BenchSuppressors -= IsWaterwaysBench;
+            Events.BenchSuppressors -= IsWaterwaysAreaBench;
         }
 
         private IEnumerable<Bench> YieldVoidBenches() => Benches.Data.Values;
@@ -33,6 +33,6 @@ namespace DarknestDungeon.IC
             yield return waterwaysCopy;
         }
 
-        private bool IsWaterwaysBench(Bench bench) => bench.areaName == "Waterways";
+        private bool IsWaterwaysAreaBench(Bench bench) => bench.areaName == "Waterways";
     }
 }
