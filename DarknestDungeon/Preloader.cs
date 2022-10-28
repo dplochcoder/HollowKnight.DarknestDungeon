@@ -7,6 +7,9 @@ namespace DarknestDungeon
     {
         public static readonly Preloader Instance = new();
 
+        [Preload("Abyss_16", "Abyss Tendrils")]
+        public GameObject AbyssTendrils { get; private set; }
+
         [Preload("Abyss_17", "Quake Floor")]
         public GameObject DiveFloor { get; private set; }
 

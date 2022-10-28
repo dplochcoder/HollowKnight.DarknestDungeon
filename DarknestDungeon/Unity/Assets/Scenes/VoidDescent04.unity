@@ -85264,3 +85264,60 @@ MonoBehaviour:
   sceneLoadVisualization: 0
   customFade: 0
   forceWaitFetch: 0
+--- !u!1001 &4066132302984173510
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4357112941122210061, guid: 773c5dce43f8f2d41951a648c9b0cee7, type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4357112941122210061, guid: 773c5dce43f8f2d41951a648c9b0cee7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 57
+      objectReference: {fileID: 0}
+    - target: {fileID: 4357112941122210061, guid: 773c5dce43f8f2d41951a648c9b0cee7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 7.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4357112941122210061, guid: 773c5dce43f8f2d41951a648c9b0cee7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4357112941122210061, guid: 773c5dce43f8f2d41951a648c9b0cee7, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4357112941122210061, guid: 773c5dce43f8f2d41951a648c9b0cee7, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4357112941122210061, guid: 773c5dce43f8f2d41951a648c9b0cee7, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4357112941122210061, guid: 773c5dce43f8f2d41951a648c9b0cee7, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4357112941122210061, guid: 773c5dce43f8f2d41951a648c9b0cee7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4357112941122210061, guid: 773c5dce43f8f2d41951a648c9b0cee7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4357112941122210061, guid: 773c5dce43f8f2d41951a648c9b0cee7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8355065664148228578, guid: 773c5dce43f8f2d41951a648c9b0cee7, type: 3}
+      propertyPath: m_Name
+      value: AbyssTendrils
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 773c5dce43f8f2d41951a648c9b0cee7, type: 3}

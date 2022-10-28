@@ -51,6 +51,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Scripts\AbyssTendrils.cs" />
     <Compile Include="Scripts\LifebloodCocoon.cs" />
     <Compile Include="Scripts\PatchSceneParticleManager.cs" />
     <Compile Include="Scripts\SoulTotem.cs" />

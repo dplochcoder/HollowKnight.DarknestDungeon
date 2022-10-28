@@ -18,7 +18,7 @@ namespace DarknestDungeon.UnityExtensions
             Destroy(gameObject);
         }
 
-        protected abstract void ModifyDeployer(ref T deployer);
+        protected virtual void ModifyDeployer(ref T deployer) { }
 
         protected virtual void ModifyDeployment(GameObject obj) { }
     }
