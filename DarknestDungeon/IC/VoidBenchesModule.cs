@@ -7,7 +7,7 @@ namespace DarknestDungeon.IC
 {
     public class VoidBenchesModule : ItemChanger.Modules.Module
     {
-        Bench waterwaysCopy;
+        private Bench waterwaysCopy;
 
         public override void Initialize()
         {
