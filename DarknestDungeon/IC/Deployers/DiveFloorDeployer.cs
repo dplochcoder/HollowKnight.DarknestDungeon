@@ -1,5 +1,4 @@
-﻿using ItemChanger;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace DarknestDungeon.IC.Deployers
 {

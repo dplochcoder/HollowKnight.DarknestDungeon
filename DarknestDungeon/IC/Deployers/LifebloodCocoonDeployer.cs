@@ -1,8 +1,5 @@
-﻿using ItemChanger;
-using System;
-using System.Net.Http.Headers;
+﻿using System;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace DarknestDungeon.IC.Deployers
 {
