@@ -16,7 +16,9 @@ namespace DarknestDungeon.UnityExtensions
             ModifyDeployer(ref deployer);
 
             var newObj = deployer.Deploy();
-            newObj.transform.localScale = gameObject.transform.localScale;
+            var oScale = newObj.transform.localScale;
+            var mScale = gameObject.transform.localScale;
+            newObj.transform.localScale = new(oScale.x * mScale.x, oScale.y * mScale.y, oScale.z * mScale.z);
             newObj.transform.SetPositionZ(gameObject.transform.GetPositionZ());
             ModifyDeployment(newObj);
 
