@@ -1,4 +1,5 @@
-﻿using ItemChanger;
+﻿using DarknestDungeon.Hero;
+using ItemChanger;
 using Modding;
 using Newtonsoft.Json;
 using System;

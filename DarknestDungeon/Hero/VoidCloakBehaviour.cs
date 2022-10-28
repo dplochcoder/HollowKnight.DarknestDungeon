@@ -1,10 +1,11 @@
-﻿using GlobalEnums;
+﻿using DarknestDungeon.IC;
+using GlobalEnums;
 using ItemChanger.Extensions;
 using System;
 using System.Reflection;
 using UnityEngine;
 
-namespace DarknestDungeon.IC
+namespace DarknestDungeon.Hero
 {
     public class VoidCloakBehaviour : MonoBehaviour
     {
@@ -108,7 +109,7 @@ namespace DarknestDungeon.IC
         {
             orig(self);
 
-            if (voidCloakState == VoidCloakState.VoidDashing && (hcs.facingRight && CheckStillTouchingWall(CollisionSide.right)) || (!hcs.facingRight && CheckStillTouchingWall(CollisionSide.left)))
+            if (voidCloakState == VoidCloakState.VoidDashing && hcs.facingRight && CheckStillTouchingWall(CollisionSide.right) || !hcs.facingRight && CheckStillTouchingWall(CollisionSide.left))
             {
                 FinishedVoidDashing(false);
             }
@@ -174,7 +175,7 @@ namespace DarknestDungeon.IC
         private bool doubleJumped
         {
             get { return (bool)doubleJumpedField.GetValue(hc); }
-            set { doubleJumpedField.SetValue(hc, value);  }
+            set { doubleJumpedField.SetValue(hc, value); }
         }
 
         private static readonly object[] emptyArr = new object[0];
@@ -246,7 +247,7 @@ namespace DarknestDungeon.IC
                     break;
                 case JumpHoldState.HoldingJump:
                     float newJumpHoldY = hc.gameObject.transform.position.y;
-                    if (hcs.dashing || hcs.touchingWall || (prevJumpHoldY != null && prevJumpHoldY > newJumpHoldY))
+                    if (hcs.dashing || hcs.touchingWall || prevJumpHoldY != null && prevJumpHoldY > newJumpHoldY)
                     {
                         jumpHoldState = JumpHoldState.Idle;
                     }
@@ -282,7 +283,7 @@ namespace DarknestDungeon.IC
             int vert = (ih.inputActions.up.IsPressed ? 1 : 0) + (ih.inputActions.down.IsPressed ? -1 : 0);
 
             // Force horizontal if coming off of wall.
-            horz = (wallLaunchTimer < WALL_LAUNCH_LIMIT) ? (wasWallClingLeft ? 1 : (wasWallClingRight ? -1 : horz)) : horz;
+            horz = wallLaunchTimer < WALL_LAUNCH_LIMIT ? wasWallClingLeft ? 1 : wasWallClingRight ? -1 : horz : horz;
 
             // Force horizontal if grounded
             if (horz == 0 && vert == -1 && hcs.onGround)
@@ -291,7 +292,7 @@ namespace DarknestDungeon.IC
             }
             else if (!voidEscapedQoL)
             {
-                if (voidDashTimer > hc.DASH_TIME || (vert == 1) || (vert == -1 && horz == 0))
+                if (voidDashTimer > hc.DASH_TIME || vert == 1 || vert == -1 && horz == 0)
                 {
                     voidEscapedQoL = true;
                 }
@@ -371,7 +372,7 @@ namespace DarknestDungeon.IC
             }
 
             // Cancel the dash in certain down-input situations.
-            if (!hcs.shadowDashing || (hcs.onGround && InputDown && (voidDashTimer > hc.DASH_TIME || (wasAirborne && InputDownOnly))))
+            if (!hcs.shadowDashing || hcs.onGround && InputDown && (voidDashTimer > hc.DASH_TIME || wasAirborne && InputDownOnly))
             {
                 // Cancel the dash.
                 FinishedVoidDashing(true);

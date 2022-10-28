@@ -15,25 +15,25 @@ namespace DarknestDungeon.IC
             var b = Bench.baseBenches.Where(b => b.name == "Waterways").Single();
             waterwaysCopy = new(b.name, "City", b.sceneName, b.respawnMarker, b.respawnType, b.mapZone, b.style, b.specificOffset);
 
-            Events.BenchInjectors += EnumVoidBenches;
-            Events.BenchInjectors += ReplaceWaterwaysBench;
-            Events.BenchSuppressors += HideWaterwaysBenches;
+            Events.BenchInjectors += YieldVoidBenches;
+            Events.BenchInjectors += YieldWaterwaysBench;
+            Events.BenchSuppressors += IsWaterwaysBench;
         }
 
         public override void Unload()
         {
-            Events.BenchInjectors -= EnumVoidBenches;
-            Events.BenchInjectors -= ReplaceWaterwaysBench;
-            Events.BenchSuppressors -= HideWaterwaysBenches;
+            Events.BenchInjectors -= YieldVoidBenches;
+            Events.BenchInjectors -= YieldWaterwaysBench;
+            Events.BenchSuppressors -= IsWaterwaysBench;
         }
 
-        private IEnumerable<Bench> EnumVoidBenches() => Benches.Data.Values;
+        private IEnumerable<Bench> YieldVoidBenches() => Benches.Data.Values;
 
-        private IEnumerable<Bench> ReplaceWaterwaysBench()
+        private IEnumerable<Bench> YieldWaterwaysBench()
         {
             yield return waterwaysCopy;
         }
 
-        private bool HideWaterwaysBenches(Bench bench) => bench.areaName == "Waterways";
+        private bool IsWaterwaysBench(Bench bench) => bench.areaName == "Waterways";
     }
 }
