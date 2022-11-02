@@ -19416,7 +19416,7 @@ MonoBehaviour:
   alwaysEnterRight: 0
   alwaysEnterLeft: 0
   hardLandOnExit: 0
-  targetScene: VoidEntrance02
+  targetScene: VoidEntrance01
   entryPoint: right1
   alwaysUnloadUnusedAssets: 0
   nonHazardGate: 0

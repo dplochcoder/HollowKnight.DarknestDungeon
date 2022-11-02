@@ -1,4 +1,6 @@
 ﻿using DarknestDungeon.IC;
+using DarknestDungeon.UnityExtensions;
+using ItemChanger;
 using UnityEngine;
 
 namespace DarknestDungeon.Hero
@@ -9,14 +11,21 @@ namespace DarknestDungeon.Hero
         public VoidFlameModule Vfm;
 
         private HeroController hc;
+        private GameObject voidFlame;
 
         private void Start()
         {
+            Vfm = ItemChangerMod.Modules.Get<VoidFlameModule>();
+
             hc = gameObject.GetComponent<HeroController>();
+
+            voidFlame = Object.Instantiate(DarknestDungeonSceneManagerAPI.LoadPrefab<GameObject>("VoidFlame"));
+            voidFlame.SetParent(gameObject);
+            voidFlame.transform.localPosition = new(0, 0, -0.01f);
+            voidFlame.SetActive(Vfm.HeroHasVoidFlame);
 
             hc.OnTakenDamage += SurrenderVoidFlameDamage;
             On.HeroController.EnterSceneDreamGate += SurrenderVoidFlameDreamgate;
-
             VoidFlameModule.OnVoidFlameStateChange += ToggleVoidFlame;
 
             ToggleVoidFlame(Vfm.HeroHasVoidFlame);
@@ -26,7 +35,6 @@ namespace DarknestDungeon.Hero
         {
             hc.OnTakenDamage -= SurrenderVoidFlameDamage;
             On.HeroController.EnterSceneDreamGate -= SurrenderVoidFlameDreamgate;
-
             VoidFlameModule.OnVoidFlameStateChange -= ToggleVoidFlame;
         }
 
@@ -44,9 +52,6 @@ namespace DarknestDungeon.Hero
             SurrenderVoidFlame(false);
         }
 
-        private void ToggleVoidFlame(bool haveFlame)
-        {
-            // TODO
-        }
+        private void ToggleVoidFlame(bool haveFlame) => voidFlame.SetActive(haveFlame);
     }
 }

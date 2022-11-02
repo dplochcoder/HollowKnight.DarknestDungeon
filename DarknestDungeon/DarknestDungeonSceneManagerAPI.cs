@@ -8,15 +8,21 @@ namespace DarknestDungeon
 {
     public class DarknestDungeonSceneManagerAPI : SMA
     {
-        public static void Load() => overrideAPI = new DarknestDungeonSceneManagerAPI();
+        private static readonly DarknestDungeonSceneManagerAPI Instance = new();
+
+        public static void Load() => overrideAPI = Instance;
 
         private AssetBundle shared;
+        private Dictionary<string, Object> prefabs = new();
         private Dictionary<string, AssetBundle?> sceneBundles = new();
 
         private DarknestDungeonSceneManagerAPI()
         {
             shared = LoadAsset("objectsbundle");
-            shared.LoadAllAssets();
+            foreach (var obj in shared.LoadAllAssets())
+            {
+                prefabs[obj.name] = obj;
+            }
 
             foreach (var str in typeof(DarknestDungeonSceneManagerAPI).Assembly.GetManifestResourceNames())
             {
@@ -26,6 +32,12 @@ namespace DarknestDungeon
 
                 sceneBundles[name] = null;
             }
+        }
+
+        public static T? LoadPrefab<T>(string name) where T : Object
+        {
+            if (Instance.prefabs.TryGetValue(name, out var obj) && obj is T typed) return typed;
+            return null;
         }
 
         protected override AsyncOperation LoadSceneAsyncByNameOrIndex(string sceneName, int sceneBuildIndex, LoadSceneParameters parameters, bool mustCompleteNextFrame)
