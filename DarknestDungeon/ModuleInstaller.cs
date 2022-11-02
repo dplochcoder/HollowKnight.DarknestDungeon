@@ -6,10 +6,7 @@ namespace DarknestDungeon
     public static class ModuleInstaller
     {
 
-        public static void Setup()
-        {
-            On.UIManager.StartNewGame += InstallModules;
-        }
+        public static void Setup() => On.UIManager.StartNewGame += InstallModules;
 
         private static void InstallModules(On.UIManager.orig_StartNewGame orig, UIManager self, bool permaDeath, bool bossRush)
         {
@@ -20,9 +17,11 @@ namespace DarknestDungeon
             }
 
             ItemChangerMod.CreateSettingsProfile(false);
-            ItemChangerMod.Modules.Add<LifebloodCocoonFixerModule>();
-            ItemChangerMod.Modules.Add<VoidCloakModule>();
-            ItemChangerMod.Modules.Add<VoidFlameModule>();
+            var mods = ItemChangerMod.Modules;
+            mods.Add<LifebloodCocoonFixerModule>();
+            mods.Add<VoidCloakModule>();
+            mods.Add<VoidFlameModule>();
+            mods.Add<VoidShardsModule>();
 
             Data.Benches.Install();
             Data.Deployers.Install();
