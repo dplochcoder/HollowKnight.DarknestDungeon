@@ -5,7 +5,7 @@ using UnityEngine;
 namespace DarknestDungeon.IC
 {
     // Makes lifeblood cocoons respawn when they exist in the same room as a bench.
-    public class FixLifebloodCocoonsModule : ItemChanger.Modules.Module
+    public class LifebloodCocoonFixerModule : ItemChanger.Modules.Module
     {
         public override void Initialize() => On.HealthCocoon.OnTriggerEnter2D += FixLifebloodReset;
 
