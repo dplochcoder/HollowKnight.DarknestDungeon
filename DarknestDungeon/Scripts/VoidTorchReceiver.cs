@@ -1,44 +1,50 @@
 ﻿using DarknestDungeon.IC;
+using DarknestDungeon.UnityExtensions;
 using ItemChanger;
 using UnityEngine;
+using static DarknestDungeon.IC.VoidFlameModule;
 
 namespace DarknestDungeon.Scripts
 {
-    public class VoidTorchReceiver : MonoBehaviour
+    public class VoidTorchReceiver : MonoBehaviour, IHitResponder
     {
+        private VoidFlameModule Vfm;
+
         public string torchId;
         public GameObject voidFlameObj;
-        public GameObject nailZoneObj;
 
         private void Awake()
         {
+            Vfm = ItemChangerMod.Modules.Get<VoidFlameModule>();
+
             VoidFlameModule.OnTorchLit += OnTorchLit;
 
-            // TODO: On nail hit
-
-            var vfm = ItemChangerMod.Modules.Get<VoidFlameModule>();
-            if (vfm.IsTorchLit(torchId))
-            {
-                MakeFlameActive(true);
-            }
+            SetFlameActive(Vfm.IsTorchLit(torchId));
         }
-        
+
         private void OnDestroy()
         {
             VoidFlameModule.OnTorchLit -= OnTorchLit;
         }
 
-        private void MakeFlameActive(bool active)
+        public void Hit(HitInstance hitInstance)
+        {
+            if (voidFlameObj.activeSelf) return;
+            if (hitInstance.AttackType != AttackTypes.Nail) return;
+
+            Vfm.LightTorch(torchId);
+        }
+
+        private void SetFlameActive(bool active)
         {
             voidFlameObj.SetActive(active);
-            nailZoneObj.SetActive(active);
+            gameObject.GetOrAddComponent<NonBouncer>().SetActive(!active);
         }
 
         private void OnTorchLit(string flameId, string torchId)
         {
             if (torchId != this.torchId) return;
-
-            MakeFlameActive(true);
+            SetFlameActive(true);
         }
     }
 }

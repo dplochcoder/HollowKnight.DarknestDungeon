@@ -6,6 +6,5 @@ namespace DarknestDungeon.Scripts
     {
         public string flameId;
         public GameObject voidFlameObj;
-        public GameObject nailZoneObj;
     }
 }

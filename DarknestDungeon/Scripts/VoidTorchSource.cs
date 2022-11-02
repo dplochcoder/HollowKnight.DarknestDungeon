@@ -1,43 +1,57 @@
 ﻿using DarknestDungeon.IC;
+using DarknestDungeon.UnityExtensions;
 using ItemChanger;
 using UnityEngine;
 
 namespace DarknestDungeon.Scripts
 {
-    public class VoidTorchSource : MonoBehaviour
+    public class VoidTorchSource : MonoBehaviour, IHitResponder
     {
+        private VoidFlameModule Vfm;
+
         public string flameId;
         public GameObject voidFlameObj;
-        public GameObject nailZoneObj;
 
         private void Awake()
         {
-            VoidFlameModule.OnTemporaryFlameLost += OnTempFlameLost;
-            // TODO: On nail hit
+            Vfm = ItemChangerMod.Modules.Get<VoidFlameModule>();
 
-            var vfm = ItemChangerMod.Modules.Get<VoidFlameModule>();
-            if (vfm.IsFlameUsed(flameId))
-            {
-                MakeFlameActive(false);
-            }
+            VoidFlameModule.OnTemporaryFlameObtained += OnTemporaryFlameObtained;
+            VoidFlameModule.OnTemporaryFlameLost += OnTemporaryFlameLost;
+
+            SetFlameActive(!Vfm.IsFlameUsed(flameId));
         }
-        
+
         private void OnDestroy()
         {
-            VoidFlameModule.OnTemporaryFlameLost -= OnTempFlameLost;
+            VoidFlameModule.OnTemporaryFlameObtained -= OnTemporaryFlameObtained;
+            VoidFlameModule.OnTemporaryFlameLost -= OnTemporaryFlameLost;
         }
 
-        private void MakeFlameActive(bool active)
+        public void Hit(HitInstance hitInstance)
+        {
+            if (!voidFlameObj.activeSelf) return;
+            if (hitInstance.AttackType != AttackTypes.Nail) return;
+
+            Vfm.ClaimTemporaryFlame(flameId);
+        }
+
+        private void SetFlameActive(bool active)
         {
             voidFlameObj.SetActive(active);
-            nailZoneObj.SetActive(active);
+            gameObject.GetOrAddComponent<NonBouncer>().SetActive(!active);
         }
 
-        private void OnTempFlameLost(string id)
+        private void OnTemporaryFlameObtained(string id)
         {
             if (id != flameId) return;
+            SetFlameActive(false);
+        }
 
-            MakeFlameActive(true);
+        private void OnTemporaryFlameLost(string id)
+        {
+            if (id != flameId) return;
+            SetFlameActive(true);
         }
     }
 }

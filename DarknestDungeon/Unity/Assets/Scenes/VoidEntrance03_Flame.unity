@@ -36060,7 +36060,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -36194,7 +36194,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -36341,7 +36341,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -36431,7 +36431,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -36623,64 +36623,64 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   respawnFacingRight: 0
---- !u!1001 &2655019947240926088
+--- !u!1001 &3122131494766531075
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2565776338993150058, guid: 31a9ee08fe08f164881dfbc68a6b0845, type: 3}
-      propertyPath: torchId
-      value: entranceTorch
+    - target: {fileID: 3177590554743396569, guid: 31a9ee08fe08f164881dfbc68a6b0845, type: 3}
+      propertyPath: m_Name
+      value: VoidTorchReceiver
       objectReference: {fileID: 0}
-    - target: {fileID: 3785894425722837788, guid: 31a9ee08fe08f164881dfbc68a6b0845, type: 3}
+    - target: {fileID: 3177590554743396570, guid: 31a9ee08fe08f164881dfbc68a6b0845, type: 3}
       propertyPath: m_RootOrder
       value: 6
       objectReference: {fileID: 0}
-    - target: {fileID: 3785894425722837788, guid: 31a9ee08fe08f164881dfbc68a6b0845, type: 3}
+    - target: {fileID: 3177590554743396570, guid: 31a9ee08fe08f164881dfbc68a6b0845, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 58.08
+      value: 56.56
       objectReference: {fileID: 0}
-    - target: {fileID: 3785894425722837788, guid: 31a9ee08fe08f164881dfbc68a6b0845, type: 3}
+    - target: {fileID: 3177590554743396570, guid: 31a9ee08fe08f164881dfbc68a6b0845, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7.36
+      value: 7.37
       objectReference: {fileID: 0}
-    - target: {fileID: 3785894425722837788, guid: 31a9ee08fe08f164881dfbc68a6b0845, type: 3}
+    - target: {fileID: 3177590554743396570, guid: 31a9ee08fe08f164881dfbc68a6b0845, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3785894425722837788, guid: 31a9ee08fe08f164881dfbc68a6b0845, type: 3}
+    - target: {fileID: 3177590554743396570, guid: 31a9ee08fe08f164881dfbc68a6b0845, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 3785894425722837788, guid: 31a9ee08fe08f164881dfbc68a6b0845, type: 3}
+    - target: {fileID: 3177590554743396570, guid: 31a9ee08fe08f164881dfbc68a6b0845, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3785894425722837788, guid: 31a9ee08fe08f164881dfbc68a6b0845, type: 3}
+    - target: {fileID: 3177590554743396570, guid: 31a9ee08fe08f164881dfbc68a6b0845, type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3785894425722837788, guid: 31a9ee08fe08f164881dfbc68a6b0845, type: 3}
+    - target: {fileID: 3177590554743396570, guid: 31a9ee08fe08f164881dfbc68a6b0845, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3785894425722837788, guid: 31a9ee08fe08f164881dfbc68a6b0845, type: 3}
+    - target: {fileID: 3177590554743396570, guid: 31a9ee08fe08f164881dfbc68a6b0845, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3785894425722837788, guid: 31a9ee08fe08f164881dfbc68a6b0845, type: 3}
+    - target: {fileID: 3177590554743396570, guid: 31a9ee08fe08f164881dfbc68a6b0845, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3785894425722837788, guid: 31a9ee08fe08f164881dfbc68a6b0845, type: 3}
+    - target: {fileID: 3177590554743396570, guid: 31a9ee08fe08f164881dfbc68a6b0845, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3785894425722837791, guid: 31a9ee08fe08f164881dfbc68a6b0845, type: 3}
-      propertyPath: m_Name
-      value: VoidTorchReceiver
+    - target: {fileID: 7759062660649915427, guid: 31a9ee08fe08f164881dfbc68a6b0845, type: 3}
+      propertyPath: torchId
+      value: entranceFlame
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31a9ee08fe08f164881dfbc68a6b0845, type: 3}
