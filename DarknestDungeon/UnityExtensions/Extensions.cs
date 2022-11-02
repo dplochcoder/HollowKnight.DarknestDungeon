@@ -28,9 +28,7 @@ namespace DarknestDungeon.UnityExtensions
             hookRef.Hook = () =>
             {
                 hook();
-
-                self.ResetSemiPersistentObjects -= hookRef.Hook;
-                hookRef.Unregistered = true;
+                hookRef.Unhook();
             };
 
             self.ResetSemiPersistentObjects += hookRef.Hook;
