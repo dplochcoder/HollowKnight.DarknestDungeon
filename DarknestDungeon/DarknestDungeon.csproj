@@ -52,6 +52,8 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Unity\Assets\**" />
+    <EmbeddedResource Remove="Unity\**\*.manifest" />
+    <EmbeddedResource Remove="Unity\**\*.meta" />
     <EmbeddedResource Include="Resources\**\*.json" />
   </ItemGroup>
   <ItemGroup>
