@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -13,7 +14,7 @@ namespace DarknestDungeon
         public static void Load() => overrideAPI = Instance;
 
         private AssetBundle shared;
-        private Dictionary<string, Object> prefabs = new();
+        private Dictionary<string, UnityEngine.Object> prefabs = new();
         private Dictionary<string, AssetBundle?> sceneBundles = new();
 
         private DarknestDungeonSceneManagerAPI()
@@ -34,10 +35,10 @@ namespace DarknestDungeon
             }
         }
 
-        public static T? LoadPrefab<T>(string name) where T : Object
+        public static T LoadPrefab<T>(string name) where T : UnityEngine.Object
         {
             if (Instance.prefabs.TryGetValue(name, out var obj) && obj is T typed) return typed;
-            return null;
+            throw new ArgumentException($"Unknown Prefab: ${name}");
         }
 
         protected override AsyncOperation LoadSceneAsyncByNameOrIndex(string sceneName, int sceneBuildIndex, LoadSceneParameters parameters, bool mustCompleteNextFrame)
