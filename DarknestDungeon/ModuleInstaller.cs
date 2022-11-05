@@ -18,13 +18,15 @@ namespace DarknestDungeon
 
             ItemChangerMod.CreateSettingsProfile(false);
             var mods = ItemChangerMod.Modules;
+
+            mods.Add<BenchesModule>();
+            mods.Add<DeployersModule>();
             mods.Add<LifebloodCocoonFixerModule>();
+            mods.Add<PromptsModule>();
             mods.Add<VoidCloakModule>();
             mods.Add<VoidFlameModule>();
             mods.Add<VoidShardsModule>();
 
-            Data.Benches.Install();
-            Data.Deployers.Install();
             orig(self, permaDeath, bossRush);
         }
     }

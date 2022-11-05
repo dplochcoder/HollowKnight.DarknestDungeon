@@ -28,8 +28,6 @@ namespace DarknestDungeon
 
             GS ??= new();
             ModuleInstaller.Setup();
-            Data.Deployers.Load();
-            Data.Benches.Load();
             DarknestDungeonSceneManagerAPI.Load();
 
             if (ModHooks.GetMod("DebugMod") is Mod)
