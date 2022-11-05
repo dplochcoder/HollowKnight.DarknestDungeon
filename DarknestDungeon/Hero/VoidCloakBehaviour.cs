@@ -200,10 +200,7 @@ namespace DarknestDungeon.Hero
             switch (voidCloakState)
             {
                 case VoidCloakState.Idle:
-                    if (hcs.shadowDashing)
-                    {
-                        StartVoidDash();
-                    }
+                    if (hcs.shadowDashing) StartVoidDash();
                     break;
                 case VoidCloakState.VoidDashing:
                     VoidDashUpdate();
