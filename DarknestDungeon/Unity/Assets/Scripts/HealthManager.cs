@@ -18,5 +18,9 @@ public class HealthManager : MonoBehaviour
 
     public bool isDead;
 
+    public int smallGeoDrops;
+    public int mediumGeoDrops;
+    public int largeGeoDrops;
+
     public event DeathEvent OnDeath;
 }
