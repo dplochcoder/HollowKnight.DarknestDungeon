@@ -1,4 +1,5 @@
-﻿using ItemChanger;
+﻿using DarknestDungeon.IC;
+using ItemChanger;
 using System.Collections.Generic;
 
 namespace DarknestDungeon.Data
@@ -17,15 +18,6 @@ namespace DarknestDungeon.Data
             }
         }
 
-        public static void Install()
-        {
-            foreach (var sceneDeployers in Data.Values)
-            {
-                foreach (var deployer in sceneDeployers.Values)
-                {
-                    ItemChangerMod.AddDeployer(deployer);
-                }
-            }
-        }
+        public static void Install() => ItemChangerMod.Modules.Add<DeployersModule>();
     }
 }
