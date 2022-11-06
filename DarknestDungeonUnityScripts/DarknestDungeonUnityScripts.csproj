@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Scripts\AbyssTendrils.cs" />
+    <Compile Include="Scripts\HealthManagerPatcher.cs" />
     <Compile Include="Scripts\VoidTorchReceiver.cs" />
     <Compile Include="Scripts\VoidTorchSource.cs" />
     <Compile Include="Scripts\LifebloodCocoon.cs" />

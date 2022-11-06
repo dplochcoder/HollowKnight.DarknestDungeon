@@ -30,5 +30,8 @@ namespace DarknestDungeon
 
         [Preload("Abyss_06_Core", "_Transition Gates/bot1")]
         public GameObject TransitionGate { get; private set; }
+
+        [Preload("Mines_11", "Mines Crawler (1)")]
+        public GameObject DemoEnemy { get; private set; }
     }
 }
