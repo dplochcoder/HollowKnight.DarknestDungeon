@@ -3,8 +3,6 @@ using System.IO;
 
 namespace DarknestDungeon.Data
 {
-    using JsonUtil = PurenailCore.SystemUtil.JsonUtil<DarknestDungeon>;
-
     public static class DataUpdater
     {
         public static string InferGitRoot(string path)

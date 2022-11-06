@@ -2,7 +2,6 @@
 using DarknestDungeon.UnityExtensions;
 using ItemChanger;
 using UnityEngine;
-using static DarknestDungeon.IC.VoidFlameModule;
 
 namespace DarknestDungeon.Scripts
 {

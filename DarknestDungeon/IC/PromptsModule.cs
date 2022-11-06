@@ -1,5 +1,4 @@
-﻿using DarknestDungeon.Data;
-using Modding;
+﻿using Modding;
 using System.Collections.Generic;
 
 namespace DarknestDungeon.IC

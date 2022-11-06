@@ -1,8 +1,4 @@
-﻿using ItemChanger;
-using System;
-using System.CodeDom;
-using System.IO;
-using System.Reflection;
+﻿using System.IO;
 
 namespace DarknestDungeon.IC
 {
