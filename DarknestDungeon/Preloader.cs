@@ -32,6 +32,9 @@ namespace DarknestDungeon
         public GameObject TransitionGate { get; private set; }
 
         [Preload("Mines_11", "Mines Crawler (1)")]
-        public GameObject DemoEnemy { get; private set; }
+        public GameObject CrystalCrawler { get; private set; }
+
+        [Preload("Crossroads_13", "_Enemies/Worm")]
+        public GameObject Goam { get; private set; }
     }
 }

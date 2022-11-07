@@ -10,12 +10,13 @@ GameObject:
   m_Component:
   - component: {fileID: 2813081380216493316}
   - component: {fileID: 6324474286942725233}
-  - component: {fileID: 3273300259023752647}
-  - component: {fileID: 4788272253513851023}
   - component: {fileID: 6380541230786631867}
   - component: {fileID: 9103600452904016291}
-  - component: {fileID: 7764298790050503515}
   - component: {fileID: 3653311363514396871}
+  - component: {fileID: 1409938038107235707}
+  - component: {fileID: 8844338798457027905}
+  - component: {fileID: 7289414593419521353}
+  - component: {fileID: -8632767492472148133}
   m_Layer: 11
   m_Name: VoidThorn
   m_TagString: Spell Vulnerable
@@ -89,38 +90,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3273300259023752647
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6875889309736456117}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42187dc56fdce654a8a1620a98807a83, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hp: 40
-  hasSpecialDeath: 1
-  deathReset: 0
-  damageOverride: 0
-  isDead: 0
-  smallGeoDrops: 0
-  mediumGeoDrops: 0
-  largeGeoDrops: 0
---- !u!114 &4788272253513851023
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6875889309736456117}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -62844987, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!61 &6380541230786631867
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -163,20 +132,6 @@ MonoBehaviour:
   hazardType: 1
   shadowDashHazard: 0
   resetOnEnable: 0
---- !u!114 &7764298790050503515
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6875889309736456117}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62f96fe1dfc7e96408d0b2d4e1b8f78e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  blockEffect: {fileID: 0}
-  useNailPosition: 1
 --- !u!114 &3653311363514396871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191,6 +146,73 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shader: Sprites/Default
   Scale: 1
+--- !u!114 &1409938038107235707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6875889309736456117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1745437014, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hp: 40
+  hasSpecialDeath: 1
+  deathReset: 0
+  damageOverride: 0
+  isDead: 0
+  smallGeoDrops: 0
+  mediumGeoDrops: 0
+  largeGeoDrops: 0
+--- !u!114 &8844338798457027905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6875889309736456117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -212000298, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blockEffect: {fileID: 0}
+  useNailPosition: 0
+--- !u!114 &7289414593419521353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6875889309736456117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -191061639, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!50 &-8632767492472148133
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6875889309736456117}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &9187466969472219138
 GameObject:
   m_ObjectHideFlags: 0

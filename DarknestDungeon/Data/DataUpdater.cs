@@ -29,6 +29,9 @@ namespace DarknestDungeon.Data
             DeployersModule.UpdateJson(root);
             PromptsModule.UpdateJson(root);
 
+            // Make sure nothing scripts do not have outbound dependencies
+            // FIXME: Walk files, check for ''
+
             // Copy DLLs
             CopyDll(root, "DarknestDungeonUnityScripts/bin/Debug/DarknestDungeon.dll", "DarknestDungeon/Unity/Assets/Assemblies/DarknestDungeon.dll");
         }
