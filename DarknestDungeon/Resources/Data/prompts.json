@@ -1,1 +1,21 @@
-{}
+{
+  "Prompts": {},
+  "DreamnailPrompts": {
+    "VOID_THORN_DREAM": [
+      "Away, away! Let us rest...",
+      "Back, back! Away, vagrant!",
+      "Begone, begone!",
+      "Filthy vessel, begone! Leave us...",
+      "HSSSSSSSSS!!",
+      "Keep it away, away!",
+      "Off, off!  Away from the sanctum!"
+    ],
+    "VOID_THORN_DREAM_FLAME": [
+      "Away, away! Let us rest...",
+      "It bears the Lord's flame! Out, out!",
+      "It carries the flame, stop it, stop it!",
+      "It must be exitinguished...",
+      "It must not escape, it can't escape..."
+    ]
+  }
+}
