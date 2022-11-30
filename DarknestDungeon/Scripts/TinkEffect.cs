@@ -13,7 +13,7 @@ namespace DarknestDungeon.Scripts
         private void Awake()
         {
             Patcher.Patch(this);
-            this.SetAttr("boxCollider", gameObject.GetComponent<BoxCollider2D>());
+            this.SetAttr<global::TinkEffect, BoxCollider2D>("boxCollider", gameObject.GetComponent<BoxCollider2D>());
         }
     }
 }
