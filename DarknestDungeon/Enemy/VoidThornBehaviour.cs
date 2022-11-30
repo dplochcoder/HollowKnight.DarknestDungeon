@@ -1,4 +1,5 @@
 ﻿using SFCore.Utils;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace DarknestDungeon.Enemy
@@ -8,6 +9,7 @@ namespace DarknestDungeon.Enemy
         private HealthManager hm;
         private Rigidbody2D rb;
         private Vector3 origPos;
+        private Vector2 origPos2d;
 
         private Vector3 destination;
         private float shuffleTimer;
@@ -18,6 +20,7 @@ namespace DarknestDungeon.Enemy
             rb = GetComponent<Rigidbody2D>();
 
             origPos = gameObject.transform.position;
+            origPos2d = new(origPos.x, origPos.y);
             hm.SetAttr("invincible", true);
 
             ShuffleDestination();
@@ -41,15 +44,48 @@ namespace DarknestDungeon.Enemy
         private const float IMPULSE_DISTANCE = 0.8f;
         private const float IMPULSE_DURATION_SECONDS = 0.1f;
 
+        private record Impulse
+        {
+            public Vector2 velocity;
+            public float remaining;
+
+            public Impulse(Vector2 velocity, float remaining)
+            {
+                this.velocity = velocity;
+                this.remaining = remaining;
+            }
+        }
+        private List<Impulse> impulses = new();
 
         public void Hit(HitInstance damageInstance)
         {
-            
+            var dir = (Quaternion.Euler(0, 0, damageInstance.Direction) * new Vector3(1, 0, 0)).normalized;
+            impulses.Add(new(dir * (IMPULSE_DISTANCE / IMPULSE_DURATION_SECONDS), IMPULSE_DURATION_SECONDS));
+        }
+
+        private Vector2 pos2d => new(rb.position.x, rb.position.y);
+
+        private const float RECOVERY_TIME = 2.0f;
+
+        private Vector2 Gravitate()
+        {
+            var dist = pos2d - origPos2d;
+            var dir = -dist;
+            return dir / RECOVERY_TIME;
         }
 
         private void FixedUpdate()
         {
+            // Sum velocities, tick them.
+            Vector2 velocity = Gravitate();
+            foreach (var impulse in impulses)
+            {
+                velocity += impulse.velocity;
+                impulse.remaining -= Time.fixedDeltaTime;
+            }
+            impulses.RemoveAll(i => i.remaining <= 0);
 
+            rb.velocity = velocity;
         }
     }
 }
