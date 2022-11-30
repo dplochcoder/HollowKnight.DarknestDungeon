@@ -61,6 +61,8 @@ namespace DarknestDungeon.Enemy
         {
             var dir = (Quaternion.Euler(0, 0, damageInstance.Direction) * new Vector3(1, 0, 0)).normalized;
             impulses.Add(new(dir * (IMPULSE_DISTANCE / IMPULSE_DURATION_SECONDS), IMPULSE_DURATION_SECONDS));
+
+            DarknestDungeon.Log($"Hit: {impulses[impulses.Count - 1].velocity}");
         }
 
         private Vector2 pos2d => new(rb.position.x, rb.position.y);
@@ -85,6 +87,10 @@ namespace DarknestDungeon.Enemy
             }
             impulses.RemoveAll(i => i.remaining <= 0);
 
+            if (velocity.sqrMagnitude > 0.1)
+            {
+                DarknestDungeon.Log($"FixedUpdate: {velocity}");
+            }
             rb.velocity = velocity;
         }
     }
