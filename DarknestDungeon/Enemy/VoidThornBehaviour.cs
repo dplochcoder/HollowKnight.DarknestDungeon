@@ -1,4 +1,5 @@
-﻿using SFCore.Utils;
+﻿using HutongGames.PlayMaker;
+using SFCore.Utils;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +7,18 @@ namespace DarknestDungeon.Enemy
 {
     public class VoidThornBehaviour : MonoBehaviour, IHitResponder
     {
+        private enum State
+        {
+            Idle,
+            Triggered,
+            Expanding,
+            Expanded,
+            Retracting,
+            Respawning
+        }
+        private State state = State.Idle;
+        private float stateDuration = 0;
+
         private HealthManager hm;
         private Rigidbody2D rb;
         private Vector3 origPos;
@@ -41,7 +54,7 @@ namespace DarknestDungeon.Enemy
             }
         }
 
-        private const float IMPULSE_DISTANCE = 0.8f;
+        private const float IMPULSE_DISTANCE = 0.55f;
         private const float IMPULSE_DURATION_SECONDS = 0.1f;
 
         private record Impulse
@@ -61,13 +74,11 @@ namespace DarknestDungeon.Enemy
         {
             var dir = (Quaternion.Euler(0, 0, damageInstance.Direction) * new Vector3(1, 0, 0)).normalized;
             impulses.Add(new(dir * (IMPULSE_DISTANCE / IMPULSE_DURATION_SECONDS), IMPULSE_DURATION_SECONDS));
-
-            DarknestDungeon.Log($"Hit: {impulses[impulses.Count - 1].velocity}");
         }
 
         private Vector2 pos2d => new(rb.position.x, rb.position.y);
 
-        private const float RECOVERY_TIME = 2.0f;
+        private const float RECOVERY_TIME = 1.25f;
 
         private Vector2 Gravitate()
         {
@@ -75,6 +86,8 @@ namespace DarknestDungeon.Enemy
             var dir = -dist;
             return dir / RECOVERY_TIME;
         }
+
+        private bool Mobile => state != State.Expanded && state != State.Respawning;
 
         private void FixedUpdate()
         {
@@ -87,11 +100,46 @@ namespace DarknestDungeon.Enemy
             }
             impulses.RemoveAll(i => i.remaining <= 0);
 
-            if (velocity.sqrMagnitude > 0.1)
+            rb.velocity = Mobile ? velocity : new(0, 0);
+        }
+
+        private void SetState(State s)
+        {
+            state = s;
+            switch (s)
             {
-                DarknestDungeon.Log($"FixedUpdate: {velocity}");
+
             }
-            rb.velocity = velocity;
+        }
+
+        private void Update()
+        {
+            stateDuration -= Time.deltaTime;
+            if (stateDuration <= 0)
+            {
+                switch (state)
+                {
+                    case State.Triggered:
+                        SetState(State.Expanding);
+                        break;
+                    case State.Expanding:
+                        SetState(State.Expanded);
+                        break;
+                    case State.Expanded:
+                        SetState(State.Retracting);
+                        break;
+                    case State.Retracting:
+                        SetState(State.Idle);
+                        break;
+                    case State.Respawning:
+                        SetState(State.Idle);
+                        break;
+                }
+            }
+            else
+            {
+
+            }
         }
     }
 }
