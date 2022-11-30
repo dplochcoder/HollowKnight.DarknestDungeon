@@ -30,6 +30,8 @@ namespace DarknestDungeon.Enemy
         private void Awake()
         {
             hm = GetComponent<HealthManager>();
+            hm.OnDeath += () => SetState(State.Respawning);
+
             rb = GetComponent<Rigidbody2D>();
 
             origPos = gameObject.transform.position;
@@ -103,12 +105,33 @@ namespace DarknestDungeon.Enemy
             rb.velocity = Mobile ? velocity : new(0, 0);
         }
 
+        private static float TRIGGER_TIME = 0.15f;
+        private static float EXPAND_TIME = 0.4f;
+        private static float EXPANDED_TIME = 1.75f;
+        private static float RETRACT_TIME = 0.75f;
+        private static float RESPAWN_TIME = 2.5f;
+
         private void SetState(State s)
         {
             state = s;
+            bool init = stateDuration <= 0;
             switch (s)
             {
-
+                case State.Triggered:
+                    if (init) stateDuration = TRIGGER_TIME;
+                    break;
+                case State.Expanding:
+                    if (init) stateDuration = EXPAND_TIME;
+                    break;
+                case State.Expanded:
+                    if (init) stateDuration = EXPANDED_TIME;
+                    break;
+                case State.Retracting:
+                    if (init) stateDuration = RETRACT_TIME;
+                    break;
+                case State.Respawning:
+                    if (init) stateDuration = RESPAWN_TIME;
+                    break;
             }
         }
 
@@ -138,7 +161,7 @@ namespace DarknestDungeon.Enemy
             }
             else
             {
-
+                SetState(state);
             }
         }
     }
