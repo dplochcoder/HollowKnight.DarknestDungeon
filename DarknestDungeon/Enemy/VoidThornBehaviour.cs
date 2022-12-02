@@ -1,13 +1,24 @@
-﻿using HutongGames.PlayMaker;
+﻿using DarknestDungeon.EnemyLib;
+using HutongGames.PlayMaker;
 using SFCore.Utils;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace DarknestDungeon.Enemy
 {
+    public enum VoidThornStateId
+    {
+        Idle,
+        Triggered,
+        Expanding,
+        Expanded,
+        Retracting,
+        Respawning
+    }
+
     public class VoidThornBehaviour : MonoBehaviour, IHitResponder
     {
-        private enum State
+        private enum StateId
         {
             Idle,
             Triggered,
@@ -16,8 +27,16 @@ namespace DarknestDungeon.Enemy
             Retracting,
             Respawning
         }
-        private State state = State.Idle;
-        private float stateDuration = 0;
+
+        private class StateMachine : EnemyStateMachine<StateId, State, StateMachine>
+        {
+
+        }
+
+        private class State : EnemyState<StateId, State, StateMachine>
+        {
+            public State(StateMachine mgr) : base(mgr) { }
+        }
 
         private HealthManager hm;
         private Rigidbody2D rb;
