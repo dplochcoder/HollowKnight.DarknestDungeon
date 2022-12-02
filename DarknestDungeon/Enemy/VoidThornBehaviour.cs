@@ -66,7 +66,7 @@ namespace DarknestDungeon.Enemy
             }
         }
 
-        public static float EXPANDED_TIME = 0.9f;
+        public static float EXPANDED_TIME = 1.1f;
 
         private class ExpandedState : State
         {
@@ -152,9 +152,10 @@ namespace DarknestDungeon.Enemy
         public Rigidbody2D rb;
         public BoxCollider2D b2d;
         public Vector3 origPos;
-        public Vector2 origPos2d;
-
         public Vector3 destination;
+        public Vector2 origPos2d;
+        public Vector2 destination2d;
+
         public float shuffleTimer;
         public StateMachine sm;
 
@@ -171,22 +172,30 @@ namespace DarknestDungeon.Enemy
             origPos2d = new(origPos.x, origPos.y);
             hm.SetAttr("invincible", true);
 
+            shuffleTimer = 0;
             ShuffleDestination();
             sm = new(this);
         }
 
-        private const float SHUFFLE_RADIUS = 1.8f;
+        private static float SHUFFLE_TIMER = 2.5f;
+        private static float SHUFFLE_RADIUS = 0.65f;
 
         private void ShuffleDestination()
         {
-            var oldDestination = destination;
+            shuffleTimer -= Time.fixedDeltaTime;
+            if (shuffleTimer > 0) return;
+
+            shuffleTimer += SHUFFLE_TIMER;
+            Vector3 oldDestination = new(destination.x, destination.y, destination.z);
             while (true)
             {
                 float radius = Mathf.Sqrt(Random.Range(0, 1)) * SHUFFLE_RADIUS;
-                float theta = Random.Range(0, 360);
-                destination = origPos + Quaternion.Euler(0, 0, Random.Range(0, Mathf.PI * 2)) * new Vector3(radius, 0, 0);
-
-                if (Vector3.Distance(oldDestination, destination) > SHUFFLE_RADIUS / 2) return;
+                destination = origPos + Quaternion.Euler(0, 0, Random.Range(0, 360)) * new Vector3(radius, 0, 0);
+                if (Vector3.Distance(destination, oldDestination) > SHUFFLE_RADIUS / 2)
+                {
+                    destination2d = new(destination.x, destination.y);
+                    return;
+                }
             }
         }
 
@@ -220,13 +229,15 @@ namespace DarknestDungeon.Enemy
 
         private Vector2 Gravitate()
         {
-            var dist = pos2d - origPos2d;
+            var dist = pos2d - destination2d;
             var dir = -dist;
             return dir / RECOVERY_TIME;
         }
 
         private void FixedUpdate()
         {
+            ShuffleDestination();
+
             // Sum velocities, tick them.
             Vector2 velocity = Gravitate();
             foreach (var impulse in impulses)
