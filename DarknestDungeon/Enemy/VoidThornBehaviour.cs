@@ -36,7 +36,7 @@ namespace DarknestDungeon.Enemy
             public override void Hit() => Mgr.ChangeState(StateId.Triggered);
         }
 
-        public static float TRIGGERED_TIME = 0.25f;
+        public static float TRIGGERED_TIME = 0.05f;
 
         private class TriggeredState : State
         {
@@ -46,8 +46,8 @@ namespace DarknestDungeon.Enemy
             }
         }
 
-        public static float EXPANDING_TIME = 0.15f;
-        public static float EXPANDED_SCALE = 2.25f;
+        public static float EXPANDING_TIME = 0.125f;
+        public static float EXPANDED_SCALE = 2.5f;
 
         private class ExpandingState : State
         {
@@ -61,12 +61,12 @@ namespace DarknestDungeon.Enemy
 
             protected override void Update()
             {
-                var scale = Mathf.Pow(EXPANDED_SCALE, Mathf.Sqrt(timer.ProgPct));
+                var scale = Mathf.Pow(EXPANDED_SCALE, timer.ProgPct * timer.ProgPct);
                 Mgr.Vtb.rb.transform.localScale = new(scale, scale, scale);
             }
         }
 
-        public static float EXPANDED_TIME = 1.4f;
+        public static float EXPANDED_TIME = 0.9f;
 
         private class ExpandedState : State
         {
@@ -86,7 +86,7 @@ namespace DarknestDungeon.Enemy
             }
         }
 
-        public static float RETRACTING_TIME = 0.25f;
+        public static float RETRACTING_TIME = 0.225f;
 
         private class RetractingState : State
         {
@@ -110,12 +110,14 @@ namespace DarknestDungeon.Enemy
             }
         }
 
+        public static float RESPAWNING_TIME = 1.5f;
+
         // TODO: sprites
         private class RespawningState : State
         {
             public RespawningState(StateMachine mgr) : base(mgr)
             {
-                AddMod(new TimerModule(mgr, RECOVERY_TIME, StateId.Idle));
+                AddMod(new TimerModule(mgr, RESPAWNING_TIME, StateId.Idle));
                 Mgr.Vtb.b2d.enabled = false;
             }
 
@@ -188,8 +190,8 @@ namespace DarknestDungeon.Enemy
             }
         }
 
-        private const float IMPULSE_DISTANCE = 0.55f;
-        private const float IMPULSE_DURATION_SECONDS = 0.1f;
+        private static float IMPULSE_DISTANCE = 0.55f;
+        private static float IMPULSE_DURATION_SECONDS = 0.1f;
 
         private record Impulse
         {
