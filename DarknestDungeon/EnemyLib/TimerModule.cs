@@ -10,6 +10,29 @@ namespace DarknestDungeon.EnemyLib
         public readonly T NextId;
 
         public float Remaining;
+        public float RemainingPct
+        {
+            get
+            {
+                return Remaining / Duration;
+            }
+            set
+            {
+                Remaining = Duration * value;
+            }
+        }
+
+        public float ProgPct
+        {
+            get
+            {
+                return 1.0f - RemainingPct;
+            }
+            set
+            {
+                Remaining = Duration - Duration * value;
+            }
+        }
 
         public TimerModule(M mgr, float duration, T nextId)
         {

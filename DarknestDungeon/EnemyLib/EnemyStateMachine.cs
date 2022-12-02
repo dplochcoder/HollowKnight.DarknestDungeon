@@ -2,33 +2,36 @@
 
 namespace DarknestDungeon.EnemyLib
 {
-    public class EnemyStateMachine<T, S, M> where S : EnemyState<T, S, M> where M : EnemyStateMachine<T, S, M>
+    public abstract class EnemyStateMachine<T, S, M> where S : EnemyState<T, S, M> where M : EnemyStateMachine<T, S, M>
     {
-        public delegate S StateCreator(EnemyStateMachine<T, S, M> mgr);
+        public delegate S StateCreator(M mgr);
 
         private readonly Dictionary<T, StateCreator> stateCreators;
-        private T currentStateId;
-        private S currentState;
+        public T CurrentStateId { get; private set; }
+        public S CurrentState { get; private set; }
 
         public EnemyStateMachine(
             T initialStateId,
-            IDictionary<T, StateCreator> stateCreators)
+            Dictionary<T, StateCreator> stateCreators)
         {
             this.stateCreators = new(stateCreators);
 
-            this.currentStateId = initialStateId;
-            this.currentState = stateCreators[initialStateId].Invoke(this);
+            this.CurrentStateId = initialStateId;
+            this.CurrentState = stateCreators[initialStateId].Invoke(AsTyped());
         }
 
-        public void Update() => currentState.Update();
+        public abstract M AsTyped();
 
-        public void ChangeState(T newStateId)
+        public void Update() => CurrentState.UpdateFinal();
+
+        public S ChangeState(T newStateId)
         {
-            if (EqualityComparer<T>.Default.Equals(currentStateId, newStateId)) return;
+            if (EqualityComparer<T>.Default.Equals(CurrentStateId, newStateId)) return CurrentState;
 
-            currentState.Stop();
-            currentStateId = newStateId;
-            currentState = stateCreators[newStateId].Invoke(this);
+            CurrentState.StopFinal();
+            CurrentStateId = newStateId;
+            CurrentState = stateCreators[newStateId].Invoke(AsTyped());
+            return CurrentState;
         }
     }
 }

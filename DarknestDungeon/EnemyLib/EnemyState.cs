@@ -26,7 +26,7 @@ namespace DarknestDungeon.EnemyLib
             Update();
         }
 
-        protected void Update() { }
+        protected virtual void Update() { }
 
         public void StopFinal()
         {
@@ -34,6 +34,6 @@ namespace DarknestDungeon.EnemyLib
             Stop();
         }
 
-        protected void Stop() { }
+        protected virtual void Stop() { }
     }
 }

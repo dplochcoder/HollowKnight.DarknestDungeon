@@ -6,19 +6,11 @@ using UnityEngine;
 
 namespace DarknestDungeon.Enemy
 {
-    public enum VoidThornStateId
-    {
-        Idle,
-        Triggered,
-        Expanding,
-        Expanded,
-        Retracting,
-        Respawning
-    }
+    using TimerModule = EnemyLib.TimerModule<VoidThornBehaviour.StateId, VoidThornBehaviour.State, VoidThornBehaviour.StateMachine>;
 
     public class VoidThornBehaviour : MonoBehaviour, IHitResponder
     {
-        private enum StateId
+        public enum StateId
         {
             Idle,
             Triggered,
@@ -28,36 +20,157 @@ namespace DarknestDungeon.Enemy
             Respawning
         }
 
-        private class StateMachine : EnemyStateMachine<StateId, State, StateMachine>
-        {
-
-        }
-
-        private class State : EnemyState<StateId, State, StateMachine>
+        public class State : EnemyState<StateId, State, StateMachine>
         {
             public State(StateMachine mgr) : base(mgr) { }
+
+            public virtual bool Mobile => true;
+
+            public virtual void Hit() { }
         }
 
-        private HealthManager hm;
-        private Rigidbody2D rb;
-        private Vector3 origPos;
-        private Vector2 origPos2d;
+        private class IdleState : State
+        {
+            public IdleState(StateMachine mgr) : base(mgr) { }
 
-        private Vector3 destination;
-        private float shuffleTimer;
+            public override void Hit() => Mgr.ChangeState(StateId.Triggered);
+        }
+
+        public static float TRIGGERED_TIME = 0.25f;
+
+        private class TriggeredState : State
+        {
+            public TriggeredState(StateMachine mgr) : base(mgr)
+            {
+                AddMod(new TimerModule(mgr, TRIGGERED_TIME, StateId.Expanding));
+            }
+        }
+
+        public static float EXPANDING_TIME = 0.15f;
+        public static float EXPANDED_SCALE = 2.25f;
+
+        private class ExpandingState : State
+        {
+            public TimerModule timer;
+
+            public ExpandingState(StateMachine mgr) : base(mgr)
+            {
+                timer = AddMod(new TimerModule(mgr, EXPANDING_TIME, StateId.Expanded));
+            }
+            public override bool Mobile => false;
+
+            protected override void Update()
+            {
+                var scale = Mathf.Pow(EXPANDED_SCALE, Mathf.Sqrt(timer.ProgPct));
+                Mgr.Vtb.rb.transform.localScale = new(scale, scale, scale);
+            }
+        }
+
+        public static float EXPANDED_TIME = 1.4f;
+
+        private class ExpandedState : State
+        {
+            private int hits = 0;
+            private TimerModule timer;
+
+            public ExpandedState(StateMachine mgr) : base(mgr)
+            {
+                Mgr.Vtb.rb.transform.localScale = new(EXPANDED_SCALE, EXPANDED_SCALE, EXPANDED_SCALE);
+                timer = AddMod(new TimerModule(mgr, EXPANDED_TIME, StateId.Retracting));
+            }
+            public override bool Mobile => false;
+
+            public override void Hit()
+            {
+                timer.Remaining += 0.5f / (++hits);
+            }
+        }
+
+        public static float RETRACTING_TIME = 0.25f;
+
+        private class RetractingState : State
+        {
+            private TimerModule timer;
+
+            public RetractingState(StateMachine mgr) : base(mgr)
+            {
+                timer = AddMod(new TimerModule(mgr, RETRACTING_TIME, StateId.Idle));
+            }
+
+            protected override void Update()
+            {
+                var scale = Mathf.Pow(EXPANDED_SCALE, Mathf.Sqrt(timer.RemainingPct));
+                Mgr.Vtb.rb.transform.localScale = new(scale, scale, scale);
+            }
+
+            public override void Hit()
+            {
+                var prog = timer.RemainingPct;
+                (Mgr.ChangeState(StateId.Expanding) as ExpandingState).timer.ProgPct = prog;
+            }
+        }
+
+        // TODO: sprites
+        private class RespawningState : State
+        {
+            public RespawningState(StateMachine mgr) : base(mgr)
+            {
+                AddMod(new TimerModule(mgr, RECOVERY_TIME, StateId.Idle));
+                Mgr.Vtb.b2d.enabled = false;
+            }
+
+            protected override void Stop()
+            {
+                Mgr.Vtb.b2d.enabled = true;
+                Mgr.Vtb.hm.hp = Mgr.Vtb.origHealth;
+            }
+        }
+
+        public class StateMachine : EnemyStateMachine<StateId, State, StateMachine>
+        {
+            public readonly VoidThornBehaviour Vtb;
+
+            public StateMachine(VoidThornBehaviour vtb) : base(StateId.Idle, new()
+            {
+                { StateId.Idle, m => new IdleState(m) },
+                { StateId.Triggered, m => new TriggeredState(m) },
+                { StateId.Expanding, m => new ExpandingState(m) },
+                { StateId.Expanded, m => new ExpandedState(m) },
+                { StateId.Retracting, m => new RetractingState(m) },
+                { StateId.Respawning, m => new RespawningState(m) },
+            }) {
+                this.Vtb = vtb;
+            }
+
+            public override StateMachine AsTyped() => this;
+        }
+
+        public HealthManager hm;
+        public int origHealth;
+        public Rigidbody2D rb;
+        public BoxCollider2D b2d;
+        public Vector3 origPos;
+        public Vector2 origPos2d;
+
+        public Vector3 destination;
+        public float shuffleTimer;
+        public StateMachine sm;
 
         private void Awake()
         {
             hm = GetComponent<HealthManager>();
-            hm.OnDeath += () => SetState(State.Respawning);
+            origHealth = hm.hp;
+            hm.OnDeath += () => sm.ChangeState(StateId.Respawning);
 
             rb = GetComponent<Rigidbody2D>();
+            b2d = GetComponent<BoxCollider2D>();
 
             origPos = gameObject.transform.position;
             origPos2d = new(origPos.x, origPos.y);
             hm.SetAttr("invincible", true);
 
             ShuffleDestination();
+            sm = new(this);
         }
 
         private const float SHUFFLE_RADIUS = 1.8f;
@@ -95,6 +208,8 @@ namespace DarknestDungeon.Enemy
         {
             var dir = (Quaternion.Euler(0, 0, damageInstance.Direction) * new Vector3(1, 0, 0)).normalized;
             impulses.Add(new(dir * (IMPULSE_DISTANCE / IMPULSE_DURATION_SECONDS), IMPULSE_DURATION_SECONDS));
+
+            sm.CurrentState.Hit();
         }
 
         private Vector2 pos2d => new(rb.position.x, rb.position.y);
@@ -108,8 +223,6 @@ namespace DarknestDungeon.Enemy
             return dir / RECOVERY_TIME;
         }
 
-        private bool Mobile => state != State.Expanded && state != State.Respawning;
-
         private void FixedUpdate()
         {
             // Sum velocities, tick them.
@@ -121,67 +234,9 @@ namespace DarknestDungeon.Enemy
             }
             impulses.RemoveAll(i => i.remaining <= 0);
 
-            rb.velocity = Mobile ? velocity : new(0, 0);
+            rb.velocity = sm.CurrentState.Mobile ? velocity : new(0, 0);
         }
 
-        private static float TRIGGER_TIME = 0.15f;
-        private static float EXPAND_TIME = 0.4f;
-        private static float EXPANDED_TIME = 1.75f;
-        private static float RETRACT_TIME = 0.75f;
-        private static float RESPAWN_TIME = 2.5f;
-
-        private void SetState(State s)
-        {
-            state = s;
-            bool init = stateDuration <= 0;
-            switch (s)
-            {
-                case State.Triggered:
-                    if (init) stateDuration = TRIGGER_TIME;
-                    break;
-                case State.Expanding:
-                    if (init) stateDuration = EXPAND_TIME;
-                    break;
-                case State.Expanded:
-                    if (init) stateDuration = EXPANDED_TIME;
-                    break;
-                case State.Retracting:
-                    if (init) stateDuration = RETRACT_TIME;
-                    break;
-                case State.Respawning:
-                    if (init) stateDuration = RESPAWN_TIME;
-                    break;
-            }
-        }
-
-        private void Update()
-        {
-            stateDuration -= Time.deltaTime;
-            if (stateDuration <= 0)
-            {
-                switch (state)
-                {
-                    case State.Triggered:
-                        SetState(State.Expanding);
-                        break;
-                    case State.Expanding:
-                        SetState(State.Expanded);
-                        break;
-                    case State.Expanded:
-                        SetState(State.Retracting);
-                        break;
-                    case State.Retracting:
-                        SetState(State.Idle);
-                        break;
-                    case State.Respawning:
-                        SetState(State.Idle);
-                        break;
-                }
-            }
-            else
-            {
-                SetState(state);
-            }
-        }
+        private void Update() => sm.Update();
     }
 }
