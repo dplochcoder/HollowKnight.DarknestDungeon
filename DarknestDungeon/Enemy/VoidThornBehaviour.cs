@@ -27,6 +27,12 @@ namespace DarknestDungeon.Enemy
 
             public virtual bool Mobile => true;
 
+            public virtual float InitScale => 0f;
+
+            protected virtual void SetInitScale() => Mgr.Vtb.SetScale(InitScale);
+
+            protected override void Init() => SetInitScale();
+
             public virtual void Hit() { }
         }
 
@@ -60,7 +66,7 @@ namespace DarknestDungeon.Enemy
         private void SetScale(float pct)
         {
             var scale = Mathf.Pow(EXPANDED_SCALE, pct * pct);
-            rb.transform.localScale = new(scale, scale, scale);
+            gameObject.transform.localScale = new(scale, scale, scale);
         }
 
         private class ExpandingState : State
@@ -81,6 +87,8 @@ namespace DarknestDungeon.Enemy
                 }
             }
 
+            protected override void SetInitScale() { }
+
             protected override void Update() => Mgr.Vtb.SetScale(timer.ProgPct);
         }
 
@@ -93,10 +101,12 @@ namespace DarknestDungeon.Enemy
 
             public ExpandedState(StateMachine mgr) : base(mgr)
             {
-                Mgr.Vtb.rb.transform.localScale = new(EXPANDED_SCALE, EXPANDED_SCALE, EXPANDED_SCALE);
+                Mgr.Vtb.gameObject.transform.localScale = new(EXPANDED_SCALE, EXPANDED_SCALE, EXPANDED_SCALE);
                 timer = AddMod(new TimerModule(mgr, EXPANDED_TIME, StateId.Retracting));
             }
             public override bool Mobile => false;
+
+            public override float InitScale => 1f;
 
             public override void Hit()
             {
@@ -116,6 +126,8 @@ namespace DarknestDungeon.Enemy
             }
 
             protected override void Update() => Mgr.Vtb.SetScale(timer.RemainingPct);
+
+            protected override void SetInitScale() { }
 
             public override void Hit()
             {
@@ -164,7 +176,6 @@ namespace DarknestDungeon.Enemy
 
         public HealthManager hm;
         public int origHealth;
-        public Rigidbody2D rb;
         public BoxCollider2D b2d;
         public GameObject knight;
         public Vector3 origPos;
@@ -181,7 +192,6 @@ namespace DarknestDungeon.Enemy
             origHealth = hm.hp;
             hm.OnDeath += () => sm.ChangeState(StateId.Respawning);
 
-            rb = GetComponent<Rigidbody2D>();
             b2d = GetComponent<BoxCollider2D>();
             knight = GameManager.instance.hero_ctrl.gameObject;
 
@@ -247,7 +257,7 @@ namespace DarknestDungeon.Enemy
             sm.CurrentState.Hit();
         }
 
-        private Vector2 pos2d => new(rb.position.x, rb.position.y);
+        private Vector2 pos2d => new(gameObject.transform.position.x, gameObject.transform.position.y);
 
         private Vector2 driftVelocity = new();
 
@@ -281,7 +291,9 @@ namespace DarknestDungeon.Enemy
             }
             impulses.RemoveAll(i => i.remaining <= 0);
 
-            rb.velocity = sm.CurrentState.Mobile ? velocity : new(0, 0);
+            velocity = sm.CurrentState.Mobile ? velocity : new(0, 0);
+            var newPos = pos2d + velocity * Time.fixedDeltaTime;
+            gameObject.transform.position = new(newPos.x, newPos.y, gameObject.transform.position.z);
         }
 
         private void Update() => sm.Update();

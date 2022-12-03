@@ -31,6 +31,7 @@ namespace DarknestDungeon.EnemyLib
             CurrentState.StopFinal();
             CurrentStateId = newStateId;
             CurrentState = stateCreators[newStateId].Invoke(AsTyped());
+            CurrentState.InitFinal();
             return CurrentState;
         }
     }
