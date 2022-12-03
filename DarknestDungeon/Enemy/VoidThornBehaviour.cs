@@ -195,6 +195,7 @@ namespace DarknestDungeon.Enemy
 
         private static float SHUFFLE_TIMER = 2.2f;
         private static float DRIFT_SPEED = 0.15f;
+        private static float DRIFT_ACCEL = 0.4f;
         private static float SHUFFLE_VARIANCE = 0.6f;
         private static float SHUFFLE_RADIUS = 0.65f;
 
@@ -247,11 +248,23 @@ namespace DarknestDungeon.Enemy
 
         private Vector2 pos2d => new(rb.position.x, rb.position.y);
 
+        private Vector2 driftVelocity = new();
+
         private Vector2 Gravitate()
         {
             var dist = pos2d - destination2d;
             var dir = -dist;
-            return dir.normalized * DRIFT_SPEED * (dir.sqrMagnitude > 1.0f ? dir.magnitude : 1);
+            var target = dir * DRIFT_SPEED;
+            var vDelta = target - driftVelocity;
+            var aDelta = DRIFT_ACCEL * Time.fixedDeltaTime;
+            if (vDelta.magnitude < aDelta)
+            {
+                driftVelocity = target;
+                return driftVelocity;
+            }
+
+            driftVelocity += vDelta.normalized * aDelta;
+            return driftVelocity;
         }
 
         private void FixedUpdate()
