@@ -114,7 +114,7 @@ namespace DarknestDungeon.Enemy
             }
         }
 
-        public static float RETRACTING_TIME = 0.225f;
+        public static float RETRACTING_TIME = 0.35f;
 
         private class RetractingState : State
         {
