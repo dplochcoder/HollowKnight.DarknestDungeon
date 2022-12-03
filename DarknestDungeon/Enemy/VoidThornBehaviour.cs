@@ -119,6 +119,7 @@ namespace DarknestDungeon.Enemy
 
             public override void Hit()
             {
+                var foo = new TinkEffect();
                 var prog = timer.RemainingPct;
                 (Mgr.ChangeState(StateId.Expanding) as ExpandingState).timer.ProgPct = prog;
             }

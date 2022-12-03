@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace DarknestDungeon.EnemyLib
 {
-    public interface EnemyStateModule<T, S, M> where S : EnemyState<T, S, M> where M : EnemyStateMachine<T, S, M>
+    public class EnemyStateModule<T, S, M> where S : EnemyState<T, S, M> where M : EnemyStateMachine<T, S, M>
     {
-        public void Update(out bool stateChange);
+        public virtual void Init() { }
 
-        public void Stop();
+        public virtual void Update(out bool stateChange) { stateChange = false; }
+
+        public virtual void Stop() { }
     }
 }

@@ -16,6 +16,14 @@ namespace DarknestDungeon.EnemyLib
             return m;
         }
 
+        protected virtual void Init() { }
+
+        public void InitFinal()
+        {
+            modules.ForEach(m => m.Init());
+            Init();
+        }
+
         public void UpdateFinal()
         {
             foreach (var module in modules)

@@ -42,7 +42,7 @@ namespace DarknestDungeon.EnemyLib
             this.Remaining = duration;
         }
 
-        public void Update(out bool stateChange)
+        public override void Update(out bool stateChange)
         {
             Remaining -= Time.deltaTime;
             if (Remaining <= 0)
@@ -55,7 +55,5 @@ namespace DarknestDungeon.EnemyLib
                 stateChange = false;
             }
         }
-
-        public void Stop() { }
     }
 }
