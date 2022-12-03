@@ -1,5 +1,6 @@
 ﻿using DarknestDungeon.EnemyLib;
 using HutongGames.PlayMaker;
+using HutongGames.PlayMaker.Actions;
 using SFCore.Utils;
 using System.Collections.Generic;
 using UnityEngine;
@@ -33,7 +34,11 @@ namespace DarknestDungeon.Enemy
         {
             public IdleState(StateMachine mgr) : base(mgr) { }
 
-            public override void Hit() => Mgr.ChangeState(StateId.Triggered);
+            public override void Hit()
+            {
+                Mgr.Vtb.chargePending = true;
+                Mgr.ChangeState(StateId.Triggered);
+            }
         }
 
         public static float TRIGGERED_TIME = 0.05f;
@@ -47,7 +52,16 @@ namespace DarknestDungeon.Enemy
         }
 
         public static float EXPANDING_TIME = 0.125f;
-        public static float EXPANDED_SCALE = 2.5f;
+        public static float EXPANDED_SCALE = 2.25f;
+        public static float ATTACK_DISTANCE = 2f;
+
+        private bool chargePending = false;
+
+        private void SetScale(float pct)
+        {
+            var scale = Mathf.Pow(EXPANDED_SCALE, pct * pct);
+            rb.transform.localScale = new(scale, scale, scale);
+        }
 
         private class ExpandingState : State
         {
@@ -56,14 +70,18 @@ namespace DarknestDungeon.Enemy
             public ExpandingState(StateMachine mgr) : base(mgr)
             {
                 timer = AddMod(new TimerModule(mgr, EXPANDING_TIME, StateId.Expanded));
-            }
-            public override bool Mobile => false;
 
-            protected override void Update()
-            {
-                var scale = Mathf.Pow(EXPANDED_SCALE, timer.ProgPct * timer.ProgPct);
-                Mgr.Vtb.rb.transform.localScale = new(scale, scale, scale);
+                var vtb = mgr.Vtb;
+                if (vtb.chargePending)
+                {
+                    // Launch in the knight's direction.
+                    var aVec = vtb.knight.transform.position - vtb.gameObject.transform.position;
+                    vtb.impulses.Add(new(aVec.normalized * ATTACK_DISTANCE / EXPANDING_TIME, EXPANDING_TIME));
+                    vtb.chargePending = false;
+                }
             }
+
+            protected override void Update() => Mgr.Vtb.SetScale(timer.ProgPct);
         }
 
         public static float EXPANDED_TIME = 1.1f;
@@ -97,11 +115,7 @@ namespace DarknestDungeon.Enemy
                 timer = AddMod(new TimerModule(mgr, RETRACTING_TIME, StateId.Idle));
             }
 
-            protected override void Update()
-            {
-                var scale = Mathf.Pow(EXPANDED_SCALE, Mathf.Sqrt(timer.RemainingPct));
-                Mgr.Vtb.rb.transform.localScale = new(scale, scale, scale);
-            }
+            protected override void Update() => Mgr.Vtb.SetScale(timer.RemainingPct);
 
             public override void Hit()
             {
@@ -110,7 +124,7 @@ namespace DarknestDungeon.Enemy
             }
         }
 
-        public static float RESPAWNING_TIME = 1.5f;
+        public static float RESPAWNING_TIME = 2f;
 
         // TODO: sprites
         private class RespawningState : State
@@ -151,6 +165,7 @@ namespace DarknestDungeon.Enemy
         public int origHealth;
         public Rigidbody2D rb;
         public BoxCollider2D b2d;
+        public GameObject knight;
         public Vector3 origPos;
         public Vector3 destination;
         public Vector2 origPos2d;
@@ -167,30 +182,37 @@ namespace DarknestDungeon.Enemy
 
             rb = GetComponent<Rigidbody2D>();
             b2d = GetComponent<BoxCollider2D>();
+            knight = GameManager.instance.hero_ctrl.gameObject;
 
             origPos = gameObject.transform.position;
             origPos2d = new(origPos.x, origPos.y);
             hm.SetAttr("invincible", true);
 
-            shuffleTimer = 0;
+            shuffleTimer = (SHUFFLE_TIMER + SHUFFLE_VARIANCE * Random.Range(0f, 1f)) * Random.Range(0f, 1f) - SHUFFLE_TIMER - SHUFFLE_VARIANCE;
             ShuffleDestination();
             sm = new(this);
         }
 
-        private static float SHUFFLE_TIMER = 2.5f;
+        private static float SHUFFLE_TIMER = 2.2f;
+        private static float DRIFT_SPEED = 0.15f;
+        private static float SHUFFLE_VARIANCE = 0.6f;
         private static float SHUFFLE_RADIUS = 0.65f;
 
         private void ShuffleDestination()
         {
             shuffleTimer -= Time.fixedDeltaTime;
-            if (shuffleTimer > 0) return;
+            if (shuffleTimer > 0)
+            {
+                destination += Quaternion.Euler(0, 0, Random.Range(0f, 360f)) * new Vector3(DRIFT_SPEED, 0, 0) * Time.fixedDeltaTime;
+                return;
+            }
 
-            shuffleTimer += SHUFFLE_TIMER;
+            shuffleTimer += SHUFFLE_TIMER + SHUFFLE_VARIANCE * Random.Range(0f, 1f);
             Vector3 oldDestination = new(destination.x, destination.y, destination.z);
             while (true)
             {
-                float radius = Mathf.Sqrt(Random.Range(0, 1)) * SHUFFLE_RADIUS;
-                destination = origPos + Quaternion.Euler(0, 0, Random.Range(0, 360)) * new Vector3(radius, 0, 0);
+                float radius = Mathf.Sqrt(Random.Range(0f, 1f)) * SHUFFLE_RADIUS;
+                destination = origPos + Quaternion.Euler(0, 0, Random.Range(0f, 360f)) * new Vector3(radius, 0, 0);
                 if (Vector3.Distance(destination, oldDestination) > SHUFFLE_RADIUS / 2)
                 {
                     destination2d = new(destination.x, destination.y);
@@ -199,7 +221,7 @@ namespace DarknestDungeon.Enemy
             }
         }
 
-        private static float IMPULSE_DISTANCE = 0.55f;
+        private static float IMPULSE_DISTANCE = 0.25f;
         private static float IMPULSE_DURATION_SECONDS = 0.1f;
 
         private record Impulse
@@ -225,13 +247,11 @@ namespace DarknestDungeon.Enemy
 
         private Vector2 pos2d => new(rb.position.x, rb.position.y);
 
-        private const float RECOVERY_TIME = 1.25f;
-
         private Vector2 Gravitate()
         {
             var dist = pos2d - destination2d;
             var dir = -dist;
-            return dir / RECOVERY_TIME;
+            return dir.normalized * DRIFT_SPEED * (dir.sqrMagnitude > 1.0f ? dir.magnitude : 1);
         }
 
         private void FixedUpdate()
