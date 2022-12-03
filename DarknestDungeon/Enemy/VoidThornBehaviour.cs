@@ -188,6 +188,7 @@ namespace DarknestDungeon.Enemy
 
         private void Awake()
         {
+            gameObject.tag = "Spell Vulnerable";
             hm = GetComponent<HealthManager>();
             origHealth = hm.hp;
             hm.OnDeath += () => sm.ChangeState(StateId.Respawning);

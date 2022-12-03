@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 577398763557804939}
   m_Layer: 19
   m_Name: VoidTorchSource
-  m_TagString: Untagged
+  m_TagString: Spell Vulnerable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -207,4 +207,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flameId: 
   voidFlameObj: {fileID: 4928986711196750220}
-  nailZoneObj: {fileID: 0}
