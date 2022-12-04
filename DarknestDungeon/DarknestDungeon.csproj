@@ -354,4 +354,5 @@
     <None Include=".gitignore" />
     <None Include="LocalOverrides.targets" />
   </ItemGroup>
+  <ProjectExtensions><VisualStudio><UserProperties resources_4data_4prompts_1json__JsonSchema="https://datahubproject.io/schemas/datahub_ingestion_schema.json" /></VisualStudio></ProjectExtensions>
 </Project>

@@ -25,6 +25,9 @@ namespace DarknestDungeon
         [Preload("Town", "_SceneManager")]
         public GameObject SceneManager { get; private set; }
 
+        [Preload("Abyss_15", "shadow_gate (2)")]
+        public GameObject ShadowGate { get; private set; }
+
         [Preload("Abyss_15", "TileMap")]
         public GameObject TileMap { get; private set; }
 
