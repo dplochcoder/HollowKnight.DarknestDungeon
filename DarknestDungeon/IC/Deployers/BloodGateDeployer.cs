@@ -70,7 +70,7 @@ namespace DarknestDungeon.IC.Deployers
     public record BloodGateDeployer : Deployer
     {
         public override GameObject Instantiate() {
-            var obj = Object.Instantiate(Preloader.Instance.AbyssTendrils);
+            var obj = Object.Instantiate(Preloader.Instance.ShadowGate);
             obj.AddComponent<BloodGateBehaviour>();
             return obj;
         }
