@@ -1,4 +1,7 @@
-﻿using ItemChanger;
+﻿using GlobalEnums;
+using HutongGames.PlayMaker;
+using ItemChanger;
+using Modding;
 using System.Collections;
 using System.Reflection;
 using UnityEngine;
@@ -9,11 +12,12 @@ namespace DarknestDungeon.IC.Deployers
     {
         private GameObject knight;
         private HeroController hc;
+        public Vector2 origPos;
 
-        private float leftX => gameObject.transform.position.x - 0.55f;
-        private float rightX => gameObject.transform.position.x + 0.55f;
-        private float botY => gameObject.transform.position.y - 2.75f;
-        private float topY => gameObject.transform.position.y + 2.75f;
+        private float leftX => origPos.x - 0.25f;
+        private float rightX => origPos.x + 0.25f;
+        private float botY => origPos.y - 2.75f;
+        private float topY => origPos.y + 2.75f;
 
         private enum Loc
         {
@@ -39,31 +43,51 @@ namespace DarknestDungeon.IC.Deployers
         {
             knight = GameObject.Find("Knight");
             hc = knight.GetComponent<HeroController>();
+
+            var pos = gameObject.transform.position;
+            gameObject.transform.position = new(pos.x + 0.75f, pos.y - 2.29f, 2.51f);
         }
+
+        private void Start() => gameObject.transform.SetPositionZ(2.51f);
 
         private Loc prevPrevLoc = Loc.Unknown;
         private Loc prevLoc = Loc.Unknown;
 
-        private MethodInfo die = typeof(HeroController).GetMethod("Die", BindingFlags.NonPublic | BindingFlags.Instance);
+        private MethodInfo dieMethod = typeof(HeroController).GetMethod("Die", BindingFlags.NonPublic | BindingFlags.Instance);
+        private MethodInfo onTakenDamageMethod = typeof(HeroController).GetMethod("OnTakenDamage", BindingFlags.NonPublic | BindingFlags.Instance);
 
         private void Update()
         {
             Loc newLoc = GetHeroLoc();
             if (newLoc != prevLoc)
             {
-                if (prevLoc == Loc.Mid && IsLeftOrRight(prevPrevLoc) && newLoc != prevPrevLoc)
+                if (IsLeftOrRight(newLoc) && ((prevLoc == Loc.Mid && IsLeftOrRight(prevPrevLoc) && newLoc != prevPrevLoc)
+                    || IsLeftOrRight(prevLoc)))
                 {
-                    // Take health from player. TODO: Play sound.
-                    PlayerData.instance.TakeHealth(PlayerData.instance.GetBool("overcharmed") ? 2 : 1);
-                    if (PlayerData.instance.GetInt("health") <= 0)
-                    {
-                        StartCoroutine((IEnumerator)die.Invoke(hc, new object[] { }));
-                    }
+                    // Force damage to be taken, without any recoil.
+                    On.HeroController.CanTakeDamage += OverrideCanTakeDamage;
+                    ModHooks.AfterTakeDamageHook += OverrideAfterTakeDamage;
+                    On.HeroController.DieFromHazard += OverrideDieFromHazard;
+
+                    hc.TakeDamage(gameObject, CollisionSide.other, 1, 5);
+
+                    On.HeroController.CanTakeDamage -= OverrideCanTakeDamage;
+                    ModHooks.AfterTakeDamageHook -= OverrideAfterTakeDamage;
+                    On.HeroController.DieFromHazard -= OverrideDieFromHazard;
                 }
 
                 prevPrevLoc = prevLoc;
                 prevLoc = newLoc;
             }
+        }
+
+        private bool OverrideCanTakeDamage(On.HeroController.orig_CanTakeDamage orig, HeroController self) => true;
+
+        private int OverrideAfterTakeDamage(int hazardType, int damage) => 1;
+
+        private IEnumerator OverrideDieFromHazard(On.HeroController.orig_DieFromHazard orig, HeroController self, HazardType type, float angle)
+        {
+            yield break;
         }
     }
 
@@ -71,7 +95,8 @@ namespace DarknestDungeon.IC.Deployers
     {
         public override GameObject Instantiate() {
             var obj = Object.Instantiate(Preloader.Instance.ShadowGate);
-            obj.AddComponent<BloodGateBehaviour>();
+            var bgb = obj.AddComponent<BloodGateBehaviour>();
+            bgb.origPos = new(X, Y);
             return obj;
         }
     }

@@ -179,7 +179,7 @@ MonoBehaviour:
   entryPoint: right2
   alwaysUnloadUnusedAssets: 0
   nonHazardGate: 0
-  respawnMarker: {fileID: 0}
+  respawnMarker: {fileID: 1921770990}
   atmosSnapshot: {fileID: 0}
   enviroSnapshot: {fileID: 0}
   actorSnapshot: {fileID: 0}
@@ -7856,7 +7856,7 @@ MonoBehaviour:
   entryPoint: left1
   alwaysUnloadUnusedAssets: 0
   nonHazardGate: 0
-  respawnMarker: {fileID: 0}
+  respawnMarker: {fileID: 655926923}
   atmosSnapshot: {fileID: 0}
   enviroSnapshot: {fileID: 0}
   actorSnapshot: {fileID: 0}

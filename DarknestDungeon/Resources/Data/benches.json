@@ -12,5 +12,19 @@
       "y": -0.68,
       "z": 0.0
     }
+  },
+  "Void_Main": {
+    "name": "Hub",
+    "areaName": "Void",
+    "sceneName": "VoidMainHub",
+    "respawnMarker": "BenchDeployer-VoidDescent05_Bench-(40,32)",
+    "respawnType": 1,
+    "mapZone": "ABYSS",
+    "style": "Right",
+    "specificOffset": {
+      "x": 0.0,
+      "y": -0.68,
+      "z": 0.0
+    }
   }
 }

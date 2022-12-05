@@ -656,7 +656,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageDealt: 1
-  hazardType: 4
+  hazardType: 5
   shadowDashHazard: 0
   resetOnEnable: 0
 --- !u!1 &152043237
@@ -23382,7 +23382,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageDealt: 1
-  hazardType: 4
+  hazardType: 5
   shadowDashHazard: 0
   resetOnEnable: 0
 --- !u!61 &854237363

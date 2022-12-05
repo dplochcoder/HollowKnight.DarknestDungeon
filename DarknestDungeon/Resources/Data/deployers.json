@@ -101,5 +101,16 @@
       "Y": 8.4,
       "Test": null
     }
+  },
+  "VoidMainHub": {
+    "Bench": {
+      "$type": "BenchRando.IC.BenchDeployer, BenchRando",
+      "NearStyle": "right",
+      "FarStyle": "right",
+      "SceneName": "VoidMainHub",
+      "X": 40.0,
+      "Y": 32.4,
+      "Test": null
+    }
   }
 }
