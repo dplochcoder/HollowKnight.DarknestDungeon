@@ -1,41 +1,70 @@
-﻿using Benchwarp;
+﻿using Newtonsoft.Json;
+using PurenailCore.SystemUtil;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace DarknestDungeon.IC
 {
-    public class BenchesModule : AbstractDataModule<BenchesModule, SortedDictionary<string, Bench>>
+    public record BenchData
     {
-        private Bench waterwaysCopy;
+        public Benchwarp.Bench Bench;
+        public BenchRando.IC.BenchDeployer Deployer;
+
+        // BenchDeployer-VoidDescent05_Bench-(10,8)
+        [JsonIgnore]
+        public string RespawnMarker => $"BenchDeployer-{Deployer.SceneName}-({(int)Deployer.X},{(int)Deployer.Y})";
+
+        public void Update()
+        {
+            Bench = new(Bench.name, Bench.areaName, Deployer.SceneName, RespawnMarker,
+                Bench.respawnType, Bench.mapZone, Bench.style, Bench.specificOffset);
+        }
+    }
+
+    public class BenchesModule : AbstractDataModule<BenchesModule, SortedDictionary<string, BenchData>>
+    {
+        private Benchwarp.Bench waterwaysCopy;
 
         protected override string JsonName() => "benches";
 
         public override void Initialize()
         {
             base.Initialize();
-            var b = Bench.baseBenches.Where(b => b.name == "Waterways").Single();
+            var b = Benchwarp.Bench.baseBenches.Where(b => b.name == "Waterways").Single();
             waterwaysCopy = new(b.name, "City", b.sceneName, b.respawnMarker, b.respawnType, b.mapZone, b.style, b.specificOffset);
 
-            Events.BenchInjectors += YieldVoidBenches;
-            Events.BenchInjectors += YieldWaterwaysBench;
-            Events.BenchSuppressors += IsWaterwaysAreaBench;
+            Benchwarp.Events.BenchInjectors += YieldVoidBenches;
+            Benchwarp.Events.BenchInjectors += YieldWaterwaysBench;
+            Benchwarp.Events.BenchSuppressors += IsWaterwaysAreaBench;
+
+            foreach (var benchData in Data.Values)
+            {
+                ItemChanger.Events.AddSceneChangeEdit(benchData.Deployer.SceneName, benchData.Deployer.OnSceneChange);
+            }
         }
+
+        protected override void Update(SortedDictionary<string, BenchData> data) => data.Values.ForEach(bd => bd.Update());
 
         public override void Unload()
         {
-            Events.BenchInjectors -= YieldVoidBenches;
-            Events.BenchInjectors -= YieldWaterwaysBench;
-            Events.BenchSuppressors -= IsWaterwaysAreaBench;
+            Benchwarp.Events.BenchInjectors -= YieldVoidBenches;
+            Benchwarp.Events.BenchInjectors -= YieldWaterwaysBench;
+            Benchwarp.Events.BenchSuppressors -= IsWaterwaysAreaBench;
+
+            foreach (var benchData in Data.Values)
+            {
+                ItemChanger.Events.RemoveSceneChangeEdit(benchData.Deployer.SceneName, benchData.Deployer.OnSceneChange);
+            }
             base.Unload();
         }
 
-        private IEnumerable<Bench> YieldVoidBenches() => Data.Values;
+        private IEnumerable<Benchwarp.Bench> YieldVoidBenches() => Data.Values.Select(bd => bd.Bench);
 
-        private IEnumerable<Bench> YieldWaterwaysBench()
+        private IEnumerable<Benchwarp.Bench> YieldWaterwaysBench()
         {
             yield return waterwaysCopy;
         }
 
-        private bool IsWaterwaysAreaBench(Bench bench) => bench.areaName == "Waterways";
+        private bool IsWaterwaysAreaBench(Benchwarp.Bench bench) => bench.areaName == "Waterways";
     }
 }

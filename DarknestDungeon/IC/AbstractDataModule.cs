@@ -16,12 +16,19 @@ namespace DarknestDungeon.IC
             }
         }
 
-        private void Load() => _data ??= JsonUtil.DeserializeEmbedded<T>($"DarknestDungeon.Resources.Data.{JsonName()}.json");
+        private void Load()
+        {
+            _data ??= JsonUtil.DeserializeEmbedded<T>($"DarknestDungeon.Resources.Data.{JsonName()}.json");
+            Update(_data);
+        }
+
+        protected virtual void Update(T data) { }
 
         public static void UpdateJson(string root)
         {
             D mod = new();
             var path = Path.Combine(root, $"DarknestDungeon/Resources/Data/{mod.JsonName()}.json");
+            mod.Load();
             File.Delete(path);
             JsonUtil.Serialize(mod.Data, path);
         }
