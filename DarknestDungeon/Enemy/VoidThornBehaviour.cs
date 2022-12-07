@@ -216,7 +216,7 @@ namespace DarknestDungeon.Enemy
         private static float DRIFT_SPEED = 0.15f;
         private static float DRIFT_ACCEL = 0.4f;
         private static float SHUFFLE_VARIANCE = 0.6f;
-        private static float SHUFFLE_RADIUS = 0.65f;
+        private static float SHUFFLE_RADIUS = 0.55f;
 
         private void ShuffleDestination()
         {
