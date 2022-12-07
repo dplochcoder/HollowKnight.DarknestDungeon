@@ -69,6 +69,8 @@ namespace DarknestDungeon.Enemy
             gameObject.transform.localScale = new(scale, scale, scale);
         }
 
+        private Vector3 retractTarget;
+
         private class ExpandingState : State
         {
             public TimerModule timer;
@@ -82,6 +84,7 @@ namespace DarknestDungeon.Enemy
                 {
                     // Launch in the knight's direction.
                     var aVec = vtb.knight.transform.position - vtb.gameObject.transform.position;
+                    vtb.retractTarget = aVec.normalized * 0.2f + vtb.gameObject.transform.position;
                     vtb.impulses.Add(new(aVec.normalized * ATTACK_DISTANCE / EXPANDING_TIME, EXPANDING_TIME));
                     vtb.chargePending = false;
                 }
@@ -123,6 +126,10 @@ namespace DarknestDungeon.Enemy
             public RetractingState(StateMachine mgr) : base(mgr)
             {
                 timer = AddMod(new TimerModule(mgr, RETRACTING_TIME, StateId.Idle));
+
+                var vtb = mgr.Vtb;
+                var rVec = vtb.retractTarget - vtb.gameObject.transform.position;
+                vtb.impulses.Add(new(rVec / RETRACTING_TIME, RETRACTING_TIME));
             }
 
             protected override void Update() => Mgr.Vtb.SetScale(timer.RemainingPct);
