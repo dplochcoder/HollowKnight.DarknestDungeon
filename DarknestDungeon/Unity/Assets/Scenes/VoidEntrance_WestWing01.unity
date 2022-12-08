@@ -1104,6 +1104,50 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &208601960
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 208601961}
+  - component: {fileID: 208601962}
+  m_Layer: 0
+  m_Name: hrm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &208601961
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 208601960}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4, y: -0.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1470551495}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &208601962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 208601960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b740941a83cf17343b19f8559dc97b50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  respawnFacingRight: 1
 --- !u!1 &221596714
 GameObject:
   m_ObjectHideFlags: 0
@@ -1131,7 +1175,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 237819475}
+  - {fileID: 1470551495}
   - {fileID: 1886254983}
   m_Father: {fileID: 0}
   m_RootOrder: 4
@@ -1218,11 +1262,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!4 &237819475 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8746838798872071239, guid: cd393db3c5289b84e9ba8f9667f9f1b9, type: 3}
-  m_PrefabInstance: {fileID: 8746838798772673044}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &252688008
 GameObject:
   m_ObjectHideFlags: 0
@@ -13661,7 +13700,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageDealt: 1
-  hazardType: 5
+  hazardType: 2
   shadowDashHazard: 1
   resetOnEnable: 0
 --- !u!61 &500679856
@@ -14267,7 +14306,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageDealt: 1
-  hazardType: 5
+  hazardType: 2
   shadowDashHazard: 1
   resetOnEnable: 0
 --- !u!61 &552466028
@@ -17742,7 +17781,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageDealt: 1
-  hazardType: 5
+  hazardType: 2
   shadowDashHazard: 1
   resetOnEnable: 0
 --- !u!61 &1364263769
@@ -17875,6 +17914,96 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1470551494
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1470551495}
+  - component: {fileID: 1470551497}
+  - component: {fileID: 1470551496}
+  m_Layer: 0
+  m_Name: left1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1470551495
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1470551494}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.5, y: 45.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 208601961}
+  m_Father: {fileID: 221596715}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1470551496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1470551494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1935117cb984ef84ea8efb90e8a04e0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isADoor: 0
+  dontWalkOutOfDoor: 0
+  entryDelay: 0
+  entryOffset: {x: 0, y: 0}
+  alwaysEnterRight: 0
+  alwaysEnterLeft: 0
+  hardLandOnExit: 0
+  targetScene: VoidEntrance_WestWing02
+  entryPoint: right1
+  alwaysUnloadUnusedAssets: 0
+  nonHazardGate: 0
+  respawnMarker: {fileID: 208601962}
+  atmosSnapshot: {fileID: 0}
+  enviroSnapshot: {fileID: 0}
+  actorSnapshot: {fileID: 0}
+  musicSnapshot: {fileID: 0}
+  sceneLoadVisualization: 0
+  customFade: 0
+  forceWaitFetch: 0
+--- !u!61 &1470551497
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1470551494}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 5}
+  m_EdgeRadius: 0
 --- !u!1 &1485257677
 GameObject:
   m_ObjectHideFlags: 0
@@ -18788,7 +18917,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageDealt: 1
-  hazardType: 5
+  hazardType: 2
   shadowDashHazard: 1
   resetOnEnable: 0
 --- !u!61 &1748718495
@@ -18924,7 +19053,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageDealt: 1
-  hazardType: 5
+  hazardType: 2
   shadowDashHazard: 1
   resetOnEnable: 0
 --- !u!61 &1777201374
@@ -19830,68 +19959,3 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1001 &8746838798772673044
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 221596715}
-    m_Modifications:
-    - target: {fileID: 8746838798872071232, guid: cd393db3c5289b84e9ba8f9667f9f1b9, type: 3}
-      propertyPath: entryPoint
-      value: right1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8746838798872071232, guid: cd393db3c5289b84e9ba8f9667f9f1b9, type: 3}
-      propertyPath: targetScene
-      value: VoidEntrance_WestWing02
-      objectReference: {fileID: 0}
-    - target: {fileID: 8746838798872071238, guid: cd393db3c5289b84e9ba8f9667f9f1b9, type: 3}
-      propertyPath: m_Name
-      value: left1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8746838798872071239, guid: cd393db3c5289b84e9ba8f9667f9f1b9, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8746838798872071239, guid: cd393db3c5289b84e9ba8f9667f9f1b9, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8746838798872071239, guid: cd393db3c5289b84e9ba8f9667f9f1b9, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 45.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8746838798872071239, guid: cd393db3c5289b84e9ba8f9667f9f1b9, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8746838798872071239, guid: cd393db3c5289b84e9ba8f9667f9f1b9, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8746838798872071239, guid: cd393db3c5289b84e9ba8f9667f9f1b9, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8746838798872071239, guid: cd393db3c5289b84e9ba8f9667f9f1b9, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8746838798872071239, guid: cd393db3c5289b84e9ba8f9667f9f1b9, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8746838798872071239, guid: cd393db3c5289b84e9ba8f9667f9f1b9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8746838798872071239, guid: cd393db3c5289b84e9ba8f9667f9f1b9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8746838798872071239, guid: cd393db3c5289b84e9ba8f9667f9f1b9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: cd393db3c5289b84e9ba8f9667f9f1b9, type: 3}
