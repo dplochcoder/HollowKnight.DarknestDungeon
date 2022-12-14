@@ -49,8 +49,11 @@ namespace DarknestDungeon.Lib
                 int runSize = 0;
                 for (int y = height - 1; y >= 0; y--)
                 {
-                    if (g.Filled(x, y)) ++runSize;
+                    bool filled = g.Filled(x, y);
+                    claimed[x, y] = !filled;
+                    if (filled) ++runSize;
                     else runSize = 0;
+
                     yRuns[x, y] = runSize;
                 }
             }
@@ -61,12 +64,10 @@ namespace DarknestDungeon.Lib
                 {
                     if (g.Filled(x, y)) ++runSize;
                     else runSize = 0;
+
                     xRuns[x, y] = runSize;
                 }
             }
-            for (int x = 0; x < width; x++)
-                for (int y = 0; y < height; y++)
-                    claimed[x, y] = !g.Filled(x, y);
         }
 
         public bool NextRect(out Rect rect)
