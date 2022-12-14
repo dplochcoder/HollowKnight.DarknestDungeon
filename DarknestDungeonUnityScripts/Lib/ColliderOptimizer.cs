@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DarknestDungeon.Lib
 {
@@ -15,10 +12,18 @@ namespace DarknestDungeon.Lib
 
     public class Rect
     {
-        public int X;
-        public int Y;
-        public int W;
-        public int H;
+        public readonly int X;
+        public readonly int Y;
+        public readonly int W;
+        public readonly int H;
+
+        public Rect(int x, int y, int w, int h)
+        {
+            X = x;
+            Y = y;
+            W = w;
+            H = h;
+        }
     }
 
     internal class CoverageRuns
@@ -87,8 +92,23 @@ namespace DarknestDungeon.Lib
 
         private Rect BuildCurRect()
         {
-            // FIXME
-            return null;
+            // Expand outwards until we can't anymore.
+            int w = 1;
+            int h = 1;
+            int maxW = xRuns[cX, cY];
+            int maxH = yRuns[cX, cY];
+            while ((w < maxW && !claimed[cX + w, cY]) || h < maxH)
+            {
+                if (w < maxW && !claimed[cX + w, cY]) maxH = Math.Min(maxH, yRuns[cX + w, cY]);
+                if (h < maxH) maxW = Math.Min(maxW, xRuns[cX, cY + h]);
+                if (w < maxW && !claimed[cX + w, cY]) ++w;
+                if (h < maxH) ++h;
+            }
+
+            for (int dx = 0; dx < w; dx++)
+                for (int dy = 0; dy < h; dy++)
+                    claimed[cX + dx, cY + dy] = true;
+            return new Rect(cX, cY, w, h);
         }
     }
 
