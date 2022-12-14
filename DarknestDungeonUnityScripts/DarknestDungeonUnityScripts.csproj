@@ -51,8 +51,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Lib\ColliderOptimizer.cs" />
     <Compile Include="Scripts\AbyssTendrils.cs" />
     <Compile Include="Scripts\BloodGate.cs" />
+    <Compile Include="Scripts\TilemapCompiler.cs" />
     <Compile Include="Scripts\MultiHitResponder.cs" />
     <Compile Include="Scripts\VoidSanctumEnemyDreamnailReaction.cs" />
     <Compile Include="Scripts\VoidThornBehaviour.cs" />
@@ -65,7 +67,7 @@
     <Compile Include="Scripts\SoulTotem.cs" />
     <Compile Include="Scripts\DiveFloor.cs" />
     <Compile Include="Scripts\PatchSceneManager.cs" />
-    <Compile Include="Scripts\PatchTilemapInfo.cs" />
+    <Compile Include="Scripts\PatchTilemap.cs" />
     <Compile Include="Scripts\PatchPlayMakerManager.cs" />
   </ItemGroup>
   <ItemGroup>
