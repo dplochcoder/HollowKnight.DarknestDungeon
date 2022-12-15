@@ -123,9 +123,9 @@ namespace DarknestDungeon.Lib
         }
     }
 
-    public static class ColliderOptimizer
+    public static class TilemapCovering
     {
-        public static List<Rect> Covering(Grid grid)
+        public static List<Rect> ComputeCovering(Grid grid)
         {
             var runs = new CoverageRuns(grid);
             List<Rect> result = new List<Rect>();

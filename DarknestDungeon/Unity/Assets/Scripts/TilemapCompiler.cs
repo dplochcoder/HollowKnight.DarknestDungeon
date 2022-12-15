@@ -3,6 +3,7 @@ using UnityEngine;
 using DarknestDungeon.Lib;
 using System.Collections.Generic;
 using UnityEditor.SceneManagement;
+using UnityEngine.SceneManagement;
 
 namespace DarknestDungeon.Scripts
 {
@@ -40,9 +41,10 @@ namespace DarknestDungeon.Scripts
             colliders.name = "Colliders";
             colliders.transform.SetParent(compiled.transform);
 
-            var grid = new TilemapGrid(gameObject.GetComponent<Tilemap>());
+            var tilemap = gameObject.GetComponent<Tilemap>();
+            var grid = new TilemapGrid(tilemap);
             int i = 0;
-            foreach (var rect in ColliderOptimizer.Covering(grid))
+            foreach (var rect in TilemapCovering.ComputeCovering(grid))
             {
                 GameObject go = new GameObject();
                 go.name = $"Collider {++i}";
@@ -55,7 +57,14 @@ namespace DarknestDungeon.Scripts
                 go.transform.position = rect.Center();
             }
 
-            EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+            System.Random r = new System.Random();
+            var w = tilemap.size.x;
+            var h = tilemap.size.y;
+            for (int x = 0; x < w; x++)
+                for (int y = 0; y < h; y++)
+                    DefaultTilesets.UpdateTile(r, tilemap, x, y);
+
+            EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
         }
     }
 }
