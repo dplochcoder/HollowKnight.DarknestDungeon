@@ -2,6 +2,7 @@
 using UnityEngine;
 using DarknestDungeon.Lib;
 using System.Collections.Generic;
+using UnityEditor.SceneManagement;
 
 namespace DarknestDungeon.Scripts
 {

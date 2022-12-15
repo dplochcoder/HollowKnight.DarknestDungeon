@@ -57,8 +57,48 @@
     <EmbeddedResource Include="Resources\**\*.json" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Remove="Unity\Assets\Lib\ColliderOptimizer.cs" />
+    <EmbeddedResource Remove="Unity\Assets\Scripts\AbyssTendrils.cs" />
+    <EmbeddedResource Remove="Unity\Assets\Scripts\BloodGate.cs" />
+    <EmbeddedResource Remove="Unity\Assets\Scripts\DiveFloor.cs" />
+    <EmbeddedResource Remove="Unity\Assets\Scripts\HealthManager.cs" />
+    <EmbeddedResource Remove="Unity\Assets\Scripts\LifebloodCocoon.cs" />
+    <EmbeddedResource Remove="Unity\Assets\Scripts\MultiHitResponder.cs" />
+    <EmbeddedResource Remove="Unity\Assets\Scripts\PatchPlayMakerManager.cs" />
+    <EmbeddedResource Remove="Unity\Assets\Scripts\PatchSceneManager.cs" />
+    <EmbeddedResource Remove="Unity\Assets\Scripts\PatchSceneParticleManager.cs" />
+    <EmbeddedResource Remove="Unity\Assets\Scripts\PatchTilemap.cs" />
+    <EmbeddedResource Remove="Unity\Assets\Scripts\SoulTotem.cs" />
+    <EmbeddedResource Remove="Unity\Assets\Scripts\TilemapCompiler.cs" />
+    <EmbeddedResource Remove="Unity\Assets\Scripts\TinkEffect.cs" />
+    <EmbeddedResource Remove="Unity\Assets\Scripts\VoidSanctumEnemyDreamnailReaction.cs" />
+    <EmbeddedResource Remove="Unity\Assets\Scripts\VoidThornBehaviour.cs" />
+    <EmbeddedResource Remove="Unity\Assets\Scripts\VoidTorchReceiver.cs" />
+    <EmbeddedResource Remove="Unity\Assets\Scripts\VoidTorchSource.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="build.yml" />
     <None Remove="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Unity\Assets\Lib\ColliderOptimizer.cs" />
+    <Compile Include="Unity\Assets\Scripts\AbyssTendrils.cs" />
+    <Compile Include="Unity\Assets\Scripts\BloodGate.cs" />
+    <Compile Include="Unity\Assets\Scripts\DiveFloor.cs" />
+    <Compile Include="Unity\Assets\Scripts\HealthManager.cs" />
+    <Compile Include="Unity\Assets\Scripts\LifebloodCocoon.cs" />
+    <Compile Include="Unity\Assets\Scripts\MultiHitResponder.cs" />
+    <Compile Include="Unity\Assets\Scripts\PatchPlayMakerManager.cs" />
+    <Compile Include="Unity\Assets\Scripts\PatchSceneManager.cs" />
+    <Compile Include="Unity\Assets\Scripts\PatchSceneParticleManager.cs" />
+    <Compile Include="Unity\Assets\Scripts\PatchTilemap.cs" />
+    <Compile Include="Unity\Assets\Scripts\SoulTotem.cs" />
+    <Compile Include="Unity\Assets\Scripts\TilemapCompiler.cs" />
+    <Compile Include="Unity\Assets\Scripts\TinkEffect.cs" />
+    <Compile Include="Unity\Assets\Scripts\VoidSanctumEnemyDreamnailReaction.cs" />
+    <Compile Include="Unity\Assets\Scripts\VoidThornBehaviour.cs" />
+    <Compile Include="Unity\Assets\Scripts\VoidTorchReceiver.cs" />
+    <Compile Include="Unity\Assets\Scripts\VoidTorchSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp">

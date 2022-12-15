@@ -202,8 +202,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 4928986712075211981}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -217467231, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Script: {fileID: 11500000, guid: f691e37a82176a449b64a68292f4fef2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   flameId: 
-  voidFlameObj: {fileID: 4928986711196750220}
+  voidFlameObj: {fileID: 0}

@@ -11,13 +11,13 @@ GameObject:
   - component: {fileID: 2813081380216493316}
   - component: {fileID: 6324474286942725233}
   - component: {fileID: 6380541230786631867}
+  - component: {fileID: 8844338798457027905}
   - component: {fileID: 2760611843264175184}
   - component: {fileID: 9103600452904016291}
   - component: {fileID: 3653311363514396871}
-  - component: {fileID: 1409938038107235707}
-  - component: {fileID: 8844338798457027905}
-  - component: {fileID: 7289414593419521353}
   - component: {fileID: 4377850748624531829}
+  - component: {fileID: 1409938038107235707}
+  - component: {fileID: 7289414593419521353}
   m_Layer: 11
   m_Name: VoidThorn
   m_TagString: Spell Vulnerable
@@ -116,6 +116,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.1129284, y: 2.0370893}
   m_EdgeRadius: 0
+--- !u!114 &8844338798457027905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6875889309736456117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06cf67ba32050e545b11d5f8da11945c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2760611843264175184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,9 +137,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 6875889309736456117}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 827209783, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Script: {fileID: 11500000, guid: 23870f3b39a055742913a340e9c96538, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hp: 40
+  hasSpecialDeath: 0
+  deathReset: 0
+  damageOverride: 0
+  isDead: 0
+  smallGeoDrops: 0
+  mediumGeoDrops: 0
+  largeGeoDrops: 0
 --- !u!114 &9103600452904016291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -158,6 +178,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shader: Sprites/Default
   Scale: 1
+--- !u!114 &4377850748624531829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6875889309736456117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bf14eb54eee7624482e3eec57331915, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1409938038107235707
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -167,27 +199,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6875889309736456117}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1745437014, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hp: 40
-  hasSpecialDeath: 0
-  deathReset: 0
-  damageOverride: 0
-  isDead: 0
-  smallGeoDrops: 0
-  mediumGeoDrops: 0
-  largeGeoDrops: 0
---- !u!114 &8844338798457027905
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6875889309736456117}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -212000298, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Script: {fileID: 11500000, guid: 6b84aa1c8c1961642bfbd2a86170a89e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   blockEffect: {fileID: 0}
@@ -201,19 +213,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6875889309736456117}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -191061639, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &4377850748624531829
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6875889309736456117}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1856530286, guid: ea0c32bdbeddbe543a5e7a85545c8753, type: 3}
+  m_Script: {fileID: 11500000, guid: 0da4befa4d6289349acdee45a259323b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   convo: VOID_THORN_DREAM
