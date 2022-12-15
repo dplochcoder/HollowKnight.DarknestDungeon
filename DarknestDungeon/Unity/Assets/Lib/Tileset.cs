@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEditor;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -54,11 +52,26 @@ namespace DarknestDungeon.Lib
             }
         }
 
+        // Prereq: tile is filled
         public static bool IsFilled(this TileAdjacency adj, Tilemap tilemap, int x, int y)
         {
-            int nx = x + adj.DeltaX();
-            int ny = y + adj.DeltaY();
-            return nx < 0 || ny < 0 || nx >= tilemap.size.x || ny >= tilemap.size.y || tilemap.GetTile(new Vector3Int(nx, ny, 0)) != null;
+            int dx = adj.DeltaX();
+            int dy = adj.DeltaY();
+            int nx = x + dx;
+            int ny = y + dy;
+            if (nx < 0 || nx >= tilemap.size.x)
+            {
+                if (dy == 0 || ny < 0 || ny >= tilemap.size.y) return true;
+                return tilemap.IsFilled(x, ny);
+            }
+            else if (ny < 0 || ny >= tilemap.size.y)
+            {
+                return dx == 0 || tilemap.IsFilled(nx, y);
+            }
+            else
+            {
+                return tilemap.IsFilled(nx, ny);
+            }
         }
 
         private static readonly List<TileAdjacency> ALL = new List<TileAdjacency>()
@@ -80,6 +93,8 @@ namespace DarknestDungeon.Lib
                 if (adj.IsFilled(tilemap, x, y)) yield return adj;
             }
         }
+
+        public static bool IsFilled(this Tilemap tilemap, int x, int y) => tilemap.GetTile(new Vector3Int(x, y, 0)) != null;
     }
 
     public class Tileset
@@ -131,7 +146,9 @@ namespace DarknestDungeon.Lib
 
             if (chosenId != -1)
             {
-                tilemap.SetTile(new Vector3Int(x, y, 0), AssetDatabase.LoadAssetAtPath($"Assets/Sprites/{spriteFolder}/{chosenId}.asset", typeof(Tile)) as TileBase);
+#if UNITY_EDITOR
+                tilemap.SetTile(new Vector3Int(x, y, 0), UnityEditor.AssetDatabase.LoadAssetAtPath($"Assets/Sprites/{spriteFolder}/{chosenId}.asset", typeof(Tile)) as TileBase);
+#endif
             }
         }
     }
@@ -156,9 +173,11 @@ namespace DarknestDungeon.Lib
             var sprite = tilemap.GetSprite(new Vector3Int(x, y, 0));
             if (sprite == null) return;
 
-            var path = AssetDatabase.GetAssetPath(sprite);
+#if UNITY_EDITOR
+            var path = UnityEditor.AssetDatabase.GetAssetPath(sprite);
             var folder = path.Substring(ASSET_PREFIX.Length, path.LastIndexOf("/") - ASSET_PREFIX.Length);
             if (tilesets.TryGetValue(folder, out var tileset)) tileset.UpdateTile(r, tilemap, folder, x, y);
+#endif
         }
 
         static DefaultTilesets()
@@ -176,7 +195,51 @@ namespace DarknestDungeon.Lib
             templeBrick.AddTileId(9, 1, LEFT, DOWN_LEFT, DOWN, DOWN_RIGHT, RIGHT, UP);
             templeBrick.AddTileId(10, 1, LEFT, DOWN_LEFT, DOWN, DOWN_RIGHT, RIGHT);
             templeBrick.AddTileId(11, 1, LEFT, DOWN_LEFT, DOWN);
-            // FIXME: Do more
+            templeBrick.AddTileId(12, 1, UP, DOWN);
+            templeBrick.AddTileId(13, 1, UP, RIGHT, DOWN);
+            templeBrick.AddTileId(14, 1, UP, LEFT, RIGHT, DOWN);
+            templeBrick.AddTileId(15, 1, UP, LEFT, DOWN);
+            templeBrick.AddTileId(16, 1, UP, UP, RIGHT, DOWN_RIGHT, DOWN);
+            templeBrick.AddTileId(17, 1, UP, UP_RIGHT, RIGHT, DOWN_RIGHT, DOWN, DOWN_LEFT, LEFT);
+            templeBrick.AddTileId(18, 1, UP, UP_LEFT, LEFT, DOWN_LEFT, DOWN, DOWN_RIGHT, RIGHT);
+            templeBrick.AddTileId(19, 1, UP, LEFT, DOWN_LEFT, DOWN);
+            templeBrick.AddTileId(20, 1, UP, UP_RIGHT, RIGHT, DOWN_RIGHT, DOWN);
+            templeBrick.AddTileId(21, 1, UP, UP_RIGHT, RIGHT, DOWN, DOWN_LEFT, LEFT);
+            templeBrick.AddTileId(22, 1, RIGHT, UP, UP_LEFT, LEFT, DOWN_LEFT, DOWN);
+            templeBrick.AddTileId(23, 1, UP);
+            templeBrick.AddTileId(24, 1, UP, RIGHT);
+            templeBrick.AddTileId(25, 1, LEFT, UP, RIGHT);
+            templeBrick.AddTileId(26, 1, LEFT, UP);
+            templeBrick.AddTileId(27, 1, UP, UP_RIGHT, RIGHT, DOWN);
+            templeBrick.AddTileId(28, 1, LEFT, UP_LEFT, UP, UP_RIGHT, RIGHT, DOWN_RIGHT, DOWN);
+            templeBrick.AddTileId(29, 1, RIGHT, UP_RIGHT, UP, UP_LEFT, LEFT, DOWN_LEFT, DOWN);
+            templeBrick.AddTileId(30, 1, DOWN, UP, UP_LEFT, LEFT);
+            templeBrick.AddTileId(31, 1, LEFT, UP, UP_RIGHT, RIGHT, DOWN_RIGHT, DOWN);
+            templeBrick.AddTileId(32, 1, RIGHT, UP_RIGHT, UP, UP_LEFT, LEFT, DOWN_LEFT, DOWN, DOWN_RIGHT);
+            templeBrick.AddTileId(33, 1, UP, UP_LEFT, LEFT, DOWN, DOWN_RIGHT, RIGHT);
+            templeBrick.AddTileId(34, 1, UP, UP_LEFT, LEFT, DOWN_LEFT, DOWN);
+            templeBrick.AddTileId(35, 1);
+            templeBrick.AddTileId(36, 1, RIGHT);
+            templeBrick.AddTileId(37, 1, LEFT, RIGHT);
+            templeBrick.AddTileId(38, 1, LEFT);
+            templeBrick.AddTileId(39, 1, UP, RIGHT, DOWN, DOWN_LEFT, LEFT);
+            templeBrick.AddTileId(40, 1, LEFT, UP, UP_RIGHT, RIGHT);
+            templeBrick.AddTileId(41, 1, RIGHT, UP, UP_LEFT, LEFT);
+            templeBrick.AddTileId(42, 1, UP, LEFT, DOWN, DOWN_RIGHT, RIGHT);
+            templeBrick.AddTileId(43, 1, UP, UP_RIGHT, RIGHT);
+            templeBrick.AddTileId(44, 1, LEFT, UP_LEFT, UP, UP_RIGHT, RIGHT);
+            templeBrick.AddTileId(45, 1, LEFT, UP_LEFT, UP, UP_RIGHT, RIGHT, DOWN);
+            templeBrick.AddTileId(46, 1, UP, UP_LEFT, LEFT);
+
+            // FIXME: These are accent tiles, weight them differently
+            templeBrick.AddTileId(47, 1, LEFT, DOWN_LEFT, DOWN, DOWN_RIGHT, RIGHT);
+            templeBrick.AddTileId(48, 1, LEFT, DOWN_LEFT, DOWN, DOWN_RIGHT, RIGHT);
+            templeBrick.AddTileId(49, 1, LEFT, DOWN_LEFT, DOWN, DOWN_RIGHT, RIGHT);
+            templeBrick.AddTileId(50, 1);
+            templeBrick.AddTileId(51, 1);
+            templeBrick.AddTileId(52, 1, UP, UP_RIGHT, RIGHT, DOWN_RIGHT, DOWN);
+            templeBrick.AddTileId(53, 1, UP, UP_LEFT, LEFT, DOWN_LEFT, DOWN);
+            templeBrick.AddTileId(54, 1, LEFT, UP_LEFT, UP, UP_RIGHT, RIGHT);
 
             tilesets.Add("TempleBrick", templeBrick);
         }

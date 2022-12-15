@@ -1,12 +1,12 @@
 ﻿using UnityEngine.Tilemaps;
 using UnityEngine;
-using DarknestDungeon.Lib;
 using System.Collections.Generic;
-using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 
 namespace DarknestDungeon.Scripts
 {
+
+#if UNITY_EDITOR
     internal class TilemapGrid : Lib.Grid
     {
         private readonly Tilemap tilemap;
@@ -26,10 +26,12 @@ namespace DarknestDungeon.Scripts
 
         public static Vector3 Center(this Lib.Rect r) => new Vector3(r.X + r.W / 2.0f, r.Y + r.H / 2.0f);
     }
+#endif
 
     [RequireComponent(typeof(Tilemap))]
     public class TilemapCompiler : MonoBehaviour
     {
+#if UNITY_EDITOR
         [ContextMenu("Compile Tilemap")]
         void CompileTilemap() {
             GameObject prevCompiled = GameObject.Find("CompiledTilemap");
@@ -44,7 +46,7 @@ namespace DarknestDungeon.Scripts
             var tilemap = gameObject.GetComponent<Tilemap>();
             var grid = new TilemapGrid(tilemap);
             int i = 0;
-            foreach (var rect in TilemapCovering.ComputeCovering(grid))
+            foreach (var rect in Lib.TilemapCovering.ComputeCovering(grid))
             {
                 GameObject go = new GameObject();
                 go.name = $"Collider {++i}";
@@ -62,9 +64,10 @@ namespace DarknestDungeon.Scripts
             var h = tilemap.size.y;
             for (int x = 0; x < w; x++)
                 for (int y = 0; y < h; y++)
-                    DefaultTilesets.UpdateTile(r, tilemap, x, y);
+                   Lib.DefaultTilesets.UpdateTile(r, tilemap, x, y);
 
-            EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+            UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
         }
+#endif
     }
 }
