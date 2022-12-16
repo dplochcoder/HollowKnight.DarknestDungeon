@@ -99,6 +99,15 @@ namespace DarknestDungeon.Lib
 
     public class Tileset
     {
+        private static int RIGHT = (int)TileAdjacency.RIGHT;
+        private static int UP_RIGHT = (int)TileAdjacency.UP_RIGHT;
+        private static int UP = (int)TileAdjacency.UP;
+        private static int UP_LEFT = (int)TileAdjacency.UP_LEFT;
+        private static int LEFT = (int)TileAdjacency.LEFT;
+        private static int DOWN_LEFT = (int)TileAdjacency.DOWN_LEFT;
+        private static int DOWN = (int)TileAdjacency.DOWN;
+        private static int DOWN_RIGHT = (int)TileAdjacency.DOWN_RIGHT;
+
         private List<List<(int, int)>> tileIds;
         private List<int> tileWeightTotals;
 
@@ -121,10 +130,20 @@ namespace DarknestDungeon.Lib
             tileWeightTotals[key] += weight;
         }
 
+        // Ignore orphaned corners.
+        private static void NormalizeKey(ref int key)
+        {
+            if ((key & (UP + RIGHT)) != (UP + RIGHT)) key &= ~UP_RIGHT;
+            if ((key & (UP + LEFT)) != (UP + LEFT)) key &= ~UP_LEFT;
+            if ((key & (DOWN + RIGHT)) != (DOWN + RIGHT)) key &= ~DOWN_RIGHT;
+            if ((key & (DOWN + LEFT)) != (DOWN + LEFT)) key &= ~DOWN_LEFT;
+        }
+
         public (List<(int, int)>, int) GetTileIds(IEnumerable<TileAdjacency> adjacency)
         {
             int key = 0;
             foreach (var adj in adjacency) key += (int)adj;
+            NormalizeKey(ref key);
             return (tileIds[key], tileWeightTotals[key]);
         }
 

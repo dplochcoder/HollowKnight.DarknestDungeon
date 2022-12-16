@@ -3,7 +3,7 @@ using UnityEngine.Tilemaps;
 
 namespace DarknestDungeon.Scripts
 {
-    public class TilemapCompiler : MonoBehaviour
+    public class TilemapPatcher : MonoBehaviour
     {
         private void Awake()
         {

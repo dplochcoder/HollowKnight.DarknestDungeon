@@ -37,6 +37,8 @@ namespace DarknestDungeon.Scripts
             GameObject prevCompiled = GameObject.Find("CompiledTilemap");
             if (prevCompiled != null) DestroyImmediate(prevCompiled, true);
 
+            if (gameObject.GetComponent<TilemapPatcher>() == null) gameObject.AddComponent<TilemapPatcher>();
+
             GameObject compiled = new GameObject("CompiledTilemap");
 
             GameObject colliders = new GameObject();

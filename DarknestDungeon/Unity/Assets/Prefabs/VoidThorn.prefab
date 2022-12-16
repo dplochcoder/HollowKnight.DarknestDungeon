@@ -125,7 +125,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6875889309736456117}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06cf67ba32050e545b11d5f8da11945c, type: 3}
+  m_Script: {fileID: 827209783, guid: 272df5dda169bf5408bc9624f365d349, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &2760611843264175184
@@ -137,7 +137,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6875889309736456117}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23870f3b39a055742913a340e9c96538, type: 3}
+  m_Script: {fileID: 1745437014, guid: 272df5dda169bf5408bc9624f365d349, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 40
@@ -187,9 +187,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 6875889309736456117}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0bf14eb54eee7624482e3eec57331915, type: 3}
+  m_Script: {fileID: 11500000, guid: edfcf48dc89c08247bd7678abd7662b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageDealt: 1
+  hazardType: 1
+  shadowDashHazard: 0
+  resetOnEnable: 0
 --- !u!114 &1409938038107235707
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199,7 +203,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6875889309736456117}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b84aa1c8c1961642bfbd2a86170a89e, type: 3}
+  m_Script: {fileID: -212000298, guid: 272df5dda169bf5408bc9624f365d349, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   blockEffect: {fileID: 0}
@@ -213,12 +217,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 6875889309736456117}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0da4befa4d6289349acdee45a259323b, type: 3}
+  m_Script: {fileID: -191061639, guid: 272df5dda169bf5408bc9624f365d349, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  convo: VOID_THORN_DREAM
-  flameConvo: VOID_THORN_DREAM_FLAME
-  heartConvo: 
-  flameHeartConvo: 
-  noSoul: 0
-  allowUseChildColliders: 0

@@ -1,0 +1,9 @@
+C:\Users\danie\source\repos\HollowKnight.DarknestDungeon\UnityScriptShims\obj\Debug\UnityScriptShims.csproj.AssemblyReference.cache
+C:\Users\danie\source\repos\HollowKnight.DarknestDungeon\UnityScriptShims\obj\Debug\UnityScriptShims.csproj.CoreCompileInputs.cache
+C:\Users\danie\source\repos\HollowKnight.DarknestDungeon\UnityScriptShims\bin\Debug\UnityEngine.CoreModule.dll
+C:\Users\danie\source\repos\HollowKnight.DarknestDungeon\UnityScriptShims\bin\Debug\UnityEngine.SharedInternalsModule.dll
+C:\Users\danie\source\repos\HollowKnight.DarknestDungeon\UnityScriptShims\obj\Debug\UnityScriptShims.csproj.CopyComplete
+C:\Users\danie\source\repos\HollowKnight.DarknestDungeon\UnityScriptShims\bin\Debug\DarknestDungeon.dll
+C:\Users\danie\source\repos\HollowKnight.DarknestDungeon\UnityScriptShims\bin\Debug\DarknestDungeon.pdb
+C:\Users\danie\source\repos\HollowKnight.DarknestDungeon\UnityScriptShims\obj\Debug\DarknestDungeon.dll
+C:\Users\danie\source\repos\HollowKnight.DarknestDungeon\UnityScriptShims\obj\Debug\DarknestDungeon.pdb

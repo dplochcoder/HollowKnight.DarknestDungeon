@@ -28,6 +28,17 @@ namespace DarknestDungeon.Data
             BenchesModule.UpdateJson(root);
             DeployersModule.UpdateJson(root);
             PromptsModule.UpdateJson(root);
+
+            // Copy DLLs
+            CopyDll(root, "UnityScriptShims/bin/Debug/DarknestDungeon.dll", "DarknestDungeon/Unity/Assets/Assemblies/DarknestDungeon.dll");
+        }
+
+        private static void CopyDll(string root, string src, string dst)
+        {
+            var inputDll = Path.Combine(root, src);
+            var outputDll = Path.Combine(root, dst);
+            if (File.Exists(outputDll)) File.Delete(outputDll);
+            File.Copy(inputDll, outputDll);
         }
     }
 }
