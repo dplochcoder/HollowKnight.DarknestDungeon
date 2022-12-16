@@ -194,8 +194,12 @@ namespace DarknestDungeon.Lib
 
 #if UNITY_EDITOR
             var path = UnityEditor.AssetDatabase.GetAssetPath(sprite);
-            var folder = path.Substring(ASSET_PREFIX.Length, path.LastIndexOf("/") - ASSET_PREFIX.Length);
-            if (tilesets.TryGetValue(folder, out var tileset)) tileset.UpdateTile(r, tilemap, folder, x, y);
+            var length = path.LastIndexOf("/") - ASSET_PREFIX.Length;
+            if (length > 0)
+            {
+                var folder = path.Substring(ASSET_PREFIX.Length, length);
+                if (tilesets.TryGetValue(folder, out var tileset)) tileset.UpdateTile(r, tilemap, folder, x, y);
+            }
 #endif
         }
 
@@ -218,7 +222,7 @@ namespace DarknestDungeon.Lib
             templeBrick.AddTileId(13, 1, UP, RIGHT, DOWN);
             templeBrick.AddTileId(14, 1, UP, LEFT, RIGHT, DOWN);
             templeBrick.AddTileId(15, 1, UP, LEFT, DOWN);
-            templeBrick.AddTileId(16, 1, UP, UP, RIGHT, DOWN_RIGHT, DOWN);
+            templeBrick.AddTileId(16, 1, UP, RIGHT, DOWN_RIGHT, DOWN);
             templeBrick.AddTileId(17, 1, UP, UP_RIGHT, RIGHT, DOWN_RIGHT, DOWN, DOWN_LEFT, LEFT);
             templeBrick.AddTileId(18, 1, UP, UP_LEFT, LEFT, DOWN_LEFT, DOWN, DOWN_RIGHT, RIGHT);
             templeBrick.AddTileId(19, 1, UP, LEFT, DOWN_LEFT, DOWN);
