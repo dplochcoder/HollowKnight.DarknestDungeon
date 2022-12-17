@@ -29,9 +29,15 @@ namespace DarknestDungeon.Enemy
 
             public virtual float InitScale => 0f;
 
+            protected virtual Sprite InitSprite => Mgr.Vtb.defaultSprite;
+
             protected virtual void SetInitScale() => Mgr.Vtb.SetScale(InitScale);
 
-            protected override void Init() => SetInitScale();
+            protected override void Init()
+            {
+                SetInitScale();
+                Mgr.Vtb.sr.sprite = InitSprite;
+            }
 
             public virtual void Hit() { }
         }
@@ -92,6 +98,8 @@ namespace DarknestDungeon.Enemy
 
             protected override void SetInitScale() { }
 
+            protected override Sprite InitSprite => Mgr.Vtb.bigSprite;
+
             protected override void Update() => Mgr.Vtb.SetScale(timer.ProgPct);
         }
 
@@ -110,6 +118,8 @@ namespace DarknestDungeon.Enemy
             public override bool Mobile => false;
 
             public override float InitScale => 1f;
+
+            protected override Sprite InitSprite => Mgr.Vtb.bigSprite;
 
             public override void Hit()
             {
@@ -134,6 +144,8 @@ namespace DarknestDungeon.Enemy
 
             protected override void Update() => Mgr.Vtb.SetScale(timer.RemainingPct);
 
+            protected override Sprite InitSprite => Mgr.Vtb.bigSprite;
+
             protected override void SetInitScale() { }
 
             public override void Hit()
@@ -154,6 +166,8 @@ namespace DarknestDungeon.Enemy
                 AddMod(new TimerModule(mgr, RESPAWNING_TIME, StateId.Idle));
                 Mgr.Vtb.b2d.enabled = false;
             }
+
+            protected override Sprite InitSprite => Mgr.Vtb.splitSprite;
 
             protected override void Stop()
             {
@@ -182,6 +196,7 @@ namespace DarknestDungeon.Enemy
         }
 
         public HealthManager hm;
+        public SpriteRenderer sr;
         public int origHealth;
         public BoxCollider2D b2d;
         public GameObject knight;
@@ -193,12 +208,20 @@ namespace DarknestDungeon.Enemy
         public float shuffleTimer;
         public StateMachine sm;
 
+        // Settable fields
+        public Sprite defaultSprite;
+        public Sprite bigSprite;
+        public Sprite splitSprite;
+
         private void Awake()
         {
             gameObject.tag = "Spell Vulnerable";
             hm = GetComponent<HealthManager>();
             origHealth = hm.hp;
             hm.OnDeath += () => sm.ChangeState(StateId.Respawning);
+
+            sr = GetComponent<SpriteRenderer>();
+            sr.sprite = defaultSprite;
 
             b2d = GetComponent<BoxCollider2D>();
             knight = GameManager.instance.hero_ctrl.gameObject;
