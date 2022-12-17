@@ -1,6 +1,4 @@
 ﻿using DarknestDungeon.EnemyLib;
-using HutongGames.PlayMaker;
-using HutongGames.PlayMaker.Actions;
 using SFCore.Utils;
 using System.Collections.Generic;
 using UnityEngine;
