@@ -10,10 +10,8 @@ namespace DarknestDungeon.Scripts
         {
             foreach (var responder in gameObject.GetComponents<IHitResponder>())
             {
-                DarknestDungeon.Log($"Found IHitResponder: {responder.GetType().Name}");
                 if (responder != this)
                 {
-                    DarknestDungeon.Log("Activating IHitResponder");
                     responder.Hit(damageInstance);
                 }
             }
