@@ -20,8 +20,9 @@ namespace DarknestDungeon.Enemy
             Armorless,
         }
 
-        private static readonly float HALF_RECOVERY = 0.75f;
-        private static readonly float FULL_RECOVERY = 1.5f;
+        private static readonly float _CONST_HALF_RECOVERY = 1.5f;
+        private static readonly float _CONST_FULL_RECOVERY = 2.5f;
+        private static readonly float _CONST_RECOVERY_DELAY = 0.75f;
 
         public abstract class State : EnemyState<StateId, State, StateMachine, ArmorControl>
         {
@@ -46,7 +47,7 @@ namespace DarknestDungeon.Enemy
         {
             public HalfArmorState(StateMachine mgr) : base(mgr)
             {
-                AddMod(new ArmorTimerModule(mgr, HALF_RECOVERY, StateId.FullArmor));
+                AddMod(new ArmorTimerModule(mgr, _CONST_HALF_RECOVERY, StateId.FullArmor));
             }
 
             public override int Armor() => 1;
@@ -60,7 +61,7 @@ namespace DarknestDungeon.Enemy
 
             public ArmorlessState(StateMachine mgr) : base(mgr)
             {
-                timer = AddMod(new ArmorTimerModule(mgr, FULL_RECOVERY, StateId.FullArmor));
+                timer = AddMod(new ArmorTimerModule(mgr, _CONST_FULL_RECOVERY, StateId.FullArmor));
                 Parent.tinkEffect.enabled = false;
                 Parent.healthManager.IsInvincible = false;
             }
@@ -72,7 +73,7 @@ namespace DarknestDungeon.Enemy
             }
             public override int Armor() => 0;
 
-            public override void NailHit() => timer.Remaining += 0.5f;
+            public override void NailHit() => timer.Remaining += _CONST_RECOVERY_DELAY;
         }
 
         public class StateMachine : EnemyStateMachine<StateId, State, StateMachine, ArmorControl>
