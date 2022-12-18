@@ -1,4 +1,5 @@
 ﻿using DarknestDungeon.EnemyLib;
+using DarknestDungeon.UnityExtensions;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,9 +27,9 @@ namespace DarknestDungeon.Enemy
         {
             public State(StateMachine mgr) : base(mgr) { }
 
-            protected override void Init() => Mgr.ac.TriggerOnArmorChanged(Armor);
+            protected override void Init() => Mgr.ac.TriggerOnArmorChanged(Armor());
 
-            public int Armor { get; }
+            public abstract int Armor();
 
             public virtual void NailHit() { }
         }
@@ -36,6 +37,7 @@ namespace DarknestDungeon.Enemy
         public class FullArmorState : State
         {
             public FullArmorState(StateMachine mgr) : base(mgr) { }
+            public override int Armor() => 2;
 
             public override void NailHit() => Mgr.ChangeState(StateId.HalfArmor);
         }
@@ -46,6 +48,8 @@ namespace DarknestDungeon.Enemy
             {
                 AddMod(new ArmorTimerModule(mgr, HALF_RECOVERY, StateId.FullArmor));
             }
+
+            public override int Armor() => 1;
 
             public override void NailHit() => Mgr.ChangeState(StateId.Armorless);
         }
@@ -66,6 +70,7 @@ namespace DarknestDungeon.Enemy
                 Mgr.ac.tinkEffect.enabled = true;
                 Mgr.ac.healthManager.IsInvincible = true;
             }
+            public override int Armor() => 0;
 
             public override void NailHit() => mod.Remaining += 0.5f;
         }
@@ -107,7 +112,7 @@ namespace DarknestDungeon.Enemy
 
         public bool Vulnerable => stateMachine.CurrentStateId == StateId.Armorless;
 
-        public int Armor => stateMachine.CurrentState.Armor;
+        public int Armor() => stateMachine.CurrentState.Armor();
 
         public void TriggerOnArmorChanged(int armor) => OnArmorChanged?.Invoke(armor);
     }
@@ -138,6 +143,8 @@ namespace DarknestDungeon.Enemy
 
             public Vector3 ToHero => Mgr.behaviour.knight.transform.position - Mgr.behaviour.transform.position;
 
+            private const int TERRAIN_MASK = 1 << (int)GlobalEnums.PhysLayers.TERRAIN;
+
             public bool HasLineOfSight(out RaycastHit2D hit)
             {
                 // Attempt to target the player.
@@ -145,7 +152,7 @@ namespace DarknestDungeon.Enemy
                 Vector2 o2d = new(origin.x, origin.y);
                 var dest = Mgr.behaviour.knight.transform.position;
                 Vector2 dest2d = new(dest.x, dest.y);
-                hit = Physics2D.Raycast(o2d, dest2d - o2d, 256f, (int)GlobalEnums.PhysLayers.TERRAIN);
+                hit = Physics2D.Raycast(o2d, dest2d - o2d, 256f, TERRAIN_MASK);
                 var dist = hit.distance;
                 return dist >= _CONST_MINIMUM_LAUNCH_DISTANCE && dist + 0.5f >= (dest2d - o2d).magnitude;
             }
@@ -163,12 +170,11 @@ namespace DarknestDungeon.Enemy
             {
                 if (ToHero.sqrMagnitude <= _CONST_AWAKE_RANGE_SQUARED)
                 {
-                    if (lineOfSightTicks <= 0)
+                    if (--lineOfSightTicks <= 0)
                     {
                         if (HasLineOfSight(out var _)) Mgr.ChangeState(StateId.Awakening);
                         else lineOfSightTicks = 10;
                     }
-                    else --lineOfSightTicks;
                 }
             }
         }
@@ -283,12 +289,11 @@ namespace DarknestDungeon.Enemy
             public LaunchingState(StateMachine mgr) : base(mgr)
             {
                 origPos = mgr.behaviour.transform.position;
-                target = mgr.behaviour.launchTarget.point - mgr.behaviour.launchTarget.normal.normalized * _CONST_LIFT_DIST;
+                target = mgr.behaviour.launchTarget.point + mgr.behaviour.launchTarget.normal.normalized * _CONST_LIFT_DIST;
                 float time = (target - origPos).magnitude / _CONST_LAUNCH_VELOCITY;
                 timer = AddMod(new SpikeTimerModule(mgr, time, StateId.Landing));
 
-                // TODO: Fix Rotation
-                mgr.behaviour.transform.rotation = Quaternion.Euler(target - origPos);
+                mgr.behaviour.transform.rotation = MathExt.AngleVec(target - origPos, -90);
             }
 
             protected override void Update()
@@ -300,7 +305,7 @@ namespace DarknestDungeon.Enemy
             protected override void Stop()
             {
                 base.Stop();
-                Mgr.behaviour.transform.rotation = Quaternion.Euler(Mgr.behaviour.launchTarget.normal);
+                Mgr.behaviour.transform.rotation = MathExt.AngleVec(Mgr.behaviour.launchTarget.normal, -90);
             }
         }
 
@@ -366,7 +371,7 @@ namespace DarknestDungeon.Enemy
             launchHurtbox.SetActive(launching);
 
             var targetSprites = launching ? launchSprites : idleSprites;
-            spriteRenderer.sprite = targetSprites[armorControl.Armor];
+            spriteRenderer.sprite = targetSprites[armorControl.Armor()];
 
             var targetB2d = launching ? launchHitbox : idleHitbox;
             b2d.offset = targetB2d.offset;
@@ -386,6 +391,8 @@ namespace DarknestDungeon.Enemy
             this.armorControl = new(gameObject);
             this.stateMachine = new(this);
             this.armorControl.OnArmorChanged += _ => UpdateVisuals();
+
+            UpdateVisuals();
         }
 
         private void Update()
