@@ -195,6 +195,7 @@ namespace DarknestDungeon.Enemy
 
         public HealthManager hm;
         public SpriteRenderer sr;
+        public IFrames iFrames;
         public int origHealth;
         public BoxCollider2D b2d;
         public GameObject knight;
@@ -220,6 +221,8 @@ namespace DarknestDungeon.Enemy
 
             sr = GetComponent<SpriteRenderer>();
             sr.sprite = defaultSprite;
+
+            iFrames = gameObject.AddComponent<IFrames>();
 
             b2d = GetComponent<BoxCollider2D>();
             knight = GameManager.instance.hero_ctrl.gameObject;
@@ -280,6 +283,8 @@ namespace DarknestDungeon.Enemy
 
         public void Hit(HitInstance damageInstance)
         {
+            if (!iFrames.AcceptHit()) return;
+
             var dir = (Quaternion.Euler(0, 0, damageInstance.Direction) * new Vector3(1, 0, 0)).normalized;
             impulses.Add(new(dir * (IMPULSE_DISTANCE / IMPULSE_DURATION_SECONDS), IMPULSE_DURATION_SECONDS));
 

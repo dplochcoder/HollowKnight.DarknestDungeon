@@ -88,17 +88,22 @@ namespace DarknestDungeon.Enemy
         private StateMachine stateMachine;
         private TinkEffect tinkEffect;
         private HealthManager healthManager;
+        private IFrames iFrames;
 
         public ArmorControl(GameObject go)
         {
             this.tinkEffect = go.GetComponent<TinkEffect>();
             this.healthManager = go.GetComponent<HealthManager>();
+            this.iFrames = go.AddComponent<IFrames>();
             stateMachine = new(this);
         }
 
         public void Update() => stateMachine.Update();
 
-        public void NailHit() => stateMachine.CurrentState.NailHit();
+        public void NailHit()
+        {
+            if (iFrames.AcceptHit()) stateMachine.CurrentState.NailHit();
+        }
 
         public bool Vulnerable => stateMachine.CurrentStateId == StateId.Armorless;
 
