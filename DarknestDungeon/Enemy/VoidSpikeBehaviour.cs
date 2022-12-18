@@ -5,8 +5,8 @@ using UnityEngine;
 
 namespace DarknestDungeon.Enemy
 {
-    using ArmorTimerModule = TimerModule<ArmorControl.StateId, ArmorControl.State, ArmorControl.StateMachine>;
-    using SpikeTimerModule = TimerModule<VoidSpikeBehaviour.StateId, VoidSpikeBehaviour.State, VoidSpikeBehaviour.StateMachine>;
+    using ArmorTimerModule = TimerModule<ArmorControl.StateId, ArmorControl.State, ArmorControl.StateMachine, ArmorControl>;
+    using SpikeTimerModule = TimerModule<VoidSpikeBehaviour.StateId, VoidSpikeBehaviour.State, VoidSpikeBehaviour.StateMachine, VoidSpikeBehaviour>;
 
     public class ArmorControl
     {
@@ -23,11 +23,11 @@ namespace DarknestDungeon.Enemy
         private static readonly float HALF_RECOVERY = 0.75f;
         private static readonly float FULL_RECOVERY = 1.5f;
 
-        public abstract class State : EnemyState<StateId, State, StateMachine>
+        public abstract class State : EnemyState<StateId, State, StateMachine, ArmorControl>
         {
             public State(StateMachine mgr) : base(mgr) { }
 
-            protected override void Init() => Mgr.ac.TriggerOnArmorChanged(Armor());
+            protected override void Init() => Parent.TriggerOnArmorChanged(Armor());
 
             public abstract int Armor();
 
@@ -56,36 +56,34 @@ namespace DarknestDungeon.Enemy
 
         public class ArmorlessState : State
         {
-            private ArmorTimerModule mod;
+            private ArmorTimerModule timer;
 
             public ArmorlessState(StateMachine mgr) : base(mgr)
             {
-                mod = AddMod(new ArmorTimerModule(mgr, FULL_RECOVERY, StateId.FullArmor));
-                mgr.ac.tinkEffect.enabled = false;
-                mgr.ac.healthManager.IsInvincible = false;
+                timer = AddMod(new ArmorTimerModule(mgr, FULL_RECOVERY, StateId.FullArmor));
+                Parent.tinkEffect.enabled = false;
+                Parent.healthManager.IsInvincible = false;
             }
 
             protected override void Stop()
             {
-                Mgr.ac.tinkEffect.enabled = true;
-                Mgr.ac.healthManager.IsInvincible = true;
+                Parent.tinkEffect.enabled = true;
+                Parent.healthManager.IsInvincible = true;
             }
             public override int Armor() => 0;
 
-            public override void NailHit() => mod.Remaining += 0.5f;
+            public override void NailHit() => timer.Remaining += 0.5f;
         }
 
-        public class StateMachine : EnemyStateMachine<StateId, State, StateMachine>
+        public class StateMachine : EnemyStateMachine<StateId, State, StateMachine, ArmorControl>
         {
-            public readonly ArmorControl ac;
-
-            public StateMachine(ArmorControl ac) : base(StateId.FullArmor, new()
+            public StateMachine(ArmorControl ac) : base(ac, StateId.FullArmor, new()
             {
                 { StateId.FullArmor, mgr => new FullArmorState(mgr) },
                 { StateId.HalfArmor, mgr => new HalfArmorState(mgr) },
                 { StateId.Armorless, mgr => new ArmorlessState(mgr) },
             })
-            { this.ac = ac; }
+            { }
 
             public override StateMachine AsTyped() => this;
         }
@@ -131,26 +129,26 @@ namespace DarknestDungeon.Enemy
 
         public static float _CONST_MINIMUM_LAUNCH_DISTANCE = 2.0f;
 
-        public class State : EnemyState<StateId, State, StateMachine>
+        public class State : EnemyState<StateId, State, StateMachine, VoidSpikeBehaviour>
         {
             public State(StateMachine mgr) : base(mgr) { }
 
             protected override void Init()
             {
                 base.Init();
-                Mgr.behaviour.UpdateVisuals();
+                Parent.UpdateVisuals();
             }
 
-            public Vector3 ToHero => Mgr.behaviour.knight.transform.position - Mgr.behaviour.transform.position;
+            public Vector3 ToHero => Parent.knight.transform.position - Parent.transform.position;
 
             private const int TERRAIN_MASK = 1 << (int)GlobalEnums.PhysLayers.TERRAIN;
 
             public bool HasLineOfSight(out RaycastHit2D hit)
             {
                 // Attempt to target the player.
-                var origin = Mgr.behaviour.transform.position;
+                var origin = Parent.transform.position;
                 Vector2 o2d = new(origin.x, origin.y);
-                var dest = Mgr.behaviour.knight.transform.position;
+                var dest = Parent.knight.transform.position;
                 Vector2 dest2d = new(dest.x, dest.y);
                 hit = Physics2D.Raycast(o2d, dest2d - o2d, 256f, TERRAIN_MASK);
                 var dist = hit.distance;
@@ -237,12 +235,12 @@ namespace DarknestDungeon.Enemy
                 base.Init();
                 if (ToHero.magnitude > _CONST_SLEEP_RANGE_SQUARED)
                 {
-                    Mgr.behaviour.retargets = 0;
+                    Parent.retargets = 0;
                     Mgr.ChangeState(StateId.Idle);
                 }
-                else if (++Mgr.behaviour.retargets > _CONST_MAX_RETARGETS)
+                else if (++Parent.retargets > _CONST_MAX_RETARGETS)
                 {
-                    Mgr.behaviour.retargets = 0;
+                    Parent.retargets = 0;
                     Mgr.ChangeState(StateId.Awakening);
                 }
             }
@@ -267,9 +265,9 @@ namespace DarknestDungeon.Enemy
                 }
                 else
                 {
-                    Mgr.behaviour.retargets = 0;
-                    Mgr.behaviour.launchVector = ToHero;
-                    Mgr.behaviour.launchTarget = hit;
+                    Parent.retargets = 0;
+                    Parent.launchVector = ToHero;
+                    Parent.launchTarget = hit;
                 }
             }
         }
@@ -288,24 +286,24 @@ namespace DarknestDungeon.Enemy
 
             public LaunchingState(StateMachine mgr) : base(mgr)
             {
-                origPos = mgr.behaviour.transform.position;
-                target = mgr.behaviour.launchTarget.point + mgr.behaviour.launchTarget.normal.normalized * _CONST_LIFT_DIST;
+                origPos = Parent.transform.position;
+                target = Parent.launchTarget.point + Parent.launchTarget.normal.normalized * _CONST_LIFT_DIST;
                 float time = (target - origPos).magnitude / _CONST_LAUNCH_VELOCITY;
                 timer = AddMod(new SpikeTimerModule(mgr, time, StateId.Landing));
 
-                mgr.behaviour.transform.rotation = MathExt.AngleVec(target - origPos, -90);
+                Parent.transform.rotation = MathExt.AngleVec(target - origPos, -90);
             }
 
             protected override void Update()
             {
                 base.Update();
-                Mgr.behaviour.transform.position = origPos + (target - origPos) * timer.ProgPct;
+                Parent.transform.position = origPos + (target - origPos) * timer.ProgPct;
             }
 
             protected override void Stop()
             {
                 base.Stop();
-                Mgr.behaviour.transform.rotation = MathExt.AngleVec(Mgr.behaviour.launchTarget.normal, -90);
+                Parent.transform.rotation = MathExt.AngleVec(Parent.launchTarget.normal, -90);
             }
         }
 
@@ -316,11 +314,9 @@ namespace DarknestDungeon.Enemy
             public LandingState(StateMachine mgr) : base(mgr) { AddMod(new SpikeTimerModule(mgr, _CONST_LANDING_TIME, StateId.Targeting)); }
         }
 
-        public class StateMachine : EnemyStateMachine<StateId, State, StateMachine>
+        public class StateMachine : EnemyStateMachine<StateId, State, StateMachine, VoidSpikeBehaviour>
         {
-            public readonly VoidSpikeBehaviour behaviour;
-
-            public StateMachine(VoidSpikeBehaviour vsb) : base(StateId.Idle, new()
+            public StateMachine(VoidSpikeBehaviour parent) : base(parent, StateId.Idle, new()
             {
                 { StateId.Idle, mgr => new IdleState(mgr) },
                 { StateId.Awakening, mgr => new AwakeningState(mgr) },
@@ -328,10 +324,7 @@ namespace DarknestDungeon.Enemy
                 { StateId.PreLaunch, mgr => new PreLaunchState(mgr) },
                 { StateId.Launching, mgr => new LaunchingState(mgr) },
                 { StateId.Landing, mgr => new LandingState(mgr) },
-            })
-            {
-                this.behaviour = vsb;
-            }
+            }) { }
 
             public override StateMachine AsTyped() => this;
         }

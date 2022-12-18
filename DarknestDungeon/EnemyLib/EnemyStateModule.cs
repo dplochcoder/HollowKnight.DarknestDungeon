@@ -1,6 +1,6 @@
 ﻿namespace DarknestDungeon.EnemyLib
 {
-    public class EnemyStateModule<T, S, M> where S : EnemyState<T, S, M> where M : EnemyStateMachine<T, S, M>
+    public class EnemyStateModule<T, S, M, P> where S : EnemyState<T, S, M, P> where M : EnemyStateMachine<T, S, M, P>
     {
         public virtual void Init() { }
 

@@ -2,7 +2,7 @@
 
 namespace DarknestDungeon.EnemyLib
 {
-    public class TimerModule<T, S, M> : EnemyStateModule<T, S, M> where S : EnemyState<T, S, M> where M : EnemyStateMachine<T, S, M>
+    public class TimerModule<T, S, M, P> : EnemyStateModule<T, S, M, P> where S : EnemyState<T, S, M, P> where M : EnemyStateMachine<T, S, M, P>
     {
         public delegate bool UpdateFilter();
 

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace DarknestDungeon.Enemy
 {
-    using TimerModule = EnemyLib.TimerModule<VoidThornBehaviour.StateId, VoidThornBehaviour.State, VoidThornBehaviour.StateMachine>;
+    using TimerModule = EnemyLib.TimerModule<VoidThornBehaviour.StateId, VoidThornBehaviour.State, VoidThornBehaviour.StateMachine, VoidThornBehaviour>;
 
     public class VoidThornBehaviour : MonoBehaviour, IHitResponder
     {
@@ -19,7 +19,7 @@ namespace DarknestDungeon.Enemy
             Respawning
         }
 
-        public class State : EnemyState<StateId, State, StateMachine>
+        public class State : EnemyState<StateId, State, StateMachine, VoidThornBehaviour>
         {
             public State(StateMachine mgr) : base(mgr) { }
 
@@ -27,14 +27,14 @@ namespace DarknestDungeon.Enemy
 
             public virtual float InitScale => 0f;
 
-            protected virtual Sprite InitSprite => Mgr.Vtb.defaultSprite;
+            protected virtual Sprite InitSprite => Parent.defaultSprite;
 
-            protected virtual void SetInitScale() => Mgr.Vtb.SetScale(InitScale);
+            protected virtual void SetInitScale() => Parent.SetScale(InitScale);
 
             protected override void Init()
             {
                 SetInitScale();
-                Mgr.Vtb.sr.sprite = InitSprite;
+                Parent.sr.sprite = InitSprite;
             }
 
             public virtual void Hit() { }
@@ -46,7 +46,7 @@ namespace DarknestDungeon.Enemy
 
             public override void Hit()
             {
-                Mgr.Vtb.chargePending = true;
+                Parent.chargePending = true;
                 Mgr.ChangeState(StateId.Triggered);
             }
         }
@@ -83,7 +83,7 @@ namespace DarknestDungeon.Enemy
             {
                 timer = AddMod(new TimerModule(mgr, EXPANDING_TIME, StateId.Expanded));
 
-                var vtb = mgr.Vtb;
+                var vtb = Parent;
                 if (vtb.chargePending)
                 {
                     // Launch in the knight's direction.
@@ -96,9 +96,9 @@ namespace DarknestDungeon.Enemy
 
             protected override void SetInitScale() { }
 
-            protected override Sprite InitSprite => Mgr.Vtb.bigSprite;
+            protected override Sprite InitSprite => Parent.bigSprite;
 
-            protected override void Update() => Mgr.Vtb.SetScale(timer.ProgPct);
+            protected override void Update() => Parent.SetScale(timer.ProgPct);
         }
 
         public static float EXPANDED_TIME = 1.1f;
@@ -110,14 +110,14 @@ namespace DarknestDungeon.Enemy
 
             public ExpandedState(StateMachine mgr) : base(mgr)
             {
-                Mgr.Vtb.gameObject.transform.localScale = new(EXPANDED_SCALE, EXPANDED_SCALE, EXPANDED_SCALE);
+                Parent.gameObject.transform.localScale = new(EXPANDED_SCALE, EXPANDED_SCALE, EXPANDED_SCALE);
                 timer = AddMod(new TimerModule(mgr, EXPANDED_TIME, StateId.Retracting));
             }
             public override bool Mobile => false;
 
             public override float InitScale => 1f;
 
-            protected override Sprite InitSprite => Mgr.Vtb.bigSprite;
+            protected override Sprite InitSprite => Parent.bigSprite;
 
             public override void Hit()
             {
@@ -135,14 +135,14 @@ namespace DarknestDungeon.Enemy
             {
                 timer = AddMod(new TimerModule(mgr, RETRACTING_TIME, StateId.Idle));
 
-                var vtb = mgr.Vtb;
+                var vtb = Parent;
                 var rVec = vtb.retractTarget - vtb.gameObject.transform.position;
                 vtb.impulses.Add(new(rVec / RETRACTING_TIME, RETRACTING_TIME));
             }
 
-            protected override void Update() => Mgr.Vtb.SetScale(timer.RemainingPct);
+            protected override void Update() => Parent.SetScale(timer.RemainingPct);
 
-            protected override Sprite InitSprite => Mgr.Vtb.bigSprite;
+            protected override Sprite InitSprite => Parent.bigSprite;
 
             protected override void SetInitScale() { }
 
@@ -162,23 +162,21 @@ namespace DarknestDungeon.Enemy
             public RespawningState(StateMachine mgr) : base(mgr)
             {
                 AddMod(new TimerModule(mgr, RESPAWNING_TIME, StateId.Idle));
-                Mgr.Vtb.b2d.enabled = false;
+                Parent.b2d.enabled = false;
             }
 
-            protected override Sprite InitSprite => Mgr.Vtb.splitSprite;
+            protected override Sprite InitSprite => Parent.splitSprite;
 
             protected override void Stop()
             {
-                Mgr.Vtb.b2d.enabled = true;
-                Mgr.Vtb.hm.hp = Mgr.Vtb.origHealth;
+                Parent.b2d.enabled = true;
+                Parent.hm.hp = Parent.origHealth;
             }
         }
 
-        public class StateMachine : EnemyStateMachine<StateId, State, StateMachine>
+        public class StateMachine : EnemyStateMachine<StateId, State, StateMachine, VoidThornBehaviour>
         {
-            public readonly VoidThornBehaviour Vtb;
-
-            public StateMachine(VoidThornBehaviour vtb) : base(StateId.Idle, new()
+            public StateMachine(VoidThornBehaviour parent) : base(parent, StateId.Idle, new()
             {
                 { StateId.Idle, m => new IdleState(m) },
                 { StateId.Triggered, m => new TriggeredState(m) },
@@ -186,9 +184,7 @@ namespace DarknestDungeon.Enemy
                 { StateId.Expanded, m => new ExpandedState(m) },
                 { StateId.Retracting, m => new RetractingState(m) },
                 { StateId.Respawning, m => new RespawningState(m) },
-            }) {
-                this.Vtb = vtb;
-            }
+            }) { }
 
             public override StateMachine AsTyped() => this;
         }
