@@ -28,7 +28,7 @@ namespace DarknestDungeon.Enemy
 
             protected override void Init() => Mgr.ac.TriggerOnArmorChanged(Armor);
 
-            protected int Armor { get; }
+            public int Armor { get; }
 
             public virtual void NailHit() { }
         }
@@ -108,24 +108,32 @@ namespace DarknestDungeon.Enemy
             PreLaunch,
             Launching,
             Landing,
-            Reassessing,
         }
+
+        public static float _CONST_MINIMUM_LAUNCH_DISTANCE = 2.0f;
 
         public class State : EnemyState<StateId, State, StateMachine>
         {
             public State(StateMachine mgr) : base(mgr) { }
 
-            public Vector3 ToHero => Mgr.VoidSpikeBehaviour.knight.transform.position - Mgr.VoidSpikeBehaviour.transform.position;
+            protected override void Init()
+            {
+                base.Init();
+                Mgr.behaviour.UpdateVisuals();
+            }
+
+            public Vector3 ToHero => Mgr.behaviour.knight.transform.position - Mgr.behaviour.transform.position;
 
             public bool HasLineOfSight(out RaycastHit2D hit)
             {
                 // Attempt to target the player.
-                var origin = Mgr.VoidSpikeBehaviour.transform.position;
+                var origin = Mgr.behaviour.transform.position;
                 Vector2 o2d = new(origin.x, origin.y);
-                var dest = Mgr.VoidSpikeBehaviour.knight.transform.position;
+                var dest = Mgr.behaviour.knight.transform.position;
                 Vector2 dest2d = new(dest.x, dest.y);
                 hit = Physics2D.Raycast(o2d, dest2d - o2d, 256f, (int)GlobalEnums.PhysLayers.TERRAIN);
-                return hit.distance + 0.5f >= (dest2d - o2d).magnitude;
+                var dist = hit.distance;
+                return dist >= _CONST_MINIMUM_LAUNCH_DISTANCE && dist + 0.5f >= (dest2d - o2d).magnitude;
             }
         }
 
@@ -163,17 +171,26 @@ namespace DarknestDungeon.Enemy
         {
             private float rage = _CONST_BASE_RAGE;
 
+            private int sightTicker = 1;
+            private bool hasSight = false;
+
             public AwakeningState(StateMachine mgr) : base(mgr) { }
 
             protected override void Update()
             {
+                if (--sightTicker <= 0)
+                {
+                    sightTicker = 10;
+                    hasSight = HasLineOfSight(out var _);
+                }
+
                 float dist = ToHero.sqrMagnitude;
                 if (dist >= _CONST_SLEEP_RANGE_SQUARED)
                 {
                     Mgr.ChangeState(StateId.Idle);
                     return;
                 }
-                else if (dist >= _CONST_ALERT_RANGE_SQUARED) rage -= Time.deltaTime;
+                else if (!hasSight || dist >= _CONST_ALERT_RANGE_SQUARED) rage -= Time.deltaTime;
                 else if (dist <= _CONST_HYPER_AGGRO_RANGE_SQUARED) rage += _CONST_HYPER_AGGRO_FACTOR * Time.deltaTime;
                 else if (dist <= _CONST_AGGRO_RANGE_SQUARED) rage += Time.deltaTime;
 
@@ -198,14 +215,20 @@ namespace DarknestDungeon.Enemy
             protected override void Init()
             {
                 base.Init();
-                if (++Mgr.VoidSpikeBehaviour.retargets > _CONST_MAX_RETARGETS)
+                if (ToHero.magnitude > _CONST_SLEEP_RANGE_SQUARED)
                 {
-
+                    Mgr.behaviour.retargets = 0;
+                    Mgr.ChangeState(StateId.Idle);
+                }
+                else if (++Mgr.behaviour.retargets > _CONST_MAX_RETARGETS)
+                {
+                    Mgr.behaviour.retargets = 0;
+                    Mgr.ChangeState(StateId.Awakening);
                 }
             }
         }
 
-        private static float _CONST_PRE_LAUNCH_TIME = 0.2f;
+        private static float _CONST_PRE_LAUNCH_TIME = 0.15f;
 
         public class PreLaunchState : State
         {
@@ -217,43 +240,78 @@ namespace DarknestDungeon.Enemy
             protected override void Init()
             {
                 base.Init();
-                if (HasLineOfSight(out var hit))
+                if (!HasLineOfSight(out var hit))
                 {
-                    // TODO
+                    var tState = Mgr.ChangeState(StateId.Targeting) as TargetingState;
+                    tState.timer.Remaining = 0.1f;
+                }
+                else
+                {
+                    Mgr.behaviour.retargets = 0;
+                    Mgr.behaviour.launchVector = ToHero;
+                    Mgr.behaviour.launchTarget = hit;
                 }
             }
         }
 
+        private static float _CONST_LIFT_DIST = 1.2f;
+        private static float _CONST_LAUNCH_VELOCITY = 25f;
+        private Vector2 launchVector;
+        private RaycastHit2D launchTarget;
+
+        // TODO: Launch in a random direction defensively on damage
         public class LaunchingState : State
         {
-            public LaunchingState(StateMachine mgr) : base(mgr) { }
-        }
-        public class LandingState : State
-        {
-            public LandingState(StateMachine mgr) : base(mgr) { }
+            private SpikeTimerModule timer;
+            private Vector2 origPos;
+            private Vector2 target;
+
+            public LaunchingState(StateMachine mgr) : base(mgr)
+            {
+                origPos = mgr.behaviour.transform.position;
+                target = mgr.behaviour.launchTarget.point - mgr.behaviour.launchTarget.normal.normalized * _CONST_LIFT_DIST;
+                float time = (target - origPos).magnitude / _CONST_LAUNCH_VELOCITY;
+                timer = AddMod(new SpikeTimerModule(mgr, time, StateId.Landing));
+
+                // TODO: Fix Rotation
+                mgr.behaviour.transform.rotation = Quaternion.Euler(target - origPos);
+            }
+
+            protected override void Update()
+            {
+                base.Update();
+                Mgr.behaviour.transform.position = origPos + (target - origPos) * timer.ProgPct;
+            }
+
+            protected override void Stop()
+            {
+                base.Stop();
+                Mgr.behaviour.transform.rotation = Quaternion.Euler(Mgr.behaviour.launchTarget.normal);
+            }
         }
 
-        public class ReassessingState : State
+        public static float _CONST_LANDING_TIME = 0.45f;
+
+        public class LandingState : State
         {
-            public ReassessingState(StateMachine mgr) : base(mgr) { }
+            public LandingState(StateMachine mgr) : base(mgr) { AddMod(new SpikeTimerModule(mgr, _CONST_LANDING_TIME, StateId.Targeting)); }
         }
 
         public class StateMachine : EnemyStateMachine<StateId, State, StateMachine>
         {
-            public readonly VoidSpikeBehaviour VoidSpikeBehaviour;
+            public readonly VoidSpikeBehaviour behaviour;
 
             public StateMachine(VoidSpikeBehaviour vsb) : base(StateId.Idle, new()
             {
                 { StateId.Idle, mgr => new IdleState(mgr) },
                 { StateId.Awakening, mgr => new AwakeningState(mgr) },
-                { StateId.Reassessing, mgr => new ReassessingState(mgr) },
                 { StateId.Targeting, mgr => new TargetingState(mgr) },
                 { StateId.PreLaunch, mgr => new PreLaunchState(mgr) },
                 { StateId.Launching, mgr => new LaunchingState(mgr) },
                 { StateId.Landing, mgr => new LandingState(mgr) },
             })
             {
-                this.VoidSpikeBehaviour = vsb;
+                this.behaviour = vsb;
             }
 
             public override StateMachine AsTyped() => this;
@@ -261,6 +319,7 @@ namespace DarknestDungeon.Enemy
 
         public HealthManager healthManager;
         public GameObject knight;
+        public SpriteRenderer spriteRenderer;
         public ArmorControl armorControl;
         public StateMachine stateMachine;
 
@@ -285,10 +344,18 @@ namespace DarknestDungeon.Enemy
             if (damageInstance.AttackType == AttackTypes.Nail) armorControl.NailHit();
         }
 
+        public void UpdateVisuals()
+        {
+            bool launching = stateMachine.CurrentStateId == StateId.Launching;
+            idleHurtbox.SetActive(!launching);
+            launchHurtbox.SetActive(launching);
+        }
+
         private void Awake()
         {
             this.healthManager = GetComponent<HealthManager>();
             this.knight = GameManager.instance.hero_ctrl.gameObject;
+            this.spriteRenderer = GetComponent<SpriteRenderer>();
             this.tag = "Spell Vulnerable";
             launchSprites = new() { launchArmorless, launchHalfArmor, launchFullArmor };
             idleSprites = new() { idleArmorless, idleHalfArmor, idleFullArmor };
