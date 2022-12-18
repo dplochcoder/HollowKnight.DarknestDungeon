@@ -10,6 +10,8 @@ public class OptimizerFinder : MonoBehaviour
     {
         foreach (var sdo in FindObjectsOfType<SceneDataOptimizer>()) sdo.OptimizeScene();
         foreach (var hrt in FindObjectsOfType<HazardRespawnTrigger>()) FixHRT(hrt);
+
+        UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
     }
 
     private void FixHRT(HazardRespawnTrigger hrt)
