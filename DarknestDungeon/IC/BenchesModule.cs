@@ -10,7 +10,6 @@ namespace DarknestDungeon.IC
         public Benchwarp.Bench Bench;
         public BenchRando.IC.BenchDeployer Deployer;
 
-        // BenchDeployer-VoidDescent05_Bench-(10,8)
         [JsonIgnore]
         public string RespawnMarker => $"BenchDeployer-{Deployer.SceneName}-({(int)Deployer.X},{(int)Deployer.Y})";
 
