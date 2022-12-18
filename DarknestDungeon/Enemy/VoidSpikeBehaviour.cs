@@ -57,10 +57,15 @@ namespace DarknestDungeon.Enemy
             public ArmorlessState(StateMachine mgr) : base(mgr)
             {
                 mod = AddMod(new ArmorTimerModule(mgr, FULL_RECOVERY, StateId.FullArmor));
-                mgr.ac.te.enabled = false;
+                mgr.ac.tinkEffect.enabled = false;
+                mgr.ac.healthManager.IsInvincible = false;
             }
 
-            protected override void Stop() => Mgr.ac.te.enabled = true;
+            protected override void Stop()
+            {
+                Mgr.ac.tinkEffect.enabled = true;
+                Mgr.ac.healthManager.IsInvincible = true;
+            }
 
             public override void NailHit() => mod.Remaining += 0.5f;
         }
@@ -80,20 +85,24 @@ namespace DarknestDungeon.Enemy
             public override StateMachine AsTyped() => this;
         }
 
-        private StateMachine sm;
-        private TinkEffect te;
+        private StateMachine stateMachine;
+        private TinkEffect tinkEffect;
+        private HealthManager healthManager;
 
-        public ArmorControl(TinkEffect te)
+        public ArmorControl(GameObject go)
         {
-            this.te = te;
-            sm = new(this);
+            this.tinkEffect = go.GetComponent<TinkEffect>();
+            this.healthManager = go.GetComponent<HealthManager>();
+            stateMachine = new(this);
         }
 
-        public void Update() => sm.Update();
+        public void Update() => stateMachine.Update();
 
-        public void NailHit() => sm.CurrentState.NailHit();
+        public void NailHit() => stateMachine.CurrentState.NailHit();
 
-        public bool Vulnerable => sm.CurrentStateId == StateId.Armorless;
+        public bool Vulnerable => stateMachine.CurrentStateId == StateId.Armorless;
+
+        public int Armor => stateMachine.CurrentState.Armor;
 
         public void TriggerOnArmorChanged(int armor) => OnArmorChanged?.Invoke(armor);
     }
@@ -320,6 +329,7 @@ namespace DarknestDungeon.Enemy
         public HealthManager healthManager;
         public GameObject knight;
         public SpriteRenderer spriteRenderer;
+        public BoxCollider2D b2d;
         public ArmorControl armorControl;
         public StateMachine stateMachine;
 
@@ -349,6 +359,13 @@ namespace DarknestDungeon.Enemy
             bool launching = stateMachine.CurrentStateId == StateId.Launching;
             idleHurtbox.SetActive(!launching);
             launchHurtbox.SetActive(launching);
+
+            var targetSprites = launching ? launchSprites : idleSprites;
+            spriteRenderer.sprite = targetSprites[armorControl.Armor];
+
+            var targetB2d = launching ? launchHitbox : idleHitbox;
+            b2d.offset = targetB2d.offset;
+            b2d.size = targetB2d.size;
         }
 
         private void Awake()
@@ -356,12 +373,20 @@ namespace DarknestDungeon.Enemy
             this.healthManager = GetComponent<HealthManager>();
             this.knight = GameManager.instance.hero_ctrl.gameObject;
             this.spriteRenderer = GetComponent<SpriteRenderer>();
+            this.b2d = gameObject.AddComponent<BoxCollider2D>();
             this.tag = "Spell Vulnerable";
             launchSprites = new() { launchArmorless, launchHalfArmor, launchFullArmor };
             idleSprites = new() { idleArmorless, idleHalfArmor, idleFullArmor };
 
-            this.armorControl = new(GetComponent<TinkEffect>());
+            this.armorControl = new(gameObject);
             this.stateMachine = new(this);
+            this.armorControl.OnArmorChanged += _ => UpdateVisuals();
+        }
+
+        private void Update()
+        {
+            armorControl.Update();
+            stateMachine.Update();
         }
     }
 }

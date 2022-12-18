@@ -53,7 +53,9 @@ namespace DarknestDungeon.Scripts
             colliders.transform.SetParent(compiled.transform);
 
             var tilemap = gameObject.GetComponent<Tilemap>();
+            tilemap.CompressBounds();
             tilemap.color = new Color(1, 1, 1);  // Always set to white
+
             var grid = new TilemapGrid(tilemap);
             int i = 0;
             foreach (var rect in Lib.TilemapCovering.ComputeCovering(grid))
