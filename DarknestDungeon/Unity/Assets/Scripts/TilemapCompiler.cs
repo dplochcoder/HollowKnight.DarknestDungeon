@@ -71,7 +71,7 @@ namespace DarknestDungeon.Scripts
                 go.transform.position = rect.Center();
             }
 
-            System.Random r = new System.Random();
+            System.Random r = new System.Random(gameObject.scene.name.GetHashCode());
             var w = tilemap.size.x;
             var h = tilemap.size.y;
             for (int x = 0; x < w; x++)

@@ -1,6 +1,13 @@
 {
   "Prompts": {},
   "DreamnailPrompts": {
+    "VOID_SPIKE_DREAM": [
+      "Almost got it that time!...",
+      "Closer, closer...",
+      "Kehehehe...",
+      "Stop moving, little runt!",
+      "This way, that way, again!..."
+    ],
     "VOID_THORN_DREAM": [
       "Away, away! Let us rest...",
       "Back, back! Away, vagrant!",

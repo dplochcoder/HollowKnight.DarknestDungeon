@@ -15,5 +15,6 @@ namespace DarknestDungeon.Enemy
         public BoxCollider2D launchHitbox;
         public GameObject idleHurtbox;
         public GameObject launchHurtbox;
+        public GameObject flashSprite;
     }
 }

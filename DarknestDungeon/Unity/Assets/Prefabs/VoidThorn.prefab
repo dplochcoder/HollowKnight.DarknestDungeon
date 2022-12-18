@@ -15,9 +15,9 @@ GameObject:
   - component: {fileID: 2760611843264175184}
   - component: {fileID: 9103600452904016291}
   - component: {fileID: 3653311363514396871}
-  - component: {fileID: 4377850748624531829}
   - component: {fileID: 1409938038107235707}
   - component: {fileID: 7289414593419521353}
+  - component: {fileID: 5384314840072589087}
   m_Layer: 11
   m_Name: VoidThorn
   m_TagString: Spell Vulnerable
@@ -178,22 +178,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shader: Sprites/Default
   Scale: 1
---- !u!114 &4377850748624531829
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6875889309736456117}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: edfcf48dc89c08247bd7678abd7662b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damageDealt: 1
-  hazardType: 1
-  shadowDashHazard: 0
-  resetOnEnable: 0
 --- !u!114 &1409938038107235707
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,3 +207,21 @@ MonoBehaviour:
   defaultSprite: {fileID: 21300000, guid: fca491d63363db348bcfbf534d3c245b, type: 3}
   bigSprite: {fileID: 21300000, guid: dcf00d28aa3c9db4e84dcb16695b95ec, type: 3}
   splitSprite: {fileID: 21300000, guid: 95ec63abe79ba7e4e86961f9a158efd8, type: 3}
+--- !u!114 &5384314840072589087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6875889309736456117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1856530286, guid: 272df5dda169bf5408bc9624f365d349, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  convo: VOID_THORN_DREAM
+  flameConvo: VOID_THORN_DREAM_FLAME
+  heartConvo: 
+  flameHeartConvo: 
+  noSoul: 0
+  allowUseChildColliders: 0

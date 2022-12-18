@@ -113,6 +113,8 @@ namespace DarknestDungeon.Enemy
         public int Armor() => stateMachine.CurrentState.Armor();
 
         public void TriggerOnArmorChanged(int armor) => OnArmorChanged?.Invoke(armor);
+
+        public void Reset() => stateMachine.ChangeState(StateId.FullArmor);
     }
 
     public class VoidSpikeBehaviour : MonoBehaviour, IHitResponder
@@ -125,6 +127,7 @@ namespace DarknestDungeon.Enemy
             PreLaunch,
             Launching,
             Landing,
+            Burrow,
         }
 
         public static float _CONST_MINIMUM_LAUNCH_DISTANCE = 2.0f;
@@ -157,10 +160,12 @@ namespace DarknestDungeon.Enemy
         }
 
         private static readonly float _CONST_AWAKE_RANGE_SQUARED = 10 * 10;
+        private static readonly float _CONST_BURROW_TIME_WAIT = 5f;
 
         public class IdleState : State
         {
             private int lineOfSightTicks = 0;
+            private float burrowTime = 0;
 
             public IdleState(StateMachine mgr) : base(mgr) { }
 
@@ -168,22 +173,26 @@ namespace DarknestDungeon.Enemy
             {
                 if (ToHero.sqrMagnitude <= _CONST_AWAKE_RANGE_SQUARED)
                 {
+                    burrowTime = 0;
                     if (--lineOfSightTicks <= 0)
                     {
                         if (HasLineOfSight(out var _)) Mgr.ChangeState(StateId.Awakening);
                         else lineOfSightTicks = 10;
                     }
                 }
+                else if ((Parent.transform.position - Parent.spawnPos).sqrMagnitude > 5 * 5) {
+                    burrowTime += Time.deltaTime;
+                    if (burrowTime >= _CONST_BURROW_TIME_WAIT) Mgr.ChangeState(StateId.Burrow);
+                }
             }
         }
 
+        private static readonly float _CONST_MAX_TARGETING_RANGE_SQUARED = 16 * 16;
         private static readonly float _CONST_SLEEP_RANGE_SQUARED = 14 * 14;
-        private static readonly float _CONST_ALERT_RANGE_SQUARED = 11 * 11;
-        private static readonly float _CONST_AGGRO_RANGE_SQUARED = 8 * 8;
-        private static readonly float _CONST_HYPER_AGGRO_RANGE_SQUARED = 4 * 4;
-        private static readonly float _CONST_HYPER_AGGRO_FACTOR = 3;
-        private static readonly float _CONST_BASE_RAGE = 1.5f;
-        private static readonly float _CONST_MAX_RAGE = 3.5f;
+        private static readonly float _CONST_AGGRO_RANGE_SQUARED = 10 * 10;
+        private static readonly float _CONST_HYPER_AGGRO_RANGE_SQUARED = 6 * 6;
+        private static readonly float _CONST_BASE_RAGE = 2f;
+        private static readonly float _CONST_MAX_RAGE = 3f;
 
         public class AwakeningState : State
         {
@@ -203,14 +212,14 @@ namespace DarknestDungeon.Enemy
                 }
 
                 float dist = ToHero.sqrMagnitude;
-                if (dist >= _CONST_SLEEP_RANGE_SQUARED)
+                if (!hasSight || dist >= _CONST_SLEEP_RANGE_SQUARED)
                 {
+                    rage -= Time.deltaTime;
                     Mgr.ChangeState(StateId.Idle);
                     return;
                 }
-                else if (!hasSight || dist >= _CONST_ALERT_RANGE_SQUARED) rage -= Time.deltaTime;
-                else if (dist <= _CONST_HYPER_AGGRO_RANGE_SQUARED) rage += _CONST_HYPER_AGGRO_FACTOR * Time.deltaTime;
-                else if (dist <= _CONST_AGGRO_RANGE_SQUARED) rage += Time.deltaTime;
+                else if (dist <= _CONST_HYPER_AGGRO_RANGE_SQUARED) rage = _CONST_MAX_RAGE;
+                else if (dist <= _CONST_AGGRO_RANGE_SQUARED) rage += 4 * Time.deltaTime;
 
                 if (rage <= 0) Mgr.ChangeState(StateId.Idle);
                 else if (rage >= _CONST_MAX_RAGE) Mgr.ChangeState(StateId.Targeting);
@@ -233,15 +242,20 @@ namespace DarknestDungeon.Enemy
             protected override void Init()
             {
                 base.Init();
-                if (ToHero.magnitude > _CONST_SLEEP_RANGE_SQUARED)
-                {
-                    Parent.retargets = 0;
-                    Mgr.ChangeState(StateId.Idle);
-                }
-                else if (++Parent.retargets > _CONST_MAX_RETARGETS)
+                if (++Parent.retargets > _CONST_MAX_RETARGETS)
                 {
                     Parent.retargets = 0;
                     Mgr.ChangeState(StateId.Awakening);
+                }
+            }
+
+            protected override void Update()
+            {
+                base.Update();
+                if (ToHero.sqrMagnitude > _CONST_MAX_TARGETING_RANGE_SQUARED)
+                {
+                    Parent.retargets = 0;
+                    Mgr.ChangeState(StateId.Idle);
                 }
             }
         }
@@ -314,6 +328,34 @@ namespace DarknestDungeon.Enemy
             public LandingState(StateMachine mgr) : base(mgr) { AddMod(new SpikeTimerModule(mgr, _CONST_LANDING_TIME, StateId.Targeting)); }
         }
 
+        public static float _CONST_BURROW_RESPAWN_TIME = 2f;
+
+        public class BurrowState : State
+        {
+            public BurrowState(StateMachine mgr) : base(mgr) { AddMod(new SpikeTimerModule(mgr, _CONST_BURROW_RESPAWN_TIME, StateId.Idle)); }
+
+            protected override void Init()
+            {
+                base.Init();
+
+                // TODO: Poof
+                Parent.spriteRenderer.enabled = false;
+                Parent.transform.position = new(-50, -50, 0);
+            }
+
+            protected override void Stop()
+            {
+                base.Stop();
+
+                // TODO: Unpoof
+                Parent.spriteRenderer.enabled = true;
+                Parent.transform.position = Parent.spawnPos;
+                Parent.transform.rotation = Quaternion.AngleAxis(0, Vector3.forward);
+                Parent.armorControl.Reset();
+                Parent.healthManager.hp = 75;
+            }
+        }
+
         public class StateMachine : EnemyStateMachine<StateId, State, StateMachine, VoidSpikeBehaviour>
         {
             public StateMachine(VoidSpikeBehaviour parent) : base(parent, StateId.Idle, new()
@@ -324,6 +366,7 @@ namespace DarknestDungeon.Enemy
                 { StateId.PreLaunch, mgr => new PreLaunchState(mgr) },
                 { StateId.Launching, mgr => new LaunchingState(mgr) },
                 { StateId.Landing, mgr => new LandingState(mgr) },
+                { StateId.Burrow, mgr => new BurrowState(mgr) }
             }) { }
 
             public override StateMachine AsTyped() => this;
@@ -333,6 +376,7 @@ namespace DarknestDungeon.Enemy
         public GameObject knight;
         public SpriteRenderer spriteRenderer;
         public BoxCollider2D b2d;
+        public Vector3 spawnPos;
         public ArmorControl armorControl;
         public StateMachine stateMachine;
 
@@ -350,6 +394,7 @@ namespace DarknestDungeon.Enemy
         public BoxCollider2D launchHitbox;
         public GameObject idleHurtbox;
         public GameObject launchHurtbox;
+        public GameObject flashSprite;
 
         public void Hit(HitInstance damageInstance)
         {
@@ -369,6 +414,8 @@ namespace DarknestDungeon.Enemy
             var targetB2d = launching ? launchHitbox : idleHitbox;
             b2d.offset = targetB2d.offset;
             b2d.size = targetB2d.size;
+
+            flashSprite.SetActive(stateMachine.CurrentStateId == StateId.Targeting);
         }
 
         private void Awake()
@@ -380,6 +427,7 @@ namespace DarknestDungeon.Enemy
             this.tag = "Spell Vulnerable";
             launchSprites = new() { launchArmorless, launchHalfArmor, launchFullArmor };
             idleSprites = new() { idleArmorless, idleHalfArmor, idleFullArmor };
+            this.spawnPos = transform.position;
 
             this.armorControl = new(gameObject);
             this.stateMachine = new(this);
