@@ -306,7 +306,7 @@ namespace DarknestDungeon.Enemy
                 float time = (target - origPos).magnitude / _CONST_LAUNCH_VELOCITY;
                 timer = AddMod(new SpikeTimerModule(mgr, time, StateId.Landing));
 
-                Parent.transform.rotation = MathExt.AngleVec(target - origPos, -90);
+                Parent.transform.rotation = MathExt.RadialVecToQuat(target - origPos, -90);
             }
 
             protected override void Update()
@@ -318,7 +318,7 @@ namespace DarknestDungeon.Enemy
             protected override void Stop()
             {
                 base.Stop();
-                Parent.transform.rotation = MathExt.AngleVec(Parent.launchTarget.normal, -90);
+                Parent.transform.rotation = MathExt.RadialVecToQuat(Parent.launchTarget.normal, -90);
             }
         }
 

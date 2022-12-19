@@ -27,6 +27,8 @@ namespace DarknestDungeon.EnemyLib
 
         public void Update() => CurrentState.UpdateFinal();
 
+        public void FixedUpdate() => CurrentState.FixedUpdateFinal();
+
         public S ChangeState(T newStateId)
         {
             if (EqualityComparer<T>.Default.Equals(CurrentStateId, newStateId)) return CurrentState;

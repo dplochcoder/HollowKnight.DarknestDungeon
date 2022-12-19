@@ -6,6 +6,8 @@
 
         public virtual void Update(out bool stateChange) { stateChange = false; }
 
+        public virtual void FixedUpdate() { }
+
         public virtual void Stop() { }
     }
 }

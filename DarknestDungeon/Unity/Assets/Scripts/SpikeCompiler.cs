@@ -65,7 +65,7 @@ namespace DarknestDungeon.Scripts
                 go.transform.SetParent(compiled.transform);
             }
 
-            var damage = compiled.AddComponent<DamageHero>();
+            var damage = gameObject.GetOrAddComponent<DamageHero>();
             damage.hazardType = 2;
             damage.shadowDashHazard = true;
         }

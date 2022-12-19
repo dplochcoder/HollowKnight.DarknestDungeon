@@ -18,6 +18,8 @@ namespace DarknestDungeon.EnemyLib
             return m;
         }
 
+        protected S ChangeState(T newId) => Mgr.ChangeState(newId);
+
         protected virtual void Init() { }
 
         public void InitFinal()
@@ -37,6 +39,14 @@ namespace DarknestDungeon.EnemyLib
         }
 
         protected virtual void Update() { }
+
+        public void FixedUpdateFinal()
+        {
+            foreach (var module in modules) module.FixedUpdate();
+            FixedUpdate();
+        }
+
+        protected virtual void FixedUpdate() { }
 
         public void StopFinal()
         {
