@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 #if UNITY_EDITOR
 [ExecuteAlways]
