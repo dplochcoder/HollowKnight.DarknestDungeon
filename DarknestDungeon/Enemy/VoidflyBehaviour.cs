@@ -40,7 +40,7 @@ namespace DarknestDungeon.Enemy
                 var self = Parent.transform.position;
                 var hero = Parent.knight.transform.position;
                 var delta = hero - self;
-                if (delta.sqrMagnitude < _CONST_DETECTION_RANGE * _CONST_DETECTION_RANGE) return;
+                if (delta.sqrMagnitude > _CONST_DETECTION_RANGE * _CONST_DETECTION_RANGE) return;
 
                 float sightAngle = MathExt.RadialVecToQuat(delta).ToAngle();
                 float baseAngle = Parent.transform.rotation.ToAngle() + 270;
