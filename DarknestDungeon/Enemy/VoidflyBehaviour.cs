@@ -42,7 +42,7 @@ namespace DarknestDungeon.Enemy
                 var delta = hero - self;
                 if (delta.sqrMagnitude > _CONST_DETECTION_RANGE * _CONST_DETECTION_RANGE) return;
 
-                float sightAngle = MathExt.RadialVecToQuat(delta).ToAngle();
+                float sightAngle = delta.To2d().VecToAngle();
                 float baseAngle = Parent.transform.rotation.ToAngle() + 270;
                 if (!MathExt.IsAngleBetween(sightAngle, baseAngle - _CONST_CONE_WIDTH, baseAngle + _CONST_CONE_WIDTH)) return;
 
@@ -50,7 +50,7 @@ namespace DarknestDungeon.Enemy
                 {
                     lineOfSightTicker = 10;
                     var hit = Physics2D.Raycast(self.To2d(), delta, 256f, TERRAIN_MASK);
-                    if (hit.distance + 0.5f >= delta.sqrMagnitude) ChangeState(StateId.Activated);
+                    if (hit.distance + 0.5f >= delta.magnitude) ChangeState(StateId.Activated);
                 }
             }
         }
