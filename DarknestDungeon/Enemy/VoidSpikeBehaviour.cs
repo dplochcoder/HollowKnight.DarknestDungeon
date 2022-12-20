@@ -227,7 +227,7 @@ namespace DarknestDungeon.Enemy
             }
         }
 
-        private static float _CONST_TARGETING_TIME = 0.25f;
+        private static float _CONST_TARGETING_TIME = 0.35f;
         private static int _CONST_MAX_RETARGETS = 5;
 
         public int retargets = 0;
@@ -261,7 +261,7 @@ namespace DarknestDungeon.Enemy
             }
         }
 
-        private static float _CONST_PRE_LAUNCH_TIME = 0.15f;
+        private static float _CONST_PRE_LAUNCH_TIME = 0.05f;
 
         public class PreLaunchState : State
         {
