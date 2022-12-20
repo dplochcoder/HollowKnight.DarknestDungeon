@@ -70,7 +70,9 @@ namespace DarknestDungeon.Enemy
 
         public class FlyingState : State
         {
-            public FlyingState(StateMachine mgr) : base(mgr) { }
+            private float currentAngle;
+
+            public FlyingState(StateMachine mgr) : base(mgr) { currentAngle = Parent.transform.rotation.ToAngle() + 270; }
 
             protected override void FixedUpdate()
             {
@@ -80,13 +82,12 @@ namespace DarknestDungeon.Enemy
                 var hero = Parent.knight.transform.position;
                 var delta = hero - self;
 
-                float sightAngle = MathExt.RadialVecToQuat(delta).ToAngle();
-                float baseAngle = Parent.transform.rotation.ToAngle() + 270;
+                float sightAngle = delta.To2d().VecToAngle();
                 float turnRange = Time.fixedDeltaTime * _CONST_TURNING_SPEED;
-                float newAngle = MathExt.Clamp(sightAngle, baseAngle - turnRange, baseAngle + turnRange);
+                currentAngle = MathExt.Clamp(sightAngle, currentAngle - turnRange, currentAngle + turnRange);
 
-                Parent.transform.rotation = Quaternion.AngleAxis(newAngle, Vector3.forward);
-                Parent.rigidbody2d.velocity = delta.normalized * _CONST_FLYING_VELOCITY;
+                Parent.transform.rotation = Quaternion.AngleAxis(currentAngle - 270, Vector3.forward);
+                Parent.rigidbody2d.velocity = currentAngle.AsAngleToVec().To3d() * _CONST_FLYING_VELOCITY;
             }
         }
 
@@ -137,10 +138,20 @@ namespace DarknestDungeon.Enemy
             Destroy(gameObject);
         }
 
+        private void OnTriggerEnter2D(Collider2D collider)
+        {
+            int layer = collider.gameObject.layer;
+            if (layer != (int)GlobalEnums.PhysLayers.TERRAIN && layer != (int)GlobalEnums.PhysLayers.HERO_BOX) return;
+
+            // TODO: Do a different explosion for mid-air collision
+            Object.Instantiate(explosionPrefab, collider.gameObject.transform.position, Quaternion.AngleAxis(0, Vector3.forward));
+            Destroy(gameObject);
+        }
+
         private void OnCollisionEnter2D(Collision2D collision)
         {
             int layer = collision.otherCollider.gameObject.layer;
-            if (layer != (int)GlobalEnums.PhysLayers.TERRAIN && layer != (int)GlobalEnums.PhysLayers.HERO_BOX) return;
+            if (layer != (int)GlobalEnums.PhysLayers.TERRAIN) return;
 
             // TODO: rotate according to normal vector, and offset.
             Object.Instantiate(explosionPrefab, collision.contacts[0].point.To3d(), Quaternion.AngleAxis(0, Vector3.forward));
@@ -194,7 +205,7 @@ namespace DarknestDungeon.Enemy
 
         public class LingeringState : State
         {
-            public LingeringState(StateMachine mgr) : base(mgr) { }
+            public LingeringState(StateMachine mgr) : base(mgr) { AddMod(new ExplosionTimerModule(mgr, _LINGER_TIME, StateId.Gone)); }
         }
 
         public class GoneState : State
