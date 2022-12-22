@@ -48,10 +48,7 @@
     <None Remove="Unity\**" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Unity\Assets\AssetBundles\**" />
-    <EmbeddedResource Include="Unity\Assets\Scenes\**" />
-    <EmbeddedResource Remove="Unity\**\*.manifest" />
-    <EmbeddedResource Remove="Unity\**\*.meta" />
+    <EmbeddedResource Include="Unity\Assets\**" />
     <EmbeddedResource Include="Resources\**\*.json" />
   </ItemGroup>
   <ItemGroup>
