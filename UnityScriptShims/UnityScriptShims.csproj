@@ -70,5 +70,8 @@
     <Compile Include="Scripts\VoidTorchReceiver.cs" />
     <Compile Include="Scripts\VoidTorchSource.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include=".gitignore" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
