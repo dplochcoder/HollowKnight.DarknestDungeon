@@ -7,7 +7,6 @@ namespace DarknestDungeon.UnityExtensions
         public static Quaternion RadialToQuat(float x, float y, float degOffset)
         {
             var angle = VecToAngle(x, y) + degOffset;
-            var q = new Quaternion();
             return Quaternion.AngleAxis(angle, Vector3.forward);
         }
 
