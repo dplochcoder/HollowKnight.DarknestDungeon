@@ -435,6 +435,8 @@ namespace DarknestDungeon.Enemy
             this.armorControl.OnArmorChanged += _ => UpdateVisuals();
 
             UpdateVisuals();
+
+            this.healthManager.OnDeath += () => Destroy(gameObject);
         }
 
         private void Update()
