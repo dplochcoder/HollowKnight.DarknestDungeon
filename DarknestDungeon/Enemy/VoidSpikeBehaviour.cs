@@ -376,7 +376,7 @@ namespace DarknestDungeon.Enemy
         public HealthManager healthManager;
         public GameObject knight;
         public SpriteRenderer spriteRenderer;
-        public BoxCollider2D b2d;
+        public BoxCollider2D boxCollider2d;
         public Vector3 spawnPos;
         public ArmorControl armorControl;
         public StateMachine stateMachine;
@@ -413,8 +413,8 @@ namespace DarknestDungeon.Enemy
             spriteRenderer.sprite = targetSprites[armorControl.Armor()];
 
             var targetB2d = launching ? launchHitbox : idleHitbox;
-            b2d.offset = targetB2d.offset;
-            b2d.size = targetB2d.size;
+            boxCollider2d.offset = targetB2d.offset;
+            boxCollider2d.size = targetB2d.size;
 
             flashSprite.SetActive(stateMachine.CurrentStateId == StateId.Targeting);
         }
@@ -424,7 +424,7 @@ namespace DarknestDungeon.Enemy
             this.healthManager = GetComponent<HealthManager>();
             this.knight = GameManager.instance.hero_ctrl.gameObject;
             this.spriteRenderer = GetComponent<SpriteRenderer>();
-            this.b2d = gameObject.AddComponent<BoxCollider2D>();
+            this.boxCollider2d = gameObject.AddComponent<BoxCollider2D>();
             this.tag = "Spell Vulnerable";
             launchSprites = new() { launchArmorless, launchHalfArmor, launchFullArmor };
             idleSprites = new() { idleArmorless, idleHalfArmor, idleFullArmor };
