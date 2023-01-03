@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace DarknestDungeon.Enemy
 {
-    using TimerModule = EnemyLib.TimerModule<VoidThornBehaviour.StateId, VoidThornBehaviour.State, VoidThornBehaviour.StateMachine, VoidThornBehaviour>;
+    using TimerModule = TimerModule<VoidThornBehaviour.StateId, VoidThornBehaviour.State, VoidThornBehaviour.StateMachine, VoidThornBehaviour>;
 
     internal class VoidThornBehaviour : GameplayMonoBehaviour, IHitResponder
     {
