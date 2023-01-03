@@ -232,8 +232,6 @@ namespace DarknestDungeon.Enemy
 
         private StateMachine stateMachine;
 
-        protected override void Awake() => stateMachine = new(this);
-
-        protected override void UpdateImpl() => stateMachine.Update();
+        protected override void Awake() => stateMachine = AddESM<StateMachine>(new(this));
     }
 }
