@@ -274,8 +274,10 @@ namespace DarknestDungeon.Enemy
                 base.Init();
                 if (!HasLineOfSight(out var hit))
                 {
-                    var tState = Mgr.ChangeState(StateId.Targeting) as TargetingState;
-                    tState.timer.Remaining = 0.1f;
+                    if (Mgr.ChangeState(StateId.Targeting) is TargetingState tState)
+                    {
+                        tState.timer.Remaining = 0.1f;
+                    }
                 }
                 else
                 {

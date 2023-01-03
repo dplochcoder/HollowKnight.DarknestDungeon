@@ -20,7 +20,7 @@ namespace DarknestDungeon.UnityExtensions
 
         public static float VecToAngle(this Vector2 vec) => VecToAngle(vec.x, vec.y);
 
-        public static Vector2 AsAngleToVec(this float angle) => new(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Rad2Deg));
+        public static Vector2 AsAngleToVec(this float angle) => new(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
 
         public static Quaternion RadialToQuat(float x, float y) => RadialToQuat(x, y, 0);
 

@@ -84,11 +84,9 @@ namespace DarknestDungeon.Enemy
 
                 float sightAngle = delta.To2d().VecToAngle();
                 float turnRange = Time.fixedDeltaTime * _CONST_TURNING_SPEED;
-                DarknestDungeon.Log($"{sightAngle}, {turnRange}, {currentAngle}");
                 currentAngle = MathExt.Clamp(sightAngle, currentAngle - turnRange, currentAngle + turnRange);
-                DarknestDungeon.Log($"{sightAngle}, {turnRange}, {currentAngle}");
 
-                Parent.transform.rotation = Quaternion.AngleAxis(currentAngle - 270, Vector3.forward);
+                Parent.transform.localRotation = Quaternion.AngleAxis(currentAngle - 270, Vector3.forward);
                 Parent.rigidbody2d.velocity = currentAngle.AsAngleToVec().To3d() * _CONST_FLYING_VELOCITY;
             }
         }
