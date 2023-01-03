@@ -55,15 +55,15 @@ namespace DarknestDungeon.Enemy
             }
         }
 
-        private static float _CONST_ATTACK_DELAY = 0.2f;
+        private static float _CONST_ATTACK_DELAY = 0.225f;
 
         public class ActivatedState : State
         {
             public ActivatedState(StateMachine mgr) : base(mgr) { AddMod(new VoidflyTimerModule(mgr, _CONST_ATTACK_DELAY, StateId.Flying)); }
         }
 
-        private static float _CONST_FLYING_VELOCITY = 32f;
-        private static float _CONST_TURNING_RADIUS = 8f;
+        private static float _CONST_FLYING_VELOCITY = 30f;
+        private static float _CONST_TURNING_RADIUS = 9f;
 
         // Degrees/sec
         private static float _CONST_TURNING_SPEED => 360 * _CONST_FLYING_VELOCITY / (2 * Mathf.PI * _CONST_TURNING_RADIUS);
@@ -104,6 +104,7 @@ namespace DarknestDungeon.Enemy
             public override StateMachine AsTyped() => this;
         }
 
+        public HeroController heroController;
         public GameObject knight;
         public HealthManager healthManager;
         public SpriteRenderer spriteRenderer;
@@ -118,7 +119,8 @@ namespace DarknestDungeon.Enemy
 
         protected override void Awake()
         {
-            this.knight = GameManager.instance.hero_ctrl.gameObject;
+            this.heroController = gm.hero_ctrl;
+            this.knight = heroController.gameObject;
             this.healthManager = GetComponent<HealthManager>();
             this.spriteRenderer = GetComponent<SpriteRenderer>();
             this.rigidbody2d = GetComponent<Rigidbody2D>();
@@ -137,7 +139,7 @@ namespace DarknestDungeon.Enemy
         private void OnTriggerEnter2D(Collider2D collider)
         {
             int layer = collider.gameObject.layer;
-            if (layer != (int)GlobalEnums.PhysLayers.TERRAIN && layer != (int)GlobalEnums.PhysLayers.HERO_BOX) return;
+            if (layer != (int)GlobalEnums.PhysLayers.HERO_BOX || heroController.cState.shadowDashing) return;
 
             // TODO: Do a different explosion for mid-air collision
             Object.Instantiate(explosionPrefab, collider.gameObject.transform.position, Quaternion.AngleAxis(0, Vector3.forward));
@@ -146,7 +148,7 @@ namespace DarknestDungeon.Enemy
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            int layer = collision.otherCollider.gameObject.layer;
+            int layer = collision.collider.gameObject.layer;
             if (layer != (int)GlobalEnums.PhysLayers.TERRAIN) return;
 
             // TODO: rotate according to normal vector, and offset.
