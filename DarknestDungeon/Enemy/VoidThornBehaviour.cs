@@ -1,4 +1,5 @@
 ﻿using DarknestDungeon.EnemyLib;
+using DarknestDungeon.Scripts.Lib;
 using SFCore.Utils;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,7 @@ namespace DarknestDungeon.Enemy
 {
     using TimerModule = EnemyLib.TimerModule<VoidThornBehaviour.StateId, VoidThornBehaviour.State, VoidThornBehaviour.StateMachine, VoidThornBehaviour>;
 
-    public class VoidThornBehaviour : MonoBehaviour, IHitResponder
+    internal class VoidThornBehaviour : GameplayMonoBehaviour, IHitResponder
     {
         public enum StateId
         {
@@ -208,7 +209,7 @@ namespace DarknestDungeon.Enemy
         public Sprite bigSprite;
         public Sprite splitSprite;
 
-        private void Awake()
+        protected override void Awake()
         {
             gameObject.tag = "Spell Vulnerable";
             hm = GetComponent<HealthManager>();
@@ -308,7 +309,7 @@ namespace DarknestDungeon.Enemy
             return driftVelocity;
         }
 
-        private void FixedUpdate()
+        protected override void FixedUpdateImpl()
         {
             ShuffleDestination();
 
@@ -326,6 +327,6 @@ namespace DarknestDungeon.Enemy
             gameObject.transform.position = new(newPos.x, newPos.y, gameObject.transform.position.z);
         }
 
-        private void Update() => sm.Update();
+        protected override void UpdateImpl() => sm.Update();
     }
 }

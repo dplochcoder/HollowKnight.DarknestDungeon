@@ -1,4 +1,5 @@
 ﻿using DarknestDungeon.IC;
+using DarknestDungeon.Scripts.Lib;
 using GlobalEnums;
 using ItemChanger.Extensions;
 using System;
@@ -7,7 +8,7 @@ using UnityEngine;
 
 namespace DarknestDungeon.Hero
 {
-    public class VoidCloakBehaviour : MonoBehaviour
+    internal class VoidCloakBehaviour : GameplayMonoBehaviour
     {
         private enum VoidCloakState
         {
@@ -55,7 +56,6 @@ namespace DarknestDungeon.Hero
         private InputHandler ih;
         private Rigidbody2D rb2d;
         private HeroControllerStates hcs;
-        private GameManager gm;
 
         private VoidCloakState voidCloakState = VoidCloakState.Idle;
         private Vector2 velocity;
@@ -80,7 +80,6 @@ namespace DarknestDungeon.Hero
             ih = (InputHandler)inputHandlerField.GetValue(hc);
             rb2d = (Rigidbody2D)rb2dField.GetValue(hc);
             hcs = hc.cState;
-            gm = GameManager.instance;
 
             shadowRecharge = gameObject.FindChild("Effects").FindChild("Shadow Recharge");
             shadowRechargeAnimator = shadowRecharge.GetComponent<tk2dSpriteAnimator>();
@@ -186,9 +185,9 @@ namespace DarknestDungeon.Hero
 
         private void FinishedDashing() => finishedDashingMethod.Invoke(hc, emptyArr);
 
-        public void Update()
+        protected override void UpdateImpl()
         {
-            if (!Vcm.HasVoidCloak || gm.isPaused) return;
+            if (!Vcm.HasVoidCloak) return;
 
             UpdateVoidCloak();
             UpdateShadowRechargeAnim();

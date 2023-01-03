@@ -1,4 +1,5 @@
 ﻿using DarknestDungeon.EnemyLib;
+using DarknestDungeon.Scripts.Lib;
 using DarknestDungeon.UnityExtensions;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +9,7 @@ namespace DarknestDungeon.Enemy
     using ArmorTimerModule = TimerModule<ArmorControl.StateId, ArmorControl.State, ArmorControl.StateMachine, ArmorControl>;
     using SpikeTimerModule = TimerModule<VoidSpikeBehaviour.StateId, VoidSpikeBehaviour.State, VoidSpikeBehaviour.StateMachine, VoidSpikeBehaviour>;
 
-    public class ArmorControl
+    internal class ArmorControl
     {
         public delegate void ArmorChanged(int armor);
         public event ArmorChanged? OnArmorChanged;
@@ -118,7 +119,7 @@ namespace DarknestDungeon.Enemy
         public void Reset() => stateMachine.ChangeState(StateId.FullArmor);
     }
 
-    public class VoidSpikeBehaviour : MonoBehaviour, IHitResponder
+    internal class VoidSpikeBehaviour : GameplayMonoBehaviour, IHitResponder
     {
         public enum StateId
         {
@@ -419,7 +420,7 @@ namespace DarknestDungeon.Enemy
             flashSprite.SetActive(stateMachine.CurrentStateId == StateId.Targeting);
         }
 
-        private void Awake()
+        protected override void Awake()
         {
             this.healthManager = GetComponent<HealthManager>();
             this.knight = GameManager.instance.hero_ctrl.gameObject;
@@ -439,7 +440,7 @@ namespace DarknestDungeon.Enemy
             this.healthManager.OnDeath += () => Destroy(gameObject);
         }
 
-        private void Update()
+        protected override void UpdateImpl()
         {
             armorControl.Update();
             stateMachine.Update();

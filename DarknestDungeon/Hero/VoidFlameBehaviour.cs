@@ -1,11 +1,12 @@
 ﻿using DarknestDungeon.IC;
+using DarknestDungeon.Scripts.Lib;
 using DarknestDungeon.UnityExtensions;
 using ItemChanger;
 using UnityEngine;
 
 namespace DarknestDungeon.Hero
 {
-    public class VoidFlameBehaviour : MonoBehaviour
+    internal class VoidFlameBehaviour : GameplayMonoBehaviour
     {
         // Must be set before Start().
         public VoidFlameModule Vfm;

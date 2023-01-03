@@ -1,6 +1,6 @@
 ﻿using DarknestDungeon.EnemyLib;
+using DarknestDungeon.Scripts.Lib;
 using DarknestDungeon.UnityExtensions;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace DarknestDungeon.Enemy
@@ -8,7 +8,7 @@ namespace DarknestDungeon.Enemy
     using VoidflyTimerModule = TimerModule<VoidflyBehaviour.StateId, VoidflyBehaviour.State, VoidflyBehaviour.StateMachine, VoidflyBehaviour>;
     using ExplosionTimerModule = TimerModule<VoidflyExplosionBehaviour.StateId, VoidflyExplosionBehaviour.State, VoidflyExplosionBehaviour.StateMachine, VoidflyExplosionBehaviour>;
 
-    public class VoidflyBehaviour : MonoBehaviour
+    internal class VoidflyBehaviour : GameplayMonoBehaviour
     {
         public enum StateId
         {
@@ -118,7 +118,7 @@ namespace DarknestDungeon.Enemy
         public Sprite activeSprite;
         public GameObject explosionPrefab;
 
-        private void Awake()
+        protected override void Awake()
         {
             this.knight = GameManager.instance.hero_ctrl.gameObject;
             this.healthManager = GetComponent<HealthManager>();
@@ -130,9 +130,9 @@ namespace DarknestDungeon.Enemy
             this.stateMachine = new(this);
         }
 
-        private void Update() => stateMachine.Update();
+        protected override void UpdateImpl() => stateMachine.Update();
 
-        private void FixedUpdate() => stateMachine.FixedUpdate();
+        protected override void FixedUpdateImpl() => stateMachine.FixedUpdate();
 
         private void Explode()
         {
@@ -161,7 +161,7 @@ namespace DarknestDungeon.Enemy
         }
     }
 
-    public class VoidflyExplosionBehaviour : MonoBehaviour
+    internal class VoidflyExplosionBehaviour : GameplayMonoBehaviour
     {
         public enum StateId
         {
@@ -236,14 +236,8 @@ namespace DarknestDungeon.Enemy
 
         private StateMachine stateMachine;
 
-        private void Awake()
-        {
-            stateMachine = new(this);
-        }
+        protected override void Awake() => stateMachine = new(this);
 
-        private void Update()
-        {
-            stateMachine.Update();
-        }
+        protected override void UpdateImpl() => stateMachine.Update();
     }
 }
