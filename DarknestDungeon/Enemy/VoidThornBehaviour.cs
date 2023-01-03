@@ -35,7 +35,7 @@ namespace DarknestDungeon.Enemy
             protected override void Init()
             {
                 SetInitScale();
-                Parent.sr.sprite = InitSprite;
+                Parent.spriteRenderer.sprite = InitSprite;
             }
 
             public virtual void Hit() { }
@@ -162,15 +162,15 @@ namespace DarknestDungeon.Enemy
             public RespawningState(StateMachine mgr) : base(mgr)
             {
                 AddMod(new TimerModule(mgr, _CONST_RESPAWNING_TIME, StateId.Idle));
-                Parent.b2d.enabled = false;
+                Parent.boxCollider2D.enabled = false;
             }
 
             protected override Sprite InitSprite => Parent.splitSprite;
 
             protected override void Stop()
             {
-                Parent.b2d.enabled = true;
-                Parent.hm.hp = Parent.origHealth;
+                Parent.boxCollider2D.enabled = true;
+                Parent.healthManager.hp = Parent.origHealth;
             }
         }
 
@@ -189,11 +189,11 @@ namespace DarknestDungeon.Enemy
             public override StateMachine AsTyped() => this;
         }
 
-        public HealthManager hm;
-        public SpriteRenderer sr;
+        public HealthManager healthManager;
+        public SpriteRenderer spriteRenderer;
         public IFrames iFrames;
         public int origHealth;
-        public BoxCollider2D b2d;
+        public BoxCollider2D boxCollider2D;
         public GameObject knight;
         public Vector3 origPos;
         public Vector3 destination;
@@ -201,7 +201,7 @@ namespace DarknestDungeon.Enemy
         public Vector2 destination2d;
 
         public float shuffleTimer;
-        public StateMachine sm;
+        public StateMachine stateMachine;
 
         // Settable fields
         public Sprite defaultSprite;
@@ -211,49 +211,49 @@ namespace DarknestDungeon.Enemy
         protected override void Awake()
         {
             gameObject.tag = "Spell Vulnerable";
-            hm = GetComponent<HealthManager>();
-            origHealth = hm.hp;
-            hm.OnDeath += () => sm.ChangeState(StateId.Respawning);
+            healthManager = GetComponent<HealthManager>();
+            origHealth = healthManager.hp;
+            healthManager.OnDeath += () => stateMachine.ChangeState(StateId.Respawning);
 
-            sr = GetComponent<SpriteRenderer>();
-            sr.sprite = defaultSprite;
+            spriteRenderer = GetComponent<SpriteRenderer>();
+            spriteRenderer.sprite = defaultSprite;
 
             iFrames = gameObject.AddComponent<IFrames>();
 
-            b2d = GetComponent<BoxCollider2D>();
+            boxCollider2D = GetComponent<BoxCollider2D>();
             knight = GameManager.instance.hero_ctrl.gameObject;
 
             origPos = gameObject.transform.position;
             origPos2d = new(origPos.x, origPos.y);
-            hm.SetAttr("invincible", true);
+            healthManager.SetAttr("invincible", true);
 
-            shuffleTimer = (SHUFFLE_TIMER + SHUFFLE_VARIANCE * Random.Range(0f, 1f)) * Random.Range(0f, 1f) - SHUFFLE_TIMER - SHUFFLE_VARIANCE;
+            shuffleTimer = (_CONST_SHUFFLE_TIMER + _CONST_SHUFFLE_VARIANCE * Random.Range(0f, 1f)) * Random.Range(0f, 1f) - _CONST_SHUFFLE_TIMER - _CONST_SHUFFLE_VARIANCE;
             ShuffleDestination();
-            sm = AddESM<StateMachine>(new(this));
+            stateMachine = AddESM<StateMachine>(new(this));
         }
 
-        private static float SHUFFLE_TIMER = 2.2f;
-        private static float DRIFT_SPEED = 0.15f;
-        private static float DRIFT_ACCEL = 0.4f;
-        private static float SHUFFLE_VARIANCE = 0.6f;
-        private static float SHUFFLE_RADIUS = 0.55f;
+        private static float _CONST_SHUFFLE_TIMER = 2.2f;
+        private static float _CONST_DRIFT_SPEED = 0.15f;
+        private static float _CONST_DRIFT_ACCEL = 0.4f;
+        private static float _CONST_SHUFFLE_VARIANCE = 0.6f;
+        private static float _CONST_SHUFFLE_RADIUS = 0.55f;
 
         private void ShuffleDestination()
         {
             shuffleTimer -= Time.fixedDeltaTime;
             if (shuffleTimer > 0)
             {
-                destination += Quaternion.Euler(0, 0, Random.Range(0f, 360f)) * new Vector3(DRIFT_SPEED, 0, 0) * Time.fixedDeltaTime;
+                destination += Quaternion.Euler(0, 0, Random.Range(0f, 360f)) * new Vector3(_CONST_DRIFT_SPEED, 0, 0) * Time.fixedDeltaTime;
                 return;
             }
 
-            shuffleTimer += SHUFFLE_TIMER + SHUFFLE_VARIANCE * Random.Range(0f, 1f);
+            shuffleTimer += _CONST_SHUFFLE_TIMER + _CONST_SHUFFLE_VARIANCE * Random.Range(0f, 1f);
             Vector3 oldDestination = new(destination.x, destination.y, destination.z);
             while (true)
             {
-                float radius = Mathf.Sqrt(Random.Range(0f, 1f)) * SHUFFLE_RADIUS;
+                float radius = Mathf.Sqrt(Random.Range(0f, 1f)) * _CONST_SHUFFLE_RADIUS;
                 destination = origPos + Quaternion.Euler(0, 0, Random.Range(0f, 360f)) * new Vector3(radius, 0, 0);
-                if (Vector3.Distance(destination, oldDestination) > SHUFFLE_RADIUS / 2)
+                if (Vector3.Distance(destination, oldDestination) > _CONST_SHUFFLE_RADIUS / 2)
                 {
                     destination2d = new(destination.x, destination.y);
                     return;
@@ -261,8 +261,8 @@ namespace DarknestDungeon.Enemy
             }
         }
 
-        private static float IMPULSE_DISTANCE = 0.25f;
-        private static float IMPULSE_DURATION_SECONDS = 0.1f;
+        private static float _CONST_IMPULSE_DISTANCE = 0.25f;
+        private static float _CONST_IMPULSE_DURATION_SECONDS = 0.1f;
 
         private record Impulse
         {
@@ -282,9 +282,9 @@ namespace DarknestDungeon.Enemy
             if (!iFrames.AcceptHit()) return;
 
             var dir = (Quaternion.Euler(0, 0, damageInstance.Direction) * new Vector3(1, 0, 0)).normalized;
-            impulses.Add(new(dir * (IMPULSE_DISTANCE / IMPULSE_DURATION_SECONDS), IMPULSE_DURATION_SECONDS));
+            impulses.Add(new(dir * (_CONST_IMPULSE_DISTANCE / _CONST_IMPULSE_DURATION_SECONDS), _CONST_IMPULSE_DURATION_SECONDS));
 
-            sm.CurrentState.Hit();
+            stateMachine.CurrentState.Hit();
         }
 
         private Vector2 pos2d => new(gameObject.transform.position.x, gameObject.transform.position.y);
@@ -295,9 +295,9 @@ namespace DarknestDungeon.Enemy
         {
             var dist = pos2d - destination2d;
             var dir = -dist;
-            var target = dir * DRIFT_SPEED;
+            var target = dir * _CONST_DRIFT_SPEED;
             var vDelta = target - driftVelocity;
-            var aDelta = DRIFT_ACCEL * Time.fixedDeltaTime;
+            var aDelta = _CONST_DRIFT_ACCEL * Time.fixedDeltaTime;
             if (vDelta.magnitude < aDelta)
             {
                 driftVelocity = target;
@@ -321,7 +321,7 @@ namespace DarknestDungeon.Enemy
             }
             impulses.RemoveAll(i => i.remaining <= 0);
 
-            velocity = sm.CurrentState.Mobile ? velocity : new(0, 0);
+            velocity = stateMachine.CurrentState.Mobile ? velocity : new(0, 0);
             var newPos = pos2d + velocity * Time.fixedDeltaTime;
             gameObject.transform.position = new(newPos.x, newPos.y, gameObject.transform.position.z);
         }
