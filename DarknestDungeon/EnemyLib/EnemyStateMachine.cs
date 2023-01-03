@@ -2,7 +2,14 @@
 
 namespace DarknestDungeon.EnemyLib
 {
-    public abstract class EnemyStateMachine<T, S, M, P> where S : EnemyState<T, S, M, P> where M : EnemyStateMachine<T, S, M, P>
+    public interface IEnemyStateMachine
+    {
+        public void Update();
+
+        public void FixedUpdate();
+    }
+
+    public abstract class EnemyStateMachine<T, S, M, P> : IEnemyStateMachine where S : EnemyState<T, S, M, P> where M : EnemyStateMachine<T, S, M, P>
     {
         public delegate S StateCreator(M mgr);
 

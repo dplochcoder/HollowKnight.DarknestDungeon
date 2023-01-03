@@ -90,7 +90,7 @@ namespace DarknestDungeon.Enemy
             public override StateMachine AsTyped() => this;
         }
 
-        private StateMachine stateMachine;
+        public readonly StateMachine stateMachine;
         private TinkEffect tinkEffect;
         private HealthManager healthManager;
         private IFrames iFrames;
@@ -102,8 +102,6 @@ namespace DarknestDungeon.Enemy
             this.iFrames = go.AddComponent<IFrames>();
             stateMachine = new(this);
         }
-
-        public void Update() => stateMachine.Update();
 
         public void NailHit()
         {
@@ -432,18 +430,13 @@ namespace DarknestDungeon.Enemy
             this.spawnPos = transform.position;
 
             this.armorControl = new(gameObject);
-            this.stateMachine = new(this);
+            AddESM(this.armorControl.stateMachine);
+            this.stateMachine = AddESM<StateMachine>(new(this));
             this.armorControl.OnArmorChanged += _ => UpdateVisuals();
 
             UpdateVisuals();
 
             this.healthManager.OnDeath += () => Destroy(gameObject);
-        }
-
-        protected override void UpdateImpl()
-        {
-            armorControl.Update();
-            stateMachine.Update();
         }
     }
 }

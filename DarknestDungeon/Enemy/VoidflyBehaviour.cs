@@ -127,12 +127,8 @@ namespace DarknestDungeon.Enemy
 
             healthManager.OnDeath += () => Explode();
 
-            this.stateMachine = new(this);
+            this.stateMachine = AddESM<StateMachine>(new(this));
         }
-
-        protected override void UpdateImpl() => stateMachine.Update();
-
-        protected override void FixedUpdateImpl() => stateMachine.FixedUpdate();
 
         private void Explode()
         {

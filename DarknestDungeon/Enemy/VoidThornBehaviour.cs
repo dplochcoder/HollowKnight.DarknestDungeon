@@ -229,7 +229,7 @@ namespace DarknestDungeon.Enemy
 
             shuffleTimer = (SHUFFLE_TIMER + SHUFFLE_VARIANCE * Random.Range(0f, 1f)) * Random.Range(0f, 1f) - SHUFFLE_TIMER - SHUFFLE_VARIANCE;
             ShuffleDestination();
-            sm = new(this);
+            sm = AddESM<StateMachine>(new(this));
         }
 
         private static float SHUFFLE_TIMER = 2.2f;
@@ -325,7 +325,5 @@ namespace DarknestDungeon.Enemy
             var newPos = pos2d + velocity * Time.fixedDeltaTime;
             gameObject.transform.position = new(newPos.x, newPos.y, gameObject.transform.position.z);
         }
-
-        protected override void UpdateImpl() => sm.Update();
     }
 }
