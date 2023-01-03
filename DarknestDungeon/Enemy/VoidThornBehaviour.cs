@@ -52,25 +52,25 @@ namespace DarknestDungeon.Enemy
             }
         }
 
-        public static float TRIGGERED_TIME = 0.05f;
+        public static float _CONST_TRIGGERED_TIME = 0.05f;
 
         private class TriggeredState : State
         {
             public TriggeredState(StateMachine mgr) : base(mgr)
             {
-                AddMod(new TimerModule(mgr, TRIGGERED_TIME, StateId.Expanding));
+                AddMod(new TimerModule(mgr, _CONST_TRIGGERED_TIME, StateId.Expanding));
             }
         }
 
-        public static float EXPANDING_TIME = 0.125f;
-        public static float EXPANDED_SCALE = 2.25f;
-        public static float ATTACK_DISTANCE = 2f;
+        public static float _CONST_EXPANDING_TIME = 0.125f;
+        public static float _CONST_EXPANDED_SCALE = 2.25f;
+        public static float _CONST_ATTACK_DISTANCE = 2f;
 
         private bool chargePending = false;
 
         private void SetScale(float pct)
         {
-            var scale = Mathf.Pow(EXPANDED_SCALE, pct * pct);
+            var scale = Mathf.Pow(_CONST_EXPANDED_SCALE, pct * pct);
             gameObject.transform.localScale = new(scale, scale, scale);
         }
 
@@ -82,7 +82,7 @@ namespace DarknestDungeon.Enemy
 
             public ExpandingState(StateMachine mgr) : base(mgr)
             {
-                timer = AddMod(new TimerModule(mgr, EXPANDING_TIME, StateId.Expanded));
+                timer = AddMod(new TimerModule(mgr, _CONST_EXPANDING_TIME, StateId.Expanded));
 
                 var vtb = Parent;
                 if (vtb.chargePending)
@@ -90,7 +90,7 @@ namespace DarknestDungeon.Enemy
                     // Launch in the knight's direction.
                     var aVec = vtb.knight.transform.position - vtb.gameObject.transform.position;
                     vtb.retractTarget = aVec.normalized * 0.2f + vtb.gameObject.transform.position;
-                    vtb.impulses.Add(new(aVec.normalized * ATTACK_DISTANCE / EXPANDING_TIME, EXPANDING_TIME));
+                    vtb.impulses.Add(new(aVec.normalized * _CONST_ATTACK_DISTANCE / _CONST_EXPANDING_TIME, _CONST_EXPANDING_TIME));
                     vtb.chargePending = false;
                 }
             }
@@ -102,7 +102,7 @@ namespace DarknestDungeon.Enemy
             protected override void Update() => Parent.SetScale(timer.ProgPct);
         }
 
-        public static float EXPANDED_TIME = 1.1f;
+        public static float _CONST_EXPANDED_TIME = 1.1f;
 
         private class ExpandedState : State
         {
@@ -111,8 +111,8 @@ namespace DarknestDungeon.Enemy
 
             public ExpandedState(StateMachine mgr) : base(mgr)
             {
-                Parent.gameObject.transform.localScale = new(EXPANDED_SCALE, EXPANDED_SCALE, EXPANDED_SCALE);
-                timer = AddMod(new TimerModule(mgr, EXPANDED_TIME, StateId.Retracting));
+                Parent.gameObject.transform.localScale = new(_CONST_EXPANDED_SCALE, _CONST_EXPANDED_SCALE, _CONST_EXPANDED_SCALE);
+                timer = AddMod(new TimerModule(mgr, _CONST_EXPANDED_TIME, StateId.Retracting));
             }
             public override bool Mobile => false;
 
@@ -126,7 +126,7 @@ namespace DarknestDungeon.Enemy
             }
         }
 
-        public static float RETRACTING_TIME = 0.35f;
+        public static float _CONST_RETRACTING_TIME = 0.35f;
 
         private class RetractingState : State
         {
@@ -134,11 +134,11 @@ namespace DarknestDungeon.Enemy
 
             public RetractingState(StateMachine mgr) : base(mgr)
             {
-                timer = AddMod(new TimerModule(mgr, RETRACTING_TIME, StateId.Idle));
+                timer = AddMod(new TimerModule(mgr, _CONST_RETRACTING_TIME, StateId.Idle));
 
                 var vtb = Parent;
                 var rVec = vtb.retractTarget - vtb.gameObject.transform.position;
-                vtb.impulses.Add(new(rVec / RETRACTING_TIME, RETRACTING_TIME));
+                vtb.impulses.Add(new(rVec / _CONST_RETRACTING_TIME, _CONST_RETRACTING_TIME));
             }
 
             protected override void Update() => Parent.SetScale(timer.RemainingPct);
@@ -155,14 +155,13 @@ namespace DarknestDungeon.Enemy
             }
         }
 
-        public static float RESPAWNING_TIME = 2f;
+        public static float _CONST_RESPAWNING_TIME = 2.5f;
 
-        // TODO: sprites
         private class RespawningState : State
         {
             public RespawningState(StateMachine mgr) : base(mgr)
             {
-                AddMod(new TimerModule(mgr, RESPAWNING_TIME, StateId.Idle));
+                AddMod(new TimerModule(mgr, _CONST_RESPAWNING_TIME, StateId.Idle));
                 Parent.b2d.enabled = false;
             }
 
