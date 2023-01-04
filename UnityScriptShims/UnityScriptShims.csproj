@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Scripts\AbyssTendrils.cs" />
     <Compile Include="Scripts\BloodGate.cs" />
+    <Compile Include="Scripts\LightningField.cs" />
     <Compile Include="Scripts\VoidflyBehaviour.cs" />
     <Compile Include="Scripts\VoidSpikeBehaviour.cs" />
     <Compile Include="Scripts\TilemapPatcher.cs" />

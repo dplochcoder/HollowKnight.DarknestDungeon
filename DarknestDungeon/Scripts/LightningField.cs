@@ -161,14 +161,14 @@ namespace DarknestDungeon.Scripts
             }
         }
 
-        public const int SlopeFactor = 3;
+        // Derived field.
+        private float DegreeRange;
 
         // Compiled field.
         public CellType[,] cellTypes;
 
-        private float DegreeRange;
-
         // Editor fields.
+        public int SlopeFactor;
         public int Width;
         public int Height;
 
