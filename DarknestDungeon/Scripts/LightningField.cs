@@ -48,7 +48,7 @@ namespace DarknestDungeon.Scripts
                 bool openLeft = type == CellType.BottomLeft || (openTop && CellIsOobOrOpen(cx - 1, cy));
                 bool openRight = type == CellType.BottomRight || (openTop && CellIsOobOrOpen(cx + 1, cy));
 
-                float lx = px - cx / SlopeFactor;
+                float lx = px - cx / field.SlopeFactor;
                 float ly = py - cy;
                 float leftDeg = MathExt.VecToAngle(-lx, 1 - ly);
                 float rightDeg = MathExt.VecToAngle(1 - lx, 1 - ly);
@@ -79,7 +79,7 @@ namespace DarknestDungeon.Scripts
                 while (true)
                 {
                     // Ray-cast to the nearest side.
-                    float lx = px - cx / SlopeFactor;
+                    float lx = px - cx / field.SlopeFactor;
                     float ly = py - cy;
                     float topRatio = Mathf.Abs(ly / vec.y);
                     float leftRatio = vec.x <= 0 ? Mathf.Abs(MathExt.ZeroDevide(lx, vec.x)) : Mathf.Infinity;
