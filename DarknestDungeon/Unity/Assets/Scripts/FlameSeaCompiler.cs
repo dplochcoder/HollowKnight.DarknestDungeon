@@ -25,7 +25,7 @@ namespace DarknestDungeon.Scripts
         {
             gameObject.layer = 11;  // Enemies
             var bc2d = GetComponent<BoxCollider2D>();
-            GOUtils.UnifyCenter(transform, bc2d);
+            bc2d.offset = new Vector2(0, 0);
             bc2d.size = GOUtils.Snap(bc2d.size, 2.0f);
 
             var sdiff = GOUtils.SnapAndGetDiff(transform, 1.0f);

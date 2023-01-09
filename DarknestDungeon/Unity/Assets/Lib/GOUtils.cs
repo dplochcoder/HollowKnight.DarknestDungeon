@@ -35,11 +35,4 @@ public static class GOUtils
         t.position = newPos;
         return newPos - oldPos;
     }
-
-    public static void UnifyCenter(Transform t, BoxCollider2D bc2d)
-    {
-        var newPos = t.position + bc2d.offset.To3d();
-        bc2d.offset = Vector2.zero;
-        t.position = newPos;
-    }
 }
