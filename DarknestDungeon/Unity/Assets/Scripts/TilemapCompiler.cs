@@ -80,6 +80,24 @@ namespace DarknestDungeon.Scripts
 
             UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
         }
+
+        [ContextMenu("Monochromatize")]
+        void Monochromatize()
+        {
+            var tilemap = gameObject.GetComponent<Tilemap>();
+            var w = tilemap.size.x;
+            var h = tilemap.size.y;
+            TileBase firstTile = null;
+            for (int x = 0; x < w; x++)
+                for (int y = 0; y < h; y++)
+                {
+                    var tile = tilemap.GetTile(new Vector3Int(x, y, 0));
+                    if (tile != null) {
+                        firstTile = (firstTile ?? tile);
+                        tilemap.SetTile(new Vector3Int(x, y, 0), firstTile);
+                    }
+                }
+        }
 #endif
     }
 }
